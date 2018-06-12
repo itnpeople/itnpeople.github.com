@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<div class="row">
+	<div class="col-sm-10">
+		<!-- body -->
+		{{ content }}
+		<p class="text-right text-info">posted at {{page.date | date: "%Y/%m/%d %H:%M" }}</p>
+	</div>
+	<div id="rnb" class="col-sm-2">
+		<!-- rnb -->
+		{% include lnb.html %}<!-- //rnb -->
+		<br>
+	</div>
+</div>

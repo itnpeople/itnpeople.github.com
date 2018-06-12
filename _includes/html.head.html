@@ -1,0 +1,25 @@
+
+	<title>{{ site.title }}{% if page.title %} : {{ page.title }}{% endif %}</title>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width">
+
+	<!-- META -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+	<meta name="keywords" content="{% for word in page.keywords %}{{word}},{% endfor %}">
+	<meta name="description" content="{{page.description}}">
+	<meta name="classification" content="소프트웨어 기술">
+	<meta name="author" content="itnpeople@naver.com">
+	<meta name="copyright" content="사람과기술">
+	<!--fb - META -->
+	<meta property="fb:app_id" content="147893102002240">
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="/resources/img/fb.jpg"/>
+	<meta property="og:site_name" content="사람과기술"/>
+	<meta property="og:title" content="{{page.title}}" />
+	<meta property="og:description" content="{{page.description}}" />
+	<!-- CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="{{site.baseurl}}/resources/css/main.css">

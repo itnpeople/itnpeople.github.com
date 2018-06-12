@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include html.head.html %}
+</head>
+<body>
+<!-- gnb -->
+{% include gnb.html %}<!-- //gnb -->
+<div class="page-content">
+	<div class="container">
+	<!-- content -->
+	{{ content }}<!-- //content -->
+	<!-- copyright -->
+	{% include copyright.html %}<!-- //copyright -->
+	</div>
+</div>
+{% if site.is_google_analytics %}<script type="text/javascript" src="{{site.baseurl}}/resources/js/ga.js"></script>{% endif %}
+</body>
+</html>

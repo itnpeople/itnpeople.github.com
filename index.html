@@ -1,0 +1,102 @@
+---
+title: "사람과기술"
+keywords: "자바,닷넷,리눅스,정보시스템,오픈소스,플렛폼,아이티,java,asp.net,platform,.net,IT"
+description: "자바,닷넷,리눅스 등 각종 오픈소스 및 오픈 플렛폼의 프로토타입을 사이트이자 정보 공유 블로그 입니다"
+---
+<!DOCTYPE html>
+<html>
+<head>
+	{% include html.head.html %}
+	<!--[if lte IE 8]><script src="{{site.baseurl}}/resources/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="{{site.baseurl}}/resources/css/index.main.css"/>
+	<!--[if lte IE 8]><link rel="stylesheet" href="{{site.baseurl}}/resources/css/index.ie8.css" /><![endif]-->
+</head>
+
+<body>
+	<body id="top">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="#" class="image avatar"><img src="{{site.baseurl}}/resources/img/index/avatar.jpg" alt="" /></a>
+				<h1><strong>eun-sang cho</strong></h1>
+				<h5><a href="http://www.incruit.co.kr" target="_blank">인크루트</a>에서<br/>  전략과제팀장으로 모바일웹,안안드로이드앱 개발, 오픈소스기반기술,웹표준화 등의 작업을 했습니다.</h5>
+				<h5><a href="http://www.squarenet.co.kr" target="_blank">스퀘어네트(주)</a>에서<br/> N스크린,스마트그리드,스마트공장,웨어러블과 같은 정부과제들을 수행했거나 수행했습니다.</h5>
+				<h5>현재는 <a href="http://www.softbowl.co.kr" target="_blank">(주)소프트보울</a>에서<br/> HTML5기반 UI/UX 컴포넌트를 개발하고 있습니다.</h5>
+			</header>
+		<!-- Main -->
+			<div id="main">
+
+				<!-- One -->
+					<section id="one">
+						<header class="major">
+							<h2>사람과기술</h2>
+						</header>
+						<p>개발하면서 얻는 소소한 지식을 공유합니다. 자바, 닷넷, 리눅스, 오픈소스 관련 작지만 도움이 될만한 S/W기술들을 이야기하고 있습니다.</p>
+					</section>
+
+				<!-- Two -->
+					<section id="two">
+						<h2>Interests</h2>
+						<div class="row">
+							{% for cate in site.category %}
+							<article class="6u 12u$(xsmall) work-item">
+								<h3><a href="{{site.baseurl}}/posts/{{cate.code}}">{{cate.name}}</a></h3>
+								<p>{{cate.desc}}</p>
+							</article>
+							{% endfor %}
+						</div>
+					</section>
+					
+				<!-- Three -->
+					<section id="three">
+						<h2>Popular Posts</h2>
+						<section>
+							{% assign pages = site.posts | where: "tags", "popular"%}
+							{% for post in pages %}
+							<article class="12u$(xsmall) work-item">
+								<h3><a href="{{post.url}}">{{post.title}}</a></h3>
+								<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
+							</article>
+							{% endfor %}
+						</section>
+					</section>
+
+				<!-- Four -->
+					<section id="four">
+						<h2>Recent Posts</h2>
+						<section>
+							{% assign pages = site.posts | where: "tags", "recent"%}
+							{% for post in pages %}
+							<article class="12u$(xsmall) work-item">
+								<h3><a href="{{post.url}}">{{post.title}}</a></h3>
+								<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
+							</article>
+							{% endfor %}
+						</section>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://www.facebook.com/cho.eunsang" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="https://twitter.com/itnpeople" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="mailto:itnpeople@naver.com" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; 사람과기술</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
+
+		<!-- Scripts -->
+			<div id="fb-root"></div><script type="text/javascript" src="{{site.baseurl}}/resources/js/fb.js"></script>
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+			{% if site.is_google_analytics %}<script type="text/javascript" src="{{site.baseurl}}/resources/js/ga.js"></script>{% endif %}
+			<script type="text/javascript" src="{{site.baseurl}}/resources/js/jquery.poptrox.min.js"></script>
+			<script type="text/javascript" src="{{site.baseurl}}/resources/js/skel.min.js"/>"></script>
+			<script type="text/javascript" src="{{site.baseurl}}/resources/js/index.util.js"/>"></script>
+			<!--[if lte IE 8]><script src="{{site.baseurl}}/resources/js/ie/respond.min.js"></script><![endif]-->
+			<script type="text/javascript" src="{{site.baseurl}}/resources/js/index.main.js"></script>
+</body>
+</html>
