@@ -1,0 +1,25 @@
+---
+layout: posts
+---
+<!-- Pagination is not active -->
+{% for cate in site.category %}
+	{% if page.categories == cate.code %}
+		<h1>{{ cate.name }}</h1>
+		<p>{{ cate.desc }}</p>
+	{% endif %}
+{% endfor %}
+<hr>
+{% assign pages = site.posts | where: "categories", page.categories | sort: "date" | reverse%}
+{% for post in pages %}
+<h2><a href="{{post.url}}">{{ post.title }}</a></h2>
+<p>{{post.date | date: "%Y/%m/%d %H:%M" }}
+{% for tags in post.tags %}
+	{% if tags == "popular" %}<span class="label label-success">Best</span>{% endif %}
+	{% if tags == "recent" %}<span class="label label-info">New</span>{% endif %}
+{% endfor %}
+{% for word in post.keywords %}
+	&nbsp;<em>#{{ word }}</em>
+{% endfor %}
+</p>
+<hr>
+{% endfor %}
