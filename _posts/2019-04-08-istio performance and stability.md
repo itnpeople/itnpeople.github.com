@@ -1,6 +1,6 @@
 ---
 title:  "Istio Performance & Stability"
-date:   2018/04/08 10:30
+date:   2019/04/08 10:30
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","performance","stability","쿠버네티스","이스티오"]
