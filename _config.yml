@@ -29,6 +29,7 @@ category:
   - {code: 'maven', name: 'Maven', desc: "Apache Maven 사용하면서 알게된 내용을 공유합니다."}
   - {code: 'java', name: 'Java', desc: "Spring framework 과 java 개발과 관련된 팁을 공유합니다."}
   - {code: 'python', name: 'Python', desc: "파이썬을 활용한 구현 예제들을 공유합니다."}
+  - {code: 'cloud', name: 'Cloud', desc: "마이크로서비스, 서비스 메시 관련 기술을 공유합니다."}
 
 is_google_analytics: true
 
