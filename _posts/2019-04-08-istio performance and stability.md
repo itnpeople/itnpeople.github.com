@@ -11,45 +11,43 @@ description: "이스티오 성능 및 안정성 테스트"
 https://istio.io/docs/concepts/performance-and-scalability/
 
 ## 개요
-
-* 1000 services and 2000 sidecars with 70,000 mesh-wide requests per second
+1000 services and 2000 sidecars with 70,000 mesh-wide requests per second
 
 ### Performance Summary
-* Offical Load Test 결과는 아래와 같음
-  * Envoy 프록시 초당 100건 - 0.6 vCPU and 50 MB memory 사용
-  * istion-telemery  서비스 - 0.6 vCPU 사용
-  * Pilot - 1 vCPU, 1.5G memory 사용
-  * Envoy 프록시 latency -  8ms가 90%
+Offical Load Test 결과는 아래와 같음
+* Envoy 프록시 초당 100건 - 0.6 vCPU and 50 MB memory 사용
+* istion-telemery  서비스 - 0.6 vCPU 사용
+* Pilot - 1 vCPU, 1.5G memory 사용
+* Envoy 프록시 latency -  8ms가 90%
 
-### Control plane performance
+### Control Plane 성능
 
-* configurations and possible system states 에 따라서 CPU, Memory 필요량 결정
+* 설정과 가능한 시스템 상태 에 따라서 CPU, Memory 필요량 결정
 * CPU 사이즈는 다음 사항에 따라 결정
   * The rate of deployment changes.
   * The rate of configuration changes.
   * The number of proxies connecting to Pilot.
 * a single Pilot instance can support 1000 services, 2000 sidecars with 1 vCPU and 1.5 GB of memory.
 
-### Data plane performance
-* 데이터 플레인의 성능은 아래 사항이외에도 많은 요소에 따라 결정됨
-  * Number of client connections
-  * Target request rate
-  * Request size and Response size
-  * Number of proxy worker threads*
-  * Protocol
-  * CPU cores
-  * Number and types of proxy filters, specifically Mixer filter.
+### Data Plane 성능
+아래 사항이외에도 많은 요소에 따라 결정됨
+* Number of client connections
+* Target request rate
+* Request size and Response size
+* Number of proxy worker threads*
+* Protocol
+* CPU cores
+* Number and types of proxy filters, specifically Mixer filter.
 
 ### CPU & Memory
-* // TODO
+// TODO
 
 ### Latency
-* // TODO
+// TODO
 
-### benchmark 툴
-
-#### fortio.org
-* 이스티오 로드 테스팅툴로 시작
+### fortio.org
+* Latency 측정 툴
+* Istio 로드 테스팅툴로 시작
 * 실행시간을 퍼센트로 계산해서 기록해줌
 
 * 실치 (mac)
@@ -60,6 +58,7 @@ https://istio.io/docs/concepts/performance-and-scalability/
 ~~~
 $ fortio load http://www.google.com
 ~~~
+
 
 
 ## Offical Performance Test 프로젝트
@@ -116,15 +115,20 @@ $ fortio load http://www.google.com
 ### minikube
 * minikube 인스턴스 삭제 설치 (minikube 설치 되어있다는 전제)
 * minikube 기본값으로 kubernetes + istio 설치 + 성능측정이 불가능하므로 리소스를 늘려서(6cpu, 8g) 인스턴스를 생성한다. 
-
 ~~~
 $ minikube delete
 $ minikube start --cpus 6 --memory 8192
 $ minikube ssh
 ~~~
 
+* minikube tunnel (https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 설정을 통하여 Cluster IP로 접근 가능 하도록 라우딩한다.
+~~~
+$ minikube tunnel
+$ sudo route -n add 10.0.0.0/12 $(minikube ip)
+~~~
+
 ### Helm 초기화 
-* helm 클라이언트가 설치되었다는 전제ß
+* helm 클라이언트가 설치되었다는 전제
 ~~~
 $ helm init
 ~~~
@@ -140,12 +144,6 @@ $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl apply -f -
 ~~~
 
-* minikube에 설치하므로 편의상 등록된 istio-ingressgateway, prometheus 서비스는 LoadBalancer Type 에서 NodePort Type으로 바꿔준다.
-~~~
-$ kubectl edit service/istio-ingressgateway -n istio-system
-$ kubectl edit service/prometheus -n istio-system
-$ kubectl get service -n istio-system
-~~~
 
 ### 테스트 프로젝트 다운로드
 ~~~
@@ -157,6 +155,8 @@ $ cd tools
 ## Benchmark 테스트 진행
 
 ### 준비작업
+* 테스트로 사용할 twopods namespace를 생성하고 사이드카(envoy)가 설치될 수 있도록 istio-injection 레이블링
+* setup_test.sh 실행
 ~~~
 $ cd perf/benchmark
 $ export NAMESPACE=twopods
@@ -164,61 +164,89 @@ $ kubectl create namespace $NAMESPACE
 $ kubectl label namespace $NAMESPACE istio-injection=enabled
 $ DNS_DOMAIN=local ./setup_test.sh
 ~~~
-
 * twopods 라는 namespace로 "fortioclient", "fortioserver" 2개 파드가 생성
 
 
-### 실행
+### 테스트 진행
 ~~~
-$ python runner/runner.py 2,4 10,40 30 --serversidecar --baseline
+$ python runner/runner.py 2,4 10,40 90 --serversidecar --baseline
 ~~~
-30초 동안 12개 테스트가 진행된다.
+* 90초 동안 12개 테스트가 진행된다.
+* 분석결과 조회시 METRICS_START_SKIP_DURATION 값(해당 시간 이전 데이터는 측정에서 SKIP 처리)이  62이으로 시간은 최소 62초 이상으로 지정한다.
 
 
 ### 결과확인
 
-* 프로메테우스, fortio URL 확인
+* Prometheus, Fortio에 대한  IP, 포트 확인
 ~~~
-$ echo ""http://$(minikube ip):$(kubectl get service/prometheus -n istio-system -o  'jsonpath={.spec.ports[0].nodePort}')""
-$ echo "http://$(minikube ip):$(kubectl get service/fortioclient -n twopods -o  'jsonpath={.spec.ports[0].nodePort}')"
+$ kubectl get svc -n istio-system
 ~~~
 
-* 결과확인 전에 portio.py 에 METRICS_START_SKIP_DURATION 값(해당 지정초 이전 데이터는 측정에서 SKIP 처리)을 0으로 바꿔준다. default 값은 62, 30초 테스트(연습으로) 했으므로 데이터가 조회되지 않음
-* 첫번째 URL은 fortio, 두번째는 prometheus
+* 앞서 확인했던 Prometheus, Forio URL을 지정 (예: http://10.98.31.42:9090  http://10.105.130.107:9090)
 ~~~
 $ python ./runner/fortio.py  FORTIO_URL PROMETHEUS_URL --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
 ~~~
 
+* fortio.py를 실행하면 2개의 아래와 같은 내용을 가진 임시 파일이 생성된다. 
+~~~
+{"mem_MB_max_ingressgateway_proxy": 24, "cpu_mili_max_telemetry_mixer": 5, "mem_MB_max_fortioserver_deployment_proxy": 29, "cpu_mili_min_ingressgateway_proxy": 13, "cpu_mili_min_fortio_deployment_captured": 22, "cpu_mili_avg_pilot_proxy": 11, "mem_MB_max_fortioserver_deployment_captured": 6, "proxyaccesslog": true, ......
+~~~
+
+#### 분석 지표
+* fortio.py 실행하여 얻은 분석결과는 3개의 시나리오에 대한  latency 측정 결과(fortio)와 리소스 측정결과(prometheus)로 나누어진다.
+
+* Fortio를 활용한 Latency 측정 (ms)
+  * p50
+  * p75
+  * p90
+  * p99
+  * min
+  * max
+  * avg
+
+* prometheus를 활용한 구성요소 cpu(milisecond), memory(mb) 사용량 측정 - 각 요소들에 대한 min,max,avg 값 
+  * ingressgateway_proxy
+  * telemetry_proxy
+  * telemetry_mixer
+  * pilot_proxy
+  * pilot_discovery
+  * policy_proxy
+  * policy_mixer
+  * fortio_deployment_proxy
+  * fortio_deployment_captured
+  * fortio_deployment_uncaptured
+  * fortioserver_deployment_proxy
+  * fortioserver_deployment_captured
+  * fortioserver_deployment_uncaptured
+
+
 #### Web UI에서 결과확인
-* 앞서 확인했던 FORTIO_URL PROMETHEUS_URL 을 웹브라우저에서 열면 확인가능
-* 프로메테우스 예제 쿼리를 실제 데이터 확인
+* FORTIO_URL PROMETHEUS_URL 을 웹브라우저에서 열면 확인가능
+* Prometheus 예제 쿼리를 실제 데이터 확인
 ~~~
 irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
 ~~~
 
-* 프로메테우스 API 호출은 다음과 같음
+* 참고 : Prometheus API 호출은 다음과 같음
 ~~~
 PROMETHEUS_URL/api/v1/query_range?start=2019-04-03T01:00:00.000Z&end=2019-04-03T02:00:00.000Z&step=15&query=irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
 ~~~
 
-## stability 테스트 진행
+## Stability 테스트 진행
 
 ### 준비작업
 ~~~
 $ cd perf/stability/
 ~~~
 
-* minikube를 사용해서 istio-ingressgateway 를 NodePort로 변경했기 때문에 아래와 같이 gateway 주소를 변경해준다.
+* minikube 환경이므로 LoadBalancer의 ExternalIP가 바인딩 되지 않는다. (Pending 상태) 그러므로 `setup_tests.sh` 파일을 열고 istio-ingressgateway의 gateway 주소를 변경해준다.(39라인)
 ~~~
  vi setup_tests.sh
 ~~~
-
-* 39라인을 다음과 같이 수정
 ~~~
 #  local gateway=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingres/s[0].ip}')
-local gateway="http://$(minikube ip):$(kubectl get service/istio-ingressgateway -n istio-system -o  'jsonpath={.spec.ports[0].nodePort}')"
+local gateway="http://$(kubectl get service/istio-ingressgateway -n istio-system -o jsonpath={.spec.clusterIP})"
 ~~~
-
 
 ### http10 테스트 실행
 
@@ -228,14 +256,6 @@ $ TESTS="http10" ./setup_tests.sh setup
 
 
 ### 네임스페이스 gateway-bouncer 조정 작업
-
-* 사용하는  ingree를 아래와 같이 NodePort로 변경해준다.
-~~~
-vi ./gateway-bouncer/templates/ingress.yaml
-~~~
-~~~
-  type: NodePort
-~~~
 
 * ingree를 아래와 같이 NodePort로 변경해 주었으므로 아래와 같이 clusterIP를 사용하도록 수정
 ~~~
@@ -256,7 +276,7 @@ vi gateway-bouncer/setup.sh
 
 * 프로메테우스 서비스 URL
 ~~~
-$ echo "http://$(minikube ip):$(kubectl get svc/prometheus -n istio-system -o jsonpath={.spec.ports[0].nodePort})"
+$ echo "http://$(kubectl get service/prometheus -n istio-system -o jsonpath={.spec.clusterIP})"
 ~~~
  
 * 프로메테우스 예제 쿼리

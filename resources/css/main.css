@@ -119,5 +119,6 @@ p {padding-left:20px;line-height: 1.6em;}
 ul { padding-left: 30px;}
 div.highlight {margin-left:20px;}
 .nav>li.nav-header {padding-bottom: 10px;}
+#body {line-height: 2em}
 #rnb ul.nav-list>li>a {padding: 3px 15px;}
 #rnb ul.nav-list>li>a.active {font-weight: bold;background-color: #eee;}
