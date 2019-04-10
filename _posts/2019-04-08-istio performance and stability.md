@@ -3,7 +3,7 @@ title:  "Istio Performance & Stability"
 date:   2019/04/08 10:30
 categories: "cloud"
 tags: ["recent"]
-keywords: ["kubernetes","istio","performance","stability","쿠버네티스","이스티오"]
+keywords: ["kubernetes","istio","performance","stability","쿠버네티스","이스티오"," 성능","안전성"]
 description: "이스티오 성능 및 안정성 테스트"
 ---
 
