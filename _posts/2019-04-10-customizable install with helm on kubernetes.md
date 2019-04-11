@@ -4,11 +4,13 @@ date:   2019/04/10 15:05
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오", "Helm"]
-description: "Kubernetes에 Istio Control Plane을 Helm template 으로 설치하는 방법"
+description: "Kubernetes에 Istio Control Plane를 설치 하는 방법 중에서 Helm template을 활용하여 설치하는 방법을 수행해 봅니다."
 ---
 
 # Kubernetes에 Istio Control Plane을 Helm template 으로 설치하는 방법
-문서 : https://istio.io/docs/setup/kubernetes/install/helm/
+---
+* *Istio 1.1.1* , *minikube v0.35.0*
+* [공식문서](https://istio.io/docs/setup/kubernetes/install/helm/) 참조
 
 
 ## 준비작업
@@ -52,6 +54,8 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 --values install/kubernetes/helm/istio/values-istio-minimal.yaml \
 | kubectl apply -f -
 ~~~
+* [Profile(values  yaml)별 설치 첨포넌트] (https://istio.io/docs/setup/kubernetes/additional-setup/config-profiles/) 참조
+
 
 * 설치옵션을 직접 지정하는 방법 
 ~~~
@@ -62,13 +66,13 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 
 * [세부 설치옵션](https://istio.io/docs/reference/config/installation-options/) 참조
 
-* minikube에 설치 처럼 LoadBalancer 를 활용할 수 없는 환경에서는 LoadBalancer 대신 NodePort 를 사용
+* Istio의 ingressgateway는 기본적으로  LoadBalancer 로 설치된다. 이때 minikube에 설치 처럼 LoadBalancer 를 활용할 수 없는 환경에서는 LoadBalancer 대신 NodePort 를 사용하도록 한다.
 
 
 ## Template을 이용한 업데이트
 `install/kubernetes/helm/istio/charts/gateways/templates/service.yaml` 에 `gateways.istio-ingressgateway.type` 옵션을 변경하여 수정 적용하는 예제
 ~~~
-helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
+$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
 -x charts/gateways/templates/service.yaml \
 --set gateways.istio-ingressgateway.type=NodePort \
 | kubectl apply -f -

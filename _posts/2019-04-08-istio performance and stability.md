@@ -4,11 +4,13 @@ date:   2019/04/08 10:30
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","performance","stability","쿠버네티스","이스티오"," 성능","안전성"]
-description: "이스티오 성능 및 안정성 테스트"
+description: "Istio의 성능 결과 문서를 정리하고 github 에 공개되어 있는 벤치마크 프로젝트를 minikube 환경에서 직접 실행해 봅니다."
 ---
 
 # Istio Performance & Stability
-https://istio.io/docs/concepts/performance-and-scalability/
+---
+* *Istio 1.1.1* , *minikube v0.35.0*
+* [공식문서](https://istio.io/docs/concepts/performance-and-scalability/)
 
 ## 개요
 1000 services and 2000 sidecars with 70,000 mesh-wide requests per second

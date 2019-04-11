@@ -16,7 +16,9 @@ layout: posts
 {% for tags in post.tags %}
 	{% if tags == "popular" %}<span class="label label-success">Best</span>{% endif %}
 	{% if tags == "recent" %}<span class="label label-info">New</span>{% endif %}
-{% endfor %}
+{% endfor %}</p>
+<p>{{ post.description }}</p>
+<p>
 {% for word in post.keywords %}
 	&nbsp;<em>#{{ word }}</em>
 {% endfor %}
