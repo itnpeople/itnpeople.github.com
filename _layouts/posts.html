@@ -4,7 +4,32 @@ layout: default
 <div class="row">
 	<div class="col-sm-10">
 		<!-- body -->
-		{{ content }}
+{% for cate in site.category %}
+	{% if page.categories == cate.code %}
+		<h1>{{ cate.name }}</h1>
+		<p>{{ cate.desc }}</p>
+	{% endif %}
+{% endfor %}
+{% assign pages = site.posts | where: "categories", page.categories | sort: "date" | reverse%}
+{% for post in pages %}
+<div class="posts-item">
+<hr>
+<h2><a href="{{post.url}}">{{ post.title }}</a></h2>
+<p class="desc">{{ post.description }}</p>
+<p class="date">
+{% for tags in post.tags %}
+	{% if tags == "popular" %}<span class="label label-success">Best</span>{% endif %}
+	{% if tags == "recent" %}<span class="label label-info">New</span>{% endif %}
+{% endfor %}
+<em>{{post.date | date: "%Y/%m/%d %H:%M" }}</em>
+<p class="keyword">
+{% for word in post.keywords %}
+	&nbsp;<em>#{{ word }}</em>
+{% endfor %}
+</p>
+</div>
+{% endfor %}
+		<!-- //body -->
 	</div>
 	<div id="rnb" class="col-sm-2">
 		<!-- rnb -->
