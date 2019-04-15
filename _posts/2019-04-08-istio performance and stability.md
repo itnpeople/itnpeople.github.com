@@ -73,7 +73,7 @@ $ fortio load http://www.google.com
 * 성능체크를 위한 이스티오 성능 권장 설정되어 있으나 대용량 클러스터가 필요, 적어도 32 vCPU 
 
 ### /load
-* 로드 구성 : https://github.com/istio/tools/tree/master/perf/load
+* https://github.com/istio/tools/tree/master/perf/load
 * 이스티오 havey load 상에서 테스트하기 위한 대용량 서비스를 생성하는 툴을 제공
 * Fortio 인스턴스로 설치됨
 * 각 인스턴스는 적어도 6 vCPU에 6G 메모리 필요 (그림상으로는 인스턴스가 9인데. 그럼 54 vCPU에 54G 리소스가 필요한건가?)
@@ -115,28 +115,35 @@ $ fortio load http://www.google.com
 
 
 ### minikube
+
 * minikube 인스턴스 삭제 설치 (minikube 설치 되어있다는 전제)
 * minikube 기본값으로 kubernetes + istio 설치 + 성능측정이 불가능하므로 리소스를 늘려서(6cpu, 8g) 인스턴스를 생성한다. 
+
 ~~~
 $ minikube delete
 $ minikube start --cpus 6 --memory 8192
 $ minikube ssh
 ~~~
 
-* minikube tunnel (https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 설정을 통하여 Cluster IP로 접근 가능 하도록 라우딩한다.
+* [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 설정을 통하여 Cluster IP로 접근 가능 하도록 라우딩한다.
+
 ~~~
 $ minikube tunnel
 $ sudo route -n add 10.0.0.0/12 $(minikube ip)
 ~~~
 
 ### Helm 초기화 
+
 * helm 클라이언트가 설치되었다는 전제
+
 ~~~
 $ helm init
 ~~~
 
 ### istio 설치
+
 * 몇가지 설치 방법 중 helm 으로 설치 (https://istio.io/docs/setup/kubernetes/install/helm/)
+
 ~~~
 $ wget https://github.com/istio/istio/releases/download/1.1.1/istio-1.1.1-osx.tar.gz
 $ tar -vxzf istio-1.1.1-osx.tar.gz
@@ -148,6 +155,7 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 
 
 ### 테스트 프로젝트 다운로드
+
 ~~~
 $ git clone https://github.com/istio/tools.git
 $ cd tools
@@ -159,6 +167,7 @@ $ cd tools
 ### 준비작업
 * 테스트로 사용할 twopods namespace를 생성하고 사이드카(envoy)가 설치될 수 있도록 istio-injection 레이블링
 * setup_test.sh 실행
+
 ~~~
 $ cd perf/benchmark
 $ export NAMESPACE=twopods
@@ -170,26 +179,34 @@ $ DNS_DOMAIN=local ./setup_test.sh
 
 
 ### 테스트 진행
+
 ~~~
+$ export NAMESPACE=twopods
 $ python runner/runner.py 2,4 10,40 90 --serversidecar --baseline
 ~~~
+* 위의 예에서 2,4 는 connection 수 10,40은 qps, 90은 수행시간을 의미
 * 90초 동안 12개 테스트가 진행된다.
-* 분석결과 조회시 METRICS_START_SKIP_DURATION 값(해당 시간 이전 데이터는 측정에서 SKIP 처리)이  62이으로 시간은 최소 62초 이상으로 지정한다.
+* 결과 확인(forio.py실행)시 지정된 값 이전 데이터는 SKIP 처리(METRICS_START_SKIP_DURATION) default 값이  62로 지정되어 있으므로  측정시간을 최소 62초 이상으로 지정해야한다.
+* 환경변수 "NAMESPACE" 는 필수
 
 
 ### 결과확인
 
 * Prometheus, Fortio에 대한  IP, 포트 확인
+
 ~~~
-$ kubectl get svc -n istio-system
+$ export PROMETHEUS_URL=http://$(kubectl get svc/prometheus -n istio-system -o jsonpath={.spec.clusterIP}):9090
+$ export FORTIO_URL=http://$(kubectl get svc/fortioclient -n twopods -o jsonpath={.spec.clusterIP}):8080
 ~~~
 
 * 앞서 확인했던 Prometheus, Forio URL을 지정 (예: http://10.98.31.42:9090  http://10.105.130.107:9090)
+
 ~~~
-$ python ./runner/fortio.py  FORTIO_URL PROMETHEUS_URL --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
+$ python ./runner/fortio.py  $FORTIO_URL $PROMETHEUS_URL --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
 ~~~
 
 * fortio.py를 실행하면 2개의 아래와 같은 내용을 가진 임시 파일이 생성된다. 
+
 ~~~
 {"mem_MB_max_ingressgateway_proxy": 24, "cpu_mili_max_telemetry_mixer": 5, "mem_MB_max_fortioserver_deployment_proxy": 29, "cpu_mili_min_ingressgateway_proxy": 13, "cpu_mili_min_fortio_deployment_captured": 22, "cpu_mili_avg_pilot_proxy": 11, "mem_MB_max_fortioserver_deployment_captured": 6, "proxyaccesslog": true, ......
 ~~~
@@ -223,31 +240,36 @@ $ python ./runner/fortio.py  FORTIO_URL PROMETHEUS_URL --csv StartTime,ActualDur
 
 
 #### Web UI에서 결과확인
+
 * FORTIO_URL PROMETHEUS_URL 을 웹브라우저에서 열면 확인가능
 * Prometheus 예제 쿼리를 실제 데이터 확인
+
 ~~~
 irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
 ~~~
 
 * 참고 : Prometheus API 호출은 다음과 같음
+
 ~~~
-PROMETHEUS_URL/api/v1/query_range?start=2019-04-03T01:00:00.000Z&end=2019-04-03T02:00:00.000Z&step=15&query=irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
+$PROMETHEUS_URL/api/v1/query_range?start=2019-04-03T01:00:00.000Z&end=2019-04-03T02:00:00.000Z&step=15&query=irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
 ~~~
 
 ## Stability 테스트 진행
 
 ### 준비작업
+
 ~~~
 $ cd perf/stability/
 ~~~
 
 * minikube 환경이므로 LoadBalancer의 ExternalIP가 바인딩 되지 않는다. (Pending 상태) 그러므로 `setup_tests.sh` 파일을 열고 istio-ingressgateway의 gateway 주소를 변경해준다.(39라인)
+
 ~~~
- vi setup_tests.sh
+$ vi setup_tests.sh
 ~~~
 ~~~
-#  local gateway=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingres/s[0].ip}')
-local gateway="http://$(kubectl get service/istio-ingressgateway -n istio-system -o jsonpath={.spec.clusterIP})"
+$ local gateway=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingres/s[0].ip}')
+$ local gateway="http://$(kubectl get service/istio-ingressgateway -n istio-system -o jsonpath={.spec.clusterIP})"
 ~~~
 
 ### http10 테스트 실행
@@ -260,28 +282,31 @@ $ TESTS="http10" ./setup_tests.sh setup
 ### 네임스페이스 gateway-bouncer 조정 작업
 
 * ingree를 아래와 같이 NodePort로 변경해 주었으므로 아래와 같이 clusterIP를 사용하도록 수정
+
 ~~~
-vi gateway-bouncer/setup.sh
+$ vi gateway-bouncer/setup.sh
 ~~~
 ~~~
-#  INGRESS_IP=$(kubectl -n ${NAMESPACE} get service istio-ingress-${NAMESPACE} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-   INGRESS_IP=$(kubectl -n ${NAMESPACE} get service istio-ingress-${NAMESPACE} -o jsonpath='{.spec.clusterIP}')
+$ INGRESS_IP=$(kubectl -n ${NAMESPACE} get service istio-ingress-${NAMESPACE} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+$ INGRESS_IP=$(kubectl -n ${NAMESPACE} get service istio-ingress-${NAMESPACE} -o jsonpath='{.spec.clusterIP}')
  ~~~
 
  ~~~
- $ kubectl get pod -n http10
- $ kubectl get pod -n gateway-bouncer
- $ kubectl get pod -n graceful-shutdown
+$ kubectl get pod -n http10
+$ kubectl get pod -n gateway-bouncer
+$ kubectl get pod -n graceful-shutdown
  ~~~
 
 ### http10 테스트 결과분석
 
 * 프로메테우스 서비스 URL
+
 ~~~
 $ echo "http://$(kubectl get service/prometheus -n istio-system -o jsonpath={.spec.clusterIP})"
 ~~~
  
 * 프로메테우스 예제 쿼리
+
 ~~~
 irate(container_cpu_usage_seconds_total{namespace="http10"}[1m])
 irate(container_cpu_usage_seconds_total{container_name=~"http10.+"}[1m])

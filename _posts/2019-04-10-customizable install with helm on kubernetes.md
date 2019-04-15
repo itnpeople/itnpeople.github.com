@@ -15,26 +15,30 @@ description: "Kubernetes에 Istio Control Plane를 설치 하는 방법 중에�
 
 ## 준비작업
 
-1. Helm 초기화 
+* Helm 초기화 (helm 클라이언트가 설치되었다는 전제)
+
 ~~~
 $ helm init
 ~~~
-* helm 클라이언트가 설치되었다는 전제
 
-1. Istio 다운로드 및 압축해제
+
+* Istio 다운로드 및 압축해제
+
 ~~~
 $ wget https://github.com/istio/istio/releases/download/1.1.1/istio-1.1.1-osx.tar.gz
 $ tar -vxzf istio-1.1.1-osx.tar.gz
 $ cd istio-1.1.1
 ~~~
 
-1. 네임스페이스 생성
+* 네임스페이스 생성
+
 ~~~
 $ kubectl create namespace istio-system
 ~~~
 
-1. CRDs 등록
+* CRDs 등록
 * kubectl apply 에 사용할 Istio Custom Resource Definitions (CRDs) 을 등록해준다. 잠시후 Kubernetes APi Server 에 반영된댜.
+
 ~~~
 $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
 $ kubectl get crds | grep 'istio.io'
@@ -42,6 +46,7 @@ $ kubectl get crds | grep 'istio.io'
 
 
 ## default 설치
+
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl apply -f -
 ~~~
@@ -49,15 +54,18 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 ## 옵션을 지정하여 설치
 
 * 설치옵션이 저정된 Custom yaml을 지정하여 설치하는 방법 
+
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
 --values install/kubernetes/helm/istio/values-istio-minimal.yaml \
 | kubectl apply -f -
 ~~~
+
 * [Profile(values  yaml)별 설치 첨포넌트] (https://istio.io/docs/setup/kubernetes/additional-setup/config-profiles/) 참조
 
 
 * 설치옵션을 직접 지정하는 방법 
+
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
 --set gateways.istio-ingressgateway.type=NodePort \
@@ -71,6 +79,7 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 
 ## Template을 이용한 업데이트
 `install/kubernetes/helm/istio/charts/gateways/templates/service.yaml` 에 `gateways.istio-ingressgateway.type` 옵션을 변경하여 수정 적용하는 예제
+
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
 -x charts/gateways/templates/service.yaml \
