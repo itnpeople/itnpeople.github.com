@@ -9,15 +9,17 @@ description: "Kubernetes에 Istio Control Plane를 설치 하는 방법 중에�
 
 # Kubernetes에 Istio Control Plane을 Helm template 으로 설치하는 방법
 ---
-* *Istio 1.1.1* , *minikube v0.35.0*
+* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1*, *minikube v0.35.0* , *macOS Mojave 10.14.4(18E226)*
 * [공식문서](https://istio.io/docs/setup/kubernetes/install/helm/) 참조
 
 
-## 준비작업
+## 공통 준비작업
+***
 
-* Helm 초기화 (helm 클라이언트가 설치되었다는 전제)
+* Helm 설치 및 초기화
 
 ~~~
+$ brew install kubernetes-helm
 $ helm init
 ~~~
 
@@ -44,16 +46,16 @@ $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace
 $ kubectl get crds | grep 'istio.io'
 ~~~
 
+## Case 별 구성 방법
+***
 
-## default 설치
+### #1. Default 구성
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl apply -f -
 ~~~
 
-## 옵션을 지정하여 설치
-
-* 설치옵션이 저정된 Custom yaml을 지정하여 설치하는 방법 
+### #2. 설치옵션이 저정된 Custom yaml을 지정하여 구성
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
@@ -64,7 +66,7 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 * [Profile(values  yaml)별 설치 첨포넌트] (https://istio.io/docs/setup/kubernetes/additional-setup/config-profiles/) 참조
 
 
-* 설치옵션을 직접 지정하는 방법 
+### #3. 설치옵션을 직접 지정하여 구성
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
@@ -77,8 +79,8 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 * Istio의 ingressgateway는 기본적으로  LoadBalancer 로 설치된다. 이때 minikube에 설치 처럼 LoadBalancer 를 활용할 수 없는 환경에서는 LoadBalancer 대신 NodePort 를 사용하도록 한다.
 
 
-## Template을 이용한 업데이트
-`install/kubernetes/helm/istio/charts/gateways/templates/service.yaml` 에 `gateways.istio-ingressgateway.type` 옵션을 변경하여 수정 적용하는 예제
+### #4. Template을 이용한 구성
+`install/kubernetes/helm/istio/charts/gateways/templates/service.yaml` 에 `gateways.istio-ingressgateway.type` 옵션을 변경하여 override하여 적용하는 예제
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
@@ -88,8 +90,10 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 ~~~
 
 ## Uninstall
+***
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl delete -f -
 $ kubectl delete namespace istio-system
 ~~~
+

@@ -2,7 +2,7 @@
 title:  "spring annotation-driven 사용시 bean name 중복(충돌,conflicts) 해결"
 date:   2015/01/20 10:55
 categories: "java"
-tags: ["popular","recent"]
+tags: ["popular"]
 keywords: ["annotation-driven", "spring", "conflicts with existing"]
 description: "spring은 annotation-driven component scan 시 기본적으로 Bean 이름으로 id를 결정한다. 이때 동일한 이름의 클래스(컴포넌트)가 존재한다면 동일한 id 를 가지게 되고 'conflicts with existing' 오류가 발생한다. BeanNameGenerator를 커스트마이징하여 이를 해결 한다"
 ---

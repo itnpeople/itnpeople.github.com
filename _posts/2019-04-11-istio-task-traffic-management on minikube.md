@@ -9,11 +9,12 @@ description: "minikube 에서 Istio 공식 TASK > Traffic Management 문서 Isti
 
 # Traffic Management
 ---
-* *Istio 1.1.1* , *minikube v0.35.0*
+* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
 * [[Istio 공식 TASK > Traffic Management 문서](https://istio.io/docs/tasks/traffic-management/) 를 토대로 minikube 환경에서 실행해보고 개인적으로 정리해 본 문서
 
 
 ## Configuring Request Routing
+***
 이 Task는 다중 microservice에 대한 요청을 다이나믹하게 라우팅하는 예제를 보여준다.
 
 ### 개요
@@ -77,7 +78,9 @@ EOF
 * refresh 하면 v2 microservice(검은색 별)를 표시한다.
 
 
+
 ## Fault Injction
+***
 어플리케이션의 자연복원을 테스트하기 위해 오류를 발생시키는 (fault inject) 방법을 보여준다.
 
 ### 개요
@@ -165,6 +168,7 @@ EOF
 
 
 ## Traffic Shifting
+***
 이 Task는 이전 버전에서 다른 버전으로 트래픽을 서서 마이그레이션 하는 방법을 보여준다. 
 
 ### 개요
@@ -208,6 +212,7 @@ EOF
 
 
 ## TCP Traffic Shifting
+***
 이 Task는 이전 버전에서 다른 버전으로 TCP 트래픽을 서서히 마이그레이션 하는 방법을 보여준다. 
 
 
@@ -329,6 +334,7 @@ done
 
 
 ## Setting Request Timeouts
+***
 이 TASK는 요청 제한시간를 샛팅하는 방법을  보여준다.
 
 ### 개요
@@ -413,6 +419,7 @@ EOF
 
 
 ## Control Ingress Traffic
+***
 이 TASK는 Istion Gateway 를 활용하여 서비스메시 외부에 서비스를 노출하는 방법을 보여준다.
 
 ### 개요
@@ -525,10 +532,11 @@ $ curl -I http://$INGRESS_HOST:$INGRESS_PORT/status/200
 
 
 ## Securing Ingress Gateway (File Mount-based approch)
+***
 이 TASK 는  File Mount-Based 접근방식을 통해 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여준다.
 
 
-###  게요
+### 개요
 
 * 시나리오 #1 - TLS (SIMPLE) 설정
 * 시나리오 #2 - mutual TLS 설정
@@ -721,6 +729,7 @@ $ kubectl apply -f $HOME/istio-ingressgateway.yaml
 
 
 ## Securing Gateways with HTTPS Using Secret Discovery Service
+***
 이 TASK 는  SDS(Secret Discovery Service)를 사용하여 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여준다.
 
 
@@ -737,7 +746,9 @@ $ kubectl apply -f $HOME/istio-ingressgateway.yaml
 
 * TODO - https://istio.io/docs/tasks/traffic-management/secure-ingress/sds/
 
+
 ## Control Egress Traffic
+***
 Istio 에서 관리되는 파드들의  모든 outbound 트래픽은 기본적으로 sidecar proxy로 리디렉션되기 때문에, 클러스터 외부의 URL 접근성은 proxy의 구성에 따라 달라진다.
 
 ### 개요
@@ -904,6 +915,7 @@ $ exit
 
 
 ## Circuit Breaking
+***
 이 TASK는 연결,요청에 따른 circuit breaking 설정을 보여준다.
 
 ### 개요
@@ -971,6 +983,7 @@ $ kubectl exec -it $FORTIO_POD  -c istio-proxy  -- sh -c 'curl localhost:15000/s
 
 
 ## Mirroring (Traffic Mirroring, Shadowing)
+***
 이 TASK는 Istio의 트래픽 미러링 역량을 보여준다.
 
 ### 개요

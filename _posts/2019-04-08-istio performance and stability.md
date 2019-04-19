@@ -9,10 +9,11 @@ description: "Istio의 성능 결과 문서를 정리하고 github 에 공개되
 
 # Istio Performance & Stability
 ---
-* *Istio 1.1.1* , *minikube v0.35.0*
+* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
 * [공식문서](https://istio.io/docs/concepts/performance-and-scalability/)
 
 ## 개요
+***
 1000 services and 2000 sidecars with 70,000 mesh-wide requests per second
 
 ### Performance Summary
@@ -62,8 +63,8 @@ $ fortio load http://www.google.com
 ~~~
 
 
-
 ## Offical Performance Test 프로젝트
+***
 
 ### /istio-install 
 * https://github.com/istio/tools/tree/master/perf/istio-install
@@ -111,8 +112,9 @@ $ fortio load http://www.google.com
   * https://github.com/istio/tools/blob/master/metrics/check_metrics.py :  프로메테우스로부터 metrics 를 가져고 각각의 시나리오의 상태를 확인하기 위한 분석 할 수 있음. Grafana 만으로는 괜찮은 실행상태인지 판단하기 애매한 몇몇 테스트에 유용함
 
 
-## 준비작업 (Performance, Stability 테스트 공통)
 
+## 준비작업 (Performance, Stability 테스트 공통)
+***
 
 ### minikube
 
@@ -163,6 +165,7 @@ $ cd tools
 
 
 ## Benchmark 테스트 진행
+***
 
 ### 준비작업
 * 테스트로 사용할 twopods namespace를 생성하고 사이드카(envoy)가 설치될 수 있도록 istio-injection 레이블링
@@ -254,7 +257,9 @@ irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|
 $PROMETHEUS_URL/api/v1/query_range?start=2019-04-03T01:00:00.000Z&end=2019-04-03T02:00:00.000Z&step=15&query=irate(container_cpu_usage_seconds_total{container_name=~"mixer|policy|discovery|istio-proxy|captured|uncaptured"}[1m])
 ~~~
 
+
 ## Stability 테스트 진행
+***
 
 ### 준비작업
 

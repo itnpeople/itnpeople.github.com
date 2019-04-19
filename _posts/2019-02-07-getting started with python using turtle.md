@@ -2,7 +2,7 @@
 title:  "거북이(Turtle)로 파이썬 시작하기"
 date:   2018/02/07 10:30
 categories: "python"
-tags: ["recent"]
+tags: [""]
 keywords: ["python","graphic","turtle","tutorial"]
 description: "거북이(Turtle) 모듈을 활용하여 파이썬을 보다 쉽게 배워보기"
 ---

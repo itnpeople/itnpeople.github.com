@@ -2,7 +2,7 @@
 title:  "Maven unmappable character for encoding 오류"
 date:    2015/01/16 17:51
 categories: "maven"
-tags: ["recent"]
+tags: []
 keywords: ["maven-compiler-plugin","encoding"]
 description: "File encoding has not been set, using platform encoding ANSI_X3.4-1968, i.e. build is platform dependent!"
 ---

@@ -4,7 +4,7 @@ date:   2012/06/05 10:24
 categories: "js"
 tags: []
 keywords: ["window.onload","document.ready","jquery"]
-description: "document.ready 와  window.onload 차이에서 오는 오류"
+description: "document.ready 와  window.onload 이벤트를 발생 시점에 대한 이해를 통해 예기치 않았던 버그를 막을 수 있습니다."
 ---
 
 # window.onload vs document.ready 이벤트
