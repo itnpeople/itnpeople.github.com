@@ -9,8 +9,12 @@ description: "minikube 에서 Istio 공식 TASK > Traffic Management 문서 Isti
 
 # Traffic Management
 ---
-* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
-* [[Istio 공식 TASK > Traffic Management 문서](https://istio.io/docs/tasks/traffic-management/) 를 토대로 minikube 환경에서 실행해보고 개인적으로 정리해 본 문서
+*docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
+
+minikube 에서 Istio 공식 TASK > Traffic Management 문서 Istio Traffic Management 를 토대로 minikube 환경에서 실행해보고 개인적으로 정리한 내용을 공유합니다.
+
+* [Istio Official Home > Task > Traffic Management](https://istio.io/docs/tasks/traffic-management/)
+
 
 
 ## Configuring Request Routing
@@ -40,7 +44,7 @@ $ kubectl get destinationrules -o yaml
 * 모든 트래픽을 v1으로 라우팅되도록 VirtualService 적용
 
 ~~~
-kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+$ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 ~~~
 
 * 브라우저에서 /productpage를 refresh하면 이전처럼 reviews 번갈아 변경되는 것이 아니라 reviews v1이 계속 표시된다.
@@ -918,14 +922,19 @@ $ exit
 ***
 이 TASK는 연결,요청에 따른 circuit breaking 설정을 보여준다.
 
+* Circuit breaker 패턴
+  * 연결되는 서비스간 장애전파를 막기 위한 패턴
+  * 마이크로 서비스 아키텍쳐는 여러개의 마이크로 서비스간에 호출하는 개념을 가지고 있으므로 하나의 마이크로서비스가 느려지거나 장애가 나면 종속된 서비스까지 그 장애가 전파되는 특성을 가지고 있다. 
+  * 호출되는 서비와 호출하는 서비스 중간에 위치하여 정상적인 상황에서는 트래픽을 문제 없이 bypass 하다가 호출되는 서비스에 문제가 발생했을 경우 트래픽을 강제적으로 끊어서  쓰레드들이 더 이상 요청을 기다리지 않도록해 장애가 전파하는 것을 방지한다.
+
 ### 개요
 
-* DestinationRule 에 허용 연결과 요청수를 작게한후 클라이언트(fortio)  에서 서버(httpbin) 로 연결정보 및 요청수를 늘려가면서 circuit breaking 되는 현상을 조회한다.
+* DestinationRule 에 허용 연결과 요청수를 작게한 후 클라이언트(fortio)  에서 서버(httpbin) 로 연결정보 및 요청수를 늘려가면서 circuit breaking 되는 현상을 확인한다.
 
 
 ### 실행
 
-* Circuit Breaking을 발생시키지 위한 Destination Rule 적용
+* Circuit Breaking 상황을 발생시키기 위해 Destination Rule 적용
 * maxConnections: 1 and http1MaxPendingRequests: 1
 * 1개의 커넥션과  1개 동시요청이 넘을 경우 istio-proxy가 추가요청을 연결을 하게되어 오류 발생 시키게 된다.
 

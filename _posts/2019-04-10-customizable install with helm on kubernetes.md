@@ -9,12 +9,23 @@ description: "Kubernetes에 Istio Control Plane를 설치 하는 방법 중에�
 
 # Kubernetes에 Istio Control Plane을 Helm template 으로 설치하는 방법
 ---
-* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1*, *minikube v0.35.0* , *macOS Mojave 10.14.4(18E226)*
+*docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1*, *minikube v0.35.0* , *macOS Mojave 10.14.4(18E226)*
+
+Kubernetes에 Istio Control Plane를 설치 하는 방법 중에서 Helm template을 활용하여 설치하는 방법을 수행해 봅니다.
+
 * [공식문서](https://istio.io/docs/setup/kubernetes/install/helm/) 참조
 
 
 ## 공통 준비작업
 ***
+
+* 클러스터 준비 (minikube)
+
+~~~
+$ minikube delete
+$ minikube start --cpus 4 --memory 8192
+~~~
+
 
 * Helm 설치 및 초기화
 

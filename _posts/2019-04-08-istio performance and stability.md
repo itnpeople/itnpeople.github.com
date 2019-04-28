@@ -9,8 +9,12 @@ description: "Istio의 성능 결과 문서를 정리하고 github 에 공개되
 
 # Istio Performance & Stability
 ---
-* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
+*docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
+
+Istio의 성능 결과 문서를 정리하고 github 에 공개되어 있는 벤치마크 프로젝트를 minikube 환경에서 직접 실행해 봅니다.
+
 * [공식문서](https://istio.io/docs/concepts/performance-and-scalability/)
+
 
 ## 개요
 ***

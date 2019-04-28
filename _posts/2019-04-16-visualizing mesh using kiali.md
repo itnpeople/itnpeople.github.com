@@ -9,9 +9,13 @@ description: "Istio에서 수집된 각종 지표를 기반으로, 서비스간�
 
 # Visualizing Mesh on minikube (Kiali)
 ---
-* *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1*, *minikube v0.35.0* , *macOS Mojave 10.14.4(18E226)*
+*docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1*, *minikube v0.35.0* , *macOS Mojave 10.14.4(18E226)*
+
+Istio에서 수집된 각종 지표를 기반으로, 서비스간의 관계와 처리량, 정상 여부, 응답 시간등 각종 지표들을 를 시각화해주는 Kiali를 minikube 환경에서 설치해보고 실행해봅니다.
+
 * [Istio Task 공식문서](https://istio.io/docs/tasks/telemetry/kiali/)
 * [Kiali Official Home](https://www.kiali.io/)
+
 
 ## 준비작업
 ***

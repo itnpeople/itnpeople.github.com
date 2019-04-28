@@ -9,7 +9,9 @@ description: "Istio에서 telemetry metric, 수집하는 handler,  metric 과 ha
 
 # Istio telemetry - collect  metrics & logs on minikube
 ---
-* *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
+*kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
+
+Istio에서 telemetry metric, 수집하는 handler,  metric 과 handler를 연결하는 rule 정의를 통하여 telemetry 데이터를 수집하고 grafana를 통해 그 결과를 조회해 봅니다.
 
 ## 준비작업
 ***
@@ -70,6 +72,15 @@ $ sudo route -n add 10.0.0.0/8 $(minikube ip -p istio-telemetry)
 
 ### Collect Matrics
 이 TASK는  Metrics 를 커스트마이징하고 수집하기위해 Istion 구성을 어떻게 하는지를 보여준다. 
+
+* Monitoring Microservices with Istio
+  * 마이크로서비스간 트래픽에 따른 Envoy Sidecar가 Proxy를 통해 얻은 데이터 속성들을 Mixer가 Telemetry-backend(Prometheus, Fluentd 등) 로 전달
+     ![Mixer](https://www.signalfx.com/wp-content/uploads/2018/12/Istio-blog-graphic-2-01-e1544637707205.png)
+    * 출처: [Monitoring Microservices with Istio](https://www.signalfx.com/blog/monitoring-microservices-with-istio/)
+
+  * Matric(Instance), Handler, Rule 정의를 통한 Istio Collect Metrics 구조
+    ![Istio Mixer and Adaptor](../resources/img/post/istio-mixer-adaptor.png)
+    * 출처: [Monitoring Microservices with Istio](https://www.signalfx.com/blog/monitoring-microservices-with-istio/)
 
 * Mixer가 Mesh내 모든 트래픽에 대한 레포트와 메트릭을 자동으로 생성하도록  구성
 * 3가지 Mixer의 기능을 컨트롤하도록 구성을 추가한다.
