@@ -41,9 +41,6 @@ $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace
 
 * Istio ingresgateway는 노드 포트로 설치
 
---set global.mtls.enabled=true \
-
-
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
 --set gateways.istio-ingressgateway.type=NodePort \

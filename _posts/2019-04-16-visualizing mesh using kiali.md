@@ -1,5 +1,5 @@
 ---
-title:  "[Istio/task] Visualizing mesh using Kiali"
+title:  "[Istio/task] Visualizing mesh with Kiali"
 date:   2019/04/16 14:55
 categories: "cloud"
 tags: ["recent"]
@@ -44,7 +44,7 @@ $ kubectl create namespace istio-system
 $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
 ~~~
 
-* `iali.enabled=true` 옵션을 지정하여 Kiali 포함하도록 Istio 설치
+* Istio 기본 설치
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl apply -f -
@@ -70,6 +70,14 @@ $ kubectl get pod
 ~~~
 $ minikube tunnel  -p istio-visual-mesh
 $ sudo route -n add 10.0.0.0/8 $(minikube ip -p istio-visual-mesh)
+~~~
+
+* Cleanup
+  * 터널링 사용 후는 반드시 cleanup 해주도록 한다.
+
+~~~
+$ sudo route -n delete 10.0.0.0/8
+$ minikube tunnel --cleanup
 ~~~
 
 
@@ -99,7 +107,7 @@ EOF
 ~~~
 
 
-* `iali.enabled=true` 옵션을 지정하여 Kiali 포함하도록 Istio 재 구성
+* `kiali.enabled=true` 옵션을 지정하여 Kiali 포함하도록 Istio 재 구성
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
@@ -116,12 +124,11 @@ $ kubectl get pod -n istio-system
 
 ### Kiali 설치 확인
 
-* 브라우저에서 아래 kiali UI에 접속, 계정은 앞서 등록했던 계정 (admin/admin)
+* 브라우저에서 아래 kiali UI에 접속, 계정은 앞서 등록했던 계정 (admin/admin) 으로 로그인
 
 ~~~
 $ echo http://$(kubectl get svc/kiali -n istio-system -o jsonpath={.spec.clusterIP}):20001/kiali/console 
 ~~~
-
 
 
 * 트래픽 발생시키지 않으면 Visualization 한 화면을 확인할 수 없으므로 임의로 트래픽을 발생시킨다.
@@ -137,3 +144,28 @@ done
 * 트래픽 발생하고 잠시 후 브라우저 결과가 반영된다. 좌측 메뉴 `Graph` 메뉴 참조
 
 * 제사한 내용은 [Kiali 공식문서](https://www.kiali.io/documentation/overview/) 참조
+
+
+## 참고
+
+### zipkin, jaeger 와 같이 설치
+
+~~~
+$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
+--set kiali.enabled=true \
+--set tracing.enabled=true \
+--set tracing.provider=zipkin \
+--set tracing.ingress.enabled=true \
+| kubectl apply -f -
+~~~
+
+* 앞서 minikube tunnel 설정을 해주었으므로 각 툴들은  다음과 같은 URL로 접근 가능하다.
+
+~~~
+PROMETHEUS_URL=http://$(kubectl get svc/prometheus -n istio-system -o jsonpath={.spec.clusterIP}):9090/ \
+JAEGER_URL=http://$(kubectl get svc/jaeger-query -n istio-system -o jsonpath={.spec.clusterIP}):16686/ \
+ZIPKIN_URL=http://$(kubectl get svc/zipkin -n istio-system -o jsonpath={.spec.clusterIP}):9411/ \
+KIALI_URL=http://$(kubectl get svc/kiali -n istio-system -o jsonpath={.spec.clusterIP}):20001/kiali/console/ \
+printf "prometheus = $PROMETHEUS_URL\njaeger = $JAEGER_URL\nzipkin = $ZIPKIN_URL\nkiali = $KIALI_URL\n"
+~~~
+

@@ -55,9 +55,10 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 | kubectl apply -f -
 ~~~
 
-## Bookinfo 샘플 서비스 설치
+## Bookinfo 샘플 어플리케이션 설치
 ***
 BookInfo는 연습시 사용되는 주요 샘플 서비스이다.
+
 
 ![Bookinfo Examples Apps](https://istio.io/docs/examples/bookinfo/noistio.svg)
 
@@ -83,13 +84,33 @@ $ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
 ~~~
 
 
+## Bookinfo 샘플 어플리케이션 확인
+LoadBalancer를 지원하지 않는 minikube 환경에서 Bookinfo 샘플 어플리케이션에 접근 하는 방법은 아래와 같이 3가지 정도 있다.
+
+* NodePort 로 접근하는 방법
+* 포트 포워딩 설정하여 접근하는 방법
+* tunnel 설정하여 접근하는 방법
+
+### NodePort 로 접근 
+
 * /productpage 요청했을 경우 정상(200)리턴 여부 확인
 
 ~~~
 $ curl -I http://$(minikube ip -p istio-security):$(k get svc/istio-ingressgateway -n istio-system -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')/productpage
 ~~~
 
-## minikube tunnel
+## 포트 포워딩 활용한 접근
+
+~~~
+$ kubectl port-forward $(kubectl  get pod -l app=productpage -o jsonpath='{.items[0].metadata.name}') 9080:9080
+~~~
+
+~~~
+curl -I http://localhost:9080/productpage
+~~~
+
+
+### minikube tunnel 기능 활용하여 접근
 
 * minikube는 Cluster IP로 접근 가능 하도록 터널링 기능을 제공한다.
 * [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md)
