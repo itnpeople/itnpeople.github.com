@@ -1,5 +1,5 @@
-
-title:  "[Istio/task] Distributed tracing using Jaeger and Zipkin"
+---
+title:  "[Istio/task] Distributed Tracing with Jaeger and Zipkin"
 date:   2019/04/18 18:20
 categories: "cloud"
 tags: ["recent"]
@@ -7,7 +7,7 @@ keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","mini
 description: "Service Mesh 환경은 모놀리틱한 아키텍쳐 환경과는 달리 수 많은 Microservice 간 복잡한 호출 관계를 가지고 있습니다. Istion에 포함되어 있는 jaeger, zipkin는 이러한 복잡하고 분산되어 있는 Microservice 간 논리적인  tracing 을 샘플링하여 그 결과를 시각화해 보여줍니다."
 ---
 
-# Istio distributed tracing using Jaeger and Zipkin
+# Distributed Tracing with Jaeger and Zipkin
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 
@@ -55,15 +55,15 @@ $ kubectl get pod -n istio-system
 
 ~~~
 $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+$ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
 $ kubectl get pod
 ~~~
 
-
-* [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 구성
+* _Istio ingress gateway_  환경변수 `GW_URL` 정의
 
 ~~~
-$ minikube tunnel  -p istio-trace
-$ sudo route -n add 10.0.0.0/8 $(minikube ip -p istio-trace)
+$ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 ~~~
 
 
@@ -84,19 +84,18 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 * /productpage에 트래픽을 발생시킨다.
 
 ~~~
-$ curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I $GW_URL/productpage
 ~~~
 
-* Jaeger-query URL은 다음과 같다.
+* Jaeger 포트포워딩
 ~~~
-$ export JAEGER_URL=http://$(kubectl get svc/jaeger-query -n istio-system -o jsonpath={.spec.clusterIP}):16686
-$ echo $JAEGER_URL
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686
 ~~~
 
-* 브라우저에서 `JAEGER_URL`을 연다.
+* 결과확인
+  * 브라우저에서 [_http://localhost:16686_](http://localhost:16686) 을 연다.
   * 좌측 조회 조건을 입력/선택하고 "Find Traces" 버튼을 클릭하여 traceing 확인한다.
   * 조회된 traceing 을 클릭하여 세부 trace 를 확인한다.
-
 
 
 ## Zipkin
@@ -123,31 +122,19 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 $ kubectl get pod -n istio-system
 ~~~
 
-* zipkin는 _istio-ingress-gateway_ 통해 tracing 하므로???? Bookinfo 어플에 GateWay 와 VirtualService 적용해준다.
-
-~~~
-$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-~~~
-
 * /productpage에 트래픽을 발생시킨다.
-  * _istio-ingress-gateway_ 서비스를 NodePort 정의 했기 때문에 아래와 같이 INGRESS_HOST, INGRESS_PORT 를 구할 수 있다.
 
 ~~~
-INGRESS_HOST=$(minikube ip -p istio-trace); \
-INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'); \
-curl -I http://$INGRESS_HOST:$INGRESS_PORT/productpage
+$ curl -I $GW_URL/productpage
+~~~
+
+* Zipkin 포트포워딩
+
+~~~
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=zipkin -o jsonpath='{.items[0].metadata.name}') 9411:9411
 ~~~
 
 
-* Zipkin URL 은 다음과 같다.
-
-~~~
-$ export ZIPKIN_URL=http://$(kubectl get svc/zipkin -n istio-system -o jsonpath={.spec.clusterIP}):9411
-$ echo $ZIPKIN_URL
-~~~
-
-* 브라우저에서 `ZIPKIN_URL`을 연다.
- * Find Traces 버튼을 클릭하여 tracing 이 조회되는지 확인한다.
-
-
-
+* 결과 확인
+  * 브라우저에서 [_http://localhost:9411_](http://localhost:9411) 을 연다.
+  * Find Traces 버튼을 클릭하여 tracing 이 조회되는지 확인한다.

@@ -11,7 +11,7 @@ description: "Fluentd +  Elasticsearch + Kibana Stack 을 구성해보고 Istio�
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 
-Fluentd +  Elasticsearch + Kibana Stack 을 구성해보고 Istio에서 telemetry metric, 수집하는 handler,  metric 과 handler를 연결하는 rule 정의를 통하여 telemetry 데이터를 elasticsearch 로 수집하고 수집된 데이터를 kibana를 통해 조회해 봅니다.
+Fluentd +  Elasticsearch + Kibana Stack (EFK) 을 구성해보고 Istio에서 telemetry metric, 수집하는 handler,  metric 과 handler를 연결하는 rule 정의를 통하여 telemetry 데이터를 elasticsearch 로 수집하고 수집된 데이터를 kibana를 통해 조회해 봅니다.
 
 ## 준비작업
 ***

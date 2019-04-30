@@ -4,24 +4,24 @@ date:   2019/04/25 09:20
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","authentication"]
-description: "Istio 는 서비스와 서비스간의  'Transport authentication' 그리고 end-user 와 서비스간의 'Origin authentication' 기능을 제공하고 있으며 MeshPolicy, Policy, DestinnationRule을 활용하여 인증 환경을 구성할 수 있습니다."
+description: "Istio는  서비스와 서비스간의  'Transport authentication', end-user 와 서비스간의 'Origin authentication' 2가지 인증처리 기능을 제공하고 있으며 MeshPolicy, Policy, DestinnationRule 3가지 CDR(Custom Define Resource)을 활용하여 인증 환경을 구성할 수 있습니다."
 ---
 
 # Istio Authentication Policy
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 
-Istio 는 서비스와 서비스간의  'Transport authentication' 그리고 end-user 와 서비스간의 'Origin authentication' 기능을 제공하고 있으며 MeshPolicy, Policy, DestinnationRule을 활용하여 인증 환경을 구성할 수 있습니다.
+Istio는  서비스와 서비스간의  'Transport authentication', end-user 와 서비스간의 'Origin authentication' 2가지 인증처리 기능을 제공하고 있으며 MeshPolicy, Policy, DestinnationRule 3가지 CDR(Custom Define Resource)을 활용하여 인증 환경을 구성할 수 있습니다.
 
 
 
 ## 개요
 ***
 
-* Istio 는 두가지 형태의 인증 (Authentication) 을 제공
+* Istio 는 두가지 형태의 인증을 제공
 
   1. Transport authentication : 서비스와 서비스 간 인증
-  1. Origin authentication : 클라이언트(사용자 또는 디바이스 요청)을 검증 (end-user authentication)
+  1. Origin authentication : 클라이언트(사용자 또는 디바이스 요청)을 인증(end-user authentication)
 
 * _MeshPolicy_, _Policy_ 에서 authentication 정책 및 범위를 지정하고 _DestinationRule_ 에서 인증처리(통과)를 위한 인증방법을 정의
 
