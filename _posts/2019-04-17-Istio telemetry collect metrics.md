@@ -60,12 +60,13 @@ $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/book
 $ kubectl get pod
 ~~~
 
-* [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 구성
+
+* _Istio ingress gateway_  환경변수 `GW_URL` 정의
 
 ~~~
-$ minikube tunnel  -p istio-telemetry
-$ sudo route -n add 10.0.0.0/8 $(minikube ip -p istio-telemetry)
+$ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 ~~~
+
 
 ## Metrics
 ***
@@ -137,21 +138,20 @@ EOF
 * Metrics가 정상 수집되는지 확인을 위해 BookInfo 서비스로 트래픽 발생시킨다.
 
 ~~~
-$ curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I $GW_URL/productpage
 ~~~
 
 
-* 아래 Promethus URL 에서 Query에 `istio_double_request_count` 를 입력하고 "Execute"  버튼 클릭
+* Prometheus 포트 포워딩
 
 ~~~
-$ echo http://$(kubectl get svc/prometheus -n istio-system -o jsonpath={.spec.clusterIP}):9090
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') 9090:9090
 ~~~
 
-* productpage 호출될 때마다 카운트가 2개씩 증가함을 확인
+* 결과 확인
+  * 브라우저에서 [_http://localhost:9090_](http://localhost:9090) 을 열고  입력박스에 `istio_double_request_count` 를 입력하고 "Execute"  버튼 클릭한다.
+  * /productpage 페이지가 호출될 때마다 카운트가 2개씩 증가함을 확인한다.
 
-~~~
-$ curl -I $PROD_URL;
-~~~
 
 
 ### Prometheus로 부터 Metrics 조회 
@@ -184,24 +184,22 @@ $ kubectl get pod -n istio-system
 
 
 * productpage 트래픽 발생한다
-~~~
-curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
-~~~
-
-
-*  발생된 트래픽은  Grafana Dashboards URL 에서 확인 가능  
-~~~
-echo http://$(kubectl -n istio-system get svc/grafana -o jsonpath={.spec.clusterIP}):3000/dashboard/db/istio-mesh-dashboard
-~~~
-
-*  Istio Dashboard : Mesh, Mixer, Service, Performance, Pilot, Service, Workload, Gally  
-
-
-* 트래픽 발생하면 잠시 후 Grafana Dashboard 에 반영되는 것을 확인
 
 ~~~
-curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I $GW_URL/productpage
 ~~~
+
+* Grafana 포트 포워딩
+
+~~~
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
+~~~
+
+* 결과확인
+  * 브라우저에서 [_http://localhost:3000/dashboard/db/istio-mesh-dashboard_](http://localhost:3000/dashboard/db/istio-mesh-dashboard) 을 연다.
+  * 트래픽 발생하면 잠시 후 Grafana Dashboard 에 반영되는 것을 확인
+  * Istio Dashboard : Mesh, Mixer, Service, Performance, Pilot, Service, Workload, Gally  
+
 
 ## Logs
 ***
@@ -270,7 +268,7 @@ EOF
 * /productpage 트래픽 발생
 
 ~~~
-$ curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I $GW_URL/productpage
 ~~~
 
 * istio-telemetry 파드 로그 검색하여 3개 로그가 조회됨을 확인
@@ -318,7 +316,7 @@ EOF
 * /productpage 트래픽 발생
 
 ~~~
-$ curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I $GW_URL/productpage
 ~~~
 
 

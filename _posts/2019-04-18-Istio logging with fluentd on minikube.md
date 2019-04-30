@@ -60,12 +60,12 @@ $ kubectl get pod
 ~~~
 
 
-* [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 구성
+* _Istio ingress gateway_  환경변수 `GW_URL` 정의
 
 ~~~
-$ minikube tunnel  -p istio-fluentd
-$ sudo route -n add 10.0.0.0/8 $(minikube ip -p istio-fluentd)
+$ export GW_URL=http://$(minikube ip -p istio-fluentd):$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 ~~~
+
 
 
 ## Logging with Fluentd
@@ -342,16 +342,18 @@ EOF
 * 트래픽 전달
 
 ~~~
-$ curl -I http://$(kubectl get svc/productpage -o jsonpath={.spec.clusterIP}):9080/productpage
+$ curl -I http://$GW_URL/productpage
 ~~~
 
-* Kibana URL 확인하고 브라우저에서 오픈 
+* Kibana 포트포워딩
 
 ~~~
-echo http://$(kubectl get svc/kibana -n logging -o jsonpath={.spec.clusterIP}):5601
+$ kubectl -n logging port-forward $(kubectl -n logging get pod -l app=kibana -o jsonpath='{.items[0].metadata.name}') 5601:5601
 ~~~
 
-1. 메인화면에서 "Index Pettterns" 선택
-1. Index pattern에 "*" 입력 하고 "Set up index patterns" 클릭
-1. Time Filter field name 에 @timestamp 선택하고 "Create index pattern" 클릭
-1. 좌측 메뉴의 "Discover" 클릭하여  현재 만든 "*"의 로그를 확인한다.
+* 결과 확인
+  1. 브라우저에서 [_http://localhost:5601_](http://localhost:5601) 을 연다.
+  1. 메인화면에서 "Index Pettterns" 선택
+  1. Index pattern에 "*" 입력 하고 "Set up index patterns" 클릭
+  1. Time Filter field name 에 @timestamp 선택하고 "Create index pattern" 클릭
+  1. 좌측 메뉴의 "Discover" 클릭하여  현재 만든 "*"의 로그를 확인한다.
