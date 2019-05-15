@@ -4,8 +4,7 @@ date:   2019/04/26 14:20
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","authorization"]
-description: "Istio는  ClusterRbacConfig 를 통해 권한(접근제어)를 활성화하고 ServiceRole에 대상 서비스들 접근권한 Rule 정의한 후 ServiceRoleBinding을 통해 특정 대상에 해당 ServiceRole에 지정하여 접근통제(권한)를 수행합니다.
-"
+description: "Istio는  ClusterRbacConfig 를 통해 권한(접근제어)를 활성화하고 ServiceRole에 대상 서비스들 접근권한 Rule 정의한 후 ServiceRoleBinding을 통해 특정 대상에 해당 ServiceRole에 지정하여 접근통제(권한)를 수행합니다."
 ---
 
 # Authorization for HTTP Services
@@ -103,7 +102,7 @@ echo $INGRESS_URL
 
 ## Istio authorization 활성화
 
-* **ClusterRbacConfig** 를 구성하여 Istion authorization 을 활성화
+* **ClusterRbacConfig** 를 구성하여 Istio authorization 을 활성화
 * 네임스페이스 "default" 에 대해서 authorization 활성화한다.
 
 ~~~

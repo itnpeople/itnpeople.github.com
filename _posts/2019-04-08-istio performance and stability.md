@@ -23,7 +23,7 @@ Istio의 성능 결과 문서를 정리하고 github 에 공개되어 있는 벤
 ### Performance Summary
 Offical Load Test 결과는 아래와 같음
 * Envoy 프록시 초당 100건 - 0.6 vCPU and 50 MB memory 사용
-* istion-telemery  서비스 - 0.6 vCPU 사용
+* istio-telemery  서비스 - 0.6 vCPU 사용
 * Pilot - 1 vCPU, 1.5G memory 사용
 * Envoy 프록시 latency -  8ms가 90%
 

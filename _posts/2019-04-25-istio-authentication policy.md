@@ -176,7 +176,7 @@ EOF
   * 적용 시간이 있으므로 잠시대기 후 결과 확인
   * 호출되는 **Istio-service** 는 내/외부 상관없이 코드 `503` (Service Unavailable)
   * **Istio-service** 에서 **non-Istio-service** 호출은  코드 `200` (정상) 
-  * **non-Istio-service** 에서  Istion 서비스를  호출 하는 경우는 코드 `56` (CURLE_RECV_ERROR, Failure with receiving network data)
+  * **non-Istio-service** 에서  Istio 서비스를  호출 하는 경우는 코드 `56` (CURLE_RECV_ERROR, Failure with receiving network data)
 
 ~~~
 $ ./security-check.sh

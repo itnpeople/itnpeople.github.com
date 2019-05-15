@@ -72,7 +72,7 @@ $ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system g
 ***
 
 ### Collect Matrics
-이 TASK는  Metrics 를 커스트마이징하고 수집하기위해 Istion 구성을 어떻게 하는지를 보여준다. 
+이 TASK는  Metrics 를 커스트마이징하고 수집하기위해 Istio 구성을 어떻게 하는지를 보여준다. 
 
 * Monitoring Microservices with Istio
   * 마이크로서비스간 트래픽에 따른 Envoy Sidecar가 Proxy를 통해 얻은 데이터 속성들을 Mixer가 Telemetry-backend(Prometheus, Fluentd 등) 로 전달

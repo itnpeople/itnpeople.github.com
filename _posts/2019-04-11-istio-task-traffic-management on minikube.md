@@ -424,7 +424,7 @@ EOF
 
 ## Control Ingress Traffic
 ***
-이 TASK는 Istion Gateway 를 활용하여 서비스메시 외부에 서비스를 노출하는 방법을 보여준다.
+이 TASK는 Istio Gateway 를 활용하여 서비스메시 외부에 서비스를 노출하는 방법을 보여준다.
 
 ### 개요
 
