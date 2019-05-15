@@ -8,6 +8,8 @@ description: "만일 나의 클러스터내에 Istio-system 이 설치가 되었
 ---
 
 # Automatic sidecar injection과 사용중인 파드와의 관계
+---
+*docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 
 만일 나의 클러스터내에 Istio-system 이 설치가 되었다면 가장 먼저 해야 할 일은  envoy _sidecar_ 를 설치하는 것이다.
 _sidecar-injection_ 이란 이렇게 파드에 sidecar를 설치하는 과정으로 공식문서를 통해 그 방법이 기술되어 있다.
