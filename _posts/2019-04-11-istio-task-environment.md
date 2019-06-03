@@ -2,7 +2,7 @@
 title:  "[Istio/task] Istio 연습과제 수행을 위한 minikube 환경 구성"
 date:   2019/04/11 10:00
 categories: "cloud"
-tags: ["recent"]
+tags: []
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube"]
 description: "minikube 에서 Istio 공식 TASK 문서를 토대로 minikube 환경에서 연습과제를 실행해 보기 위한 사전 준비 작업을 공유합니다."
 ---

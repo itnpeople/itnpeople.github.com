@@ -2,7 +2,7 @@
 title:  "[Istio/task] Distributed Tracing with Jaeger and Zipkin"
 date:   2019/04/18 18:20
 categories: "cloud"
-tags: ["recent"]
+tags: []
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","jaeger","zipkin"]
 description: "Service Mesh 환경은 모놀리틱한 아키텍쳐 환경과는 달리 수 많은 Microservice 간 복잡한 호출 관계를 가지고 있습니다. Istion에 포함되어 있는 jaeger, zipkin는 이러한 복잡하고 분산되어 있는 Microservice 간 논리적인  tracing 을 샘플링하여 그 결과를 시각화해 보여줍니다."
 ---

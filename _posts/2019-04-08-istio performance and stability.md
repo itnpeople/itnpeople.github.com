@@ -2,7 +2,7 @@
 title:  "Istio Performance & Stability"
 date:   2019/04/08 10:30
 categories: "cloud"
-tags: ["recent"]
+tags: []
 keywords: ["kubernetes","istio","performance","stability","쿠버네티스","이스티오"," 성능","안전성"]
 description: "Istio의 성능 결과 문서를 정리하고 github 에 공개되어 있는 벤치마크 프로젝트를 minikube 환경에서 직접 실행해 봅니다."
 ---

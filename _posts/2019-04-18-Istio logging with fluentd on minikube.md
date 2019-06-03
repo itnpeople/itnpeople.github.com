@@ -2,7 +2,7 @@
 title:  "[Istio/task] Istio logging with Fluentd on minikube"
 date:   2019/04/18 13:15
 categories: "cloud"
-tags: ["recent"]
+tags: []
 keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","fluentd","elasticsearch","kibana"]
 description: "Fluentd +  Elasticsearch + Kibana Stack 을 구성해보고 Istio에서 telemetry metric, 수집하는 handler,  metric 과 handler를 연결하는 rule 정의를 통하여 telemetry 데이터를 elasticsearch 로 수집하고 수집된 데이터를 kibana를 통해 조회해 봅니다."
 ---
