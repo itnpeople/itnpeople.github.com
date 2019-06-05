@@ -219,10 +219,9 @@ $ kubectl delete -f service.yaml
 * Blue-Green Deployments란 무중단 배포를 위한 방안
 * 현재버전을 Blue, 새버전을 Green으로 정하여 Green 으로 점점 더 많은 트래픽을 보내는 방법
 * 만일 문제가 생길경우 Green 버전을 철수하여 빠르게 복구
-
 * 응용
-  * A/B Testing
   * Canary Releases
+  * A/B Testing
 
 ### 시나리오
 
@@ -378,7 +377,7 @@ $ kubectl delete route route-demo
 
 아래와 같은 사항을 확인하였다.
 
-* Knative는 Kubernetes, Istio 기반의 Serverless 오픈소스 플랫폼이다.
+* Knative는 Kubernetes, Istio 기반의 Serverless 오픈소스 플랫폼이다. Istio 대신 Gloo를 활용할 경우 기능을 제한된다.
 * 사용자의 요청에 따라서 실시간으로 Running 되어야할 POD가 Create 되고 작업 완료 후 Terminating 된다.
 * Knative의 Serving 컴포넌트의 Configuration, Route CRDs 를 통해 Knative Blue/Green Deployment 전략을 손쉽게 실현할 수 있다.
 
