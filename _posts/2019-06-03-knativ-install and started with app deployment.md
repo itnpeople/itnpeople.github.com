@@ -101,7 +101,7 @@ $ kubectl apply --selector knative.dev/crd-install=true \
 -f https://raw.githubusercontent.com/knative/serving/v0.6.0/third_party/config/build/clusterrole.yaml
 ~~~
 
-* Knative 설치 (Event 컴포넌트 제외)
+* Knative 설치 (Event, Monitoring 컴포넌트 제외)
 
 ~~~
 $ kubectl apply --selector networking.knative.dev/certificate-provider!=cert-manager \

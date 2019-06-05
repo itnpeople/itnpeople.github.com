@@ -145,6 +145,10 @@ done
 
 * 제사한 내용은 [Kiali 공식문서](https://www.kiali.io/documentation/overview/) 참조
 
+### 실행 예제
+
+[![Video Label](https://lh3.google.com/u/0/d/1WMAHoijhqKAudXCZ2qKAmar6-Dn1BIew=w640-h360-pd-k-iv2)](https://drive.google.com/open?id=1TJwiNkMlPvWuFKtosEvafvKJGAj7MOxN)
+
 
 ## 참고
 
