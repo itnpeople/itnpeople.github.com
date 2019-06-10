@@ -208,6 +208,7 @@ $ kubectl get pod
 No resources found.
 ~~~ 
 
+
 ### Clean-up
 
 ~~~
