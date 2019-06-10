@@ -220,9 +220,7 @@ $ kubectl delete -f service.yaml
 * Blue-Green Deployments란 무중단 배포를 위한 방안
 * 현재버전을 Blue, 새버전을 Green으로 정하여 Green 으로 점점 더 많은 트래픽을 보내는 방법
 * 만일 문제가 생길경우 Green 버전을 철수하여 빠르게 복구
-* 응용
-  * Canary Releases
-  * A/B Testing
+* 응용 : Canary Releases, A/B Testing
 
 ### 시나리오
 
