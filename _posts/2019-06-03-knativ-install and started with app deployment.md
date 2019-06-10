@@ -303,8 +303,8 @@ $ 2초마다 10번의 트래픽 생성하여 결과 HTML 에서 `class='blue'` �
 $ for i in {1..10}; do curl -i -H "Host: ${HOST_URL}" http://${IP_ADDRESS}; sleep 2; done
 ~~~
 
-### 2단계 - v2 배포 하고 `v1:v2=50:50` 으로 라우팅 정의
 
+### 2단계 - v2 배포 하고 `v1:v2=50:50` 으로 라우팅 정의
 
 * Green (v2, route-demo-config-v2) app을 배포
 

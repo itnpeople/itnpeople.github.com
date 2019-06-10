@@ -308,103 +308,6 @@ Init Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from build-bot-token-wntrj (ro)
       /workspace from workspace (rw)
 
-Init Containers:
-  build-step-credential-initializer:
-    Container ID:  docker://f030028aa58cb330da991e781bd961797db79226acd6efdf7ddd6af1274f0ef2
-    Image:         gcr.io/knative-releases/github.com/knative/build/cmd/creds-init@sha256:ebf58f848c65c50a7158a155db7e0384c3430221564c4bbaf83e8fbde8f756fe
-    Image ID:      docker-pullable://gcr.io/knative-releases/github.com/knative/build/cmd/creds-init@sha256:ebf58f848c65c50a7158a155db7e0384c3430221564c4bbaf83e8fbde8f756fe
-    Port:          <none>
-    Host Port:     <none>
-    Args:
-      -basic-docker=docker-hub=https://index.docker.io/v1/
-    State:          Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 07 Jun 2019 17:32:45 +0900
-      Finished:     Fri, 07 Jun 2019 17:32:45 +0900
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      HOME:  /builder/home
-    Mounts:
-      /builder/home from home (rw)
-      /var/build-secrets/docker-hub from secret-volume-docker-hub (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from build-bot-token-wntrj (ro)
-      /workspace from workspace (rw)
-  build-step-git-source-0:
-    Container ID:  docker://794938c396e874f9344c92c35f417fcf5db0e6a4478c22faa9c9d131f5217ff6
-    Image:         gcr.io/knative-releases/github.com/knative/build/cmd/git-init@sha256:09f22919256ba4f7451e4e595227fb852b0a55e5e1e4694cb7df5ba0ad742b23
-    Image ID:      docker-pullable://gcr.io/knative-releases/github.com/knative/build/cmd/git-init@sha256:09f22919256ba4f7451e4e595227fb852b0a55e5e1e4694cb7df5ba0ad742b23
-    Port:          <none>
-    Host Port:     <none>
-    Args:
-      -url
-      https://github.com/itnpeople/knatvie_build_demo.git
-      -revision
-      master
-    State:          Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 07 Jun 2019 17:32:47 +0900
-      Finished:     Fri, 07 Jun 2019 17:32:49 +0900
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      HOME:  /builder/home
-    Mounts:
-      /builder/home from home (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from build-bot-token-wntrj (ro)
-      /workspace from workspace (rw)
-  build-step-build:
-    Container ID:  docker://d22a271ac513e7589f60f05f29ac19d5933283126c34902e912a5a91b7c05e77
-    Image:         docker:18.06
-    Image ID:      docker-pullable://docker@sha256:d0ae46aa08806ffc1c4de70a4eb585df33470643a9d2ccf055ff3ec91ba5b0b0
-    Port:          <none>
-    Host Port:     <none>
-    Args:
-      build
-      -t
-      honester/hello-server:v0.2.1
-      .
-    State:          Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 07 Jun 2019 17:32:50 +0900
-      Finished:     Fri, 07 Jun 2019 17:32:51 +0900
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      HOME:             /builder/home
-      DOCKER_BUILDKIT:  0
-    Mounts:
-      /builder/home from home (rw)
-      /var/run/docker.sock from docker-socket (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from build-bot-token-wntrj (ro)
-      /workspace from workspace (rw)
-  build-step-push:
-    Container ID:  docker://d8e358229a92d5e886783e41ef6a85d41a3c20f03d1f7bfb8e160a3d62ad63db
-    Image:         docker:18.06
-    Image ID:      docker-pullable://docker@sha256:d0ae46aa08806ffc1c4de70a4eb585df33470643a9d2ccf055ff3ec91ba5b0b0
-    Port:          <none>
-    Host Port:     <none>
-    Args:
-      push
-      honester/hello-server:v0.2.1
-    State:          Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 07 Jun 2019 17:32:53 +0900
-      Finished:     Fri, 07 Jun 2019 17:33:08 +0900
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      HOME:  /builder/home
-    Mounts:
-      /builder/home from home (rw)
-      /var/run/docker.sock from docker-socket (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from build-bot-token-wntrj (ro)
-      /workspace from workspace (rw)
-
 ...
 ~~~
 
@@ -457,7 +360,8 @@ hello-server-s2f7f-deployment-7494f7854b-689pb   3/3     Running     0          
 
 ## 참조
 * https://knative.dev/docs/build/
-
+* https://knative.club/
+* https://www.youtube.com/watch?v=KDWvN8q2FEU&t=1444s
 
 
 ## 마치며
