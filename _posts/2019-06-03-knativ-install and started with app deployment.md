@@ -16,6 +16,7 @@ Knativ는 AWS의 람다(Lambda)나, Google의 펑션(Function) 같은 Serverless
 
 
 ## Install
+***
 
 ### 개요
 
@@ -117,6 +118,7 @@ $ kubectl get pod --all-namespaces --watch
 ~~~
 
 ## 샘플 앱 (_helloworld-go_) 배포 및 실행 해보기
+***
 
 ### 배포
 
@@ -373,6 +375,7 @@ $ kubectl delete route route-demo
 ~~~
 
 ## 마치면서
+***
 
 아래와 같은 사항을 확인하였다.
 
@@ -382,6 +385,8 @@ $ kubectl delete route route-demo
 
 
 ## 참고
+***
+
 * [Install Knative](https://knative.dev/docs/install/)
 * [Install on Minikube](https://knative.dev/docs/install/knative-with-minikube/)
 * [Getting started Knative Applicatin](https://knative.dev/docs/install/getting-started-knative-app/)

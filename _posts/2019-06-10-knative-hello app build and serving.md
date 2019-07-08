@@ -17,6 +17,7 @@ Knative의 _Build 컴포넌트_ 는 git 같은 SCM에서 소스를 pull 하고 �
 
 
 ## 개요
+***
 
 진행 과정은 다음과 같다.
 
@@ -32,6 +33,7 @@ Knative의 _Build 컴포넌트_ 는 git 같은 SCM에서 소스를 pull 하고 �
 
 
 ## 준비
+***
 
 * 예제 실행전에 아래와 같이 2가지 계정 및 _Repository_ 를 준비한다.
 
@@ -91,6 +93,7 @@ CMD [ "npm", "start" ]
 
 
 ## Build
+***
 
 ### Docker Hub 계정 인증
 
@@ -318,6 +321,7 @@ Init Containers:
 
 
 ## Service
+***
 
 * 이제 Service를 생성해 해당 이미지를 배치한다.
 
@@ -359,12 +363,15 @@ hello-server-s2f7f-deployment-7494f7854b-689pb   3/3     Running     0          
 ~~~
 
 ## 참조
+***
+
 * https://knative.dev/docs/build/
 * https://knative.club/
 * https://www.youtube.com/watch?v=KDWvN8q2FEU&t=1444s
 
 
 ## 마치며
+***
 
 예제를 통해 Github 에 hello 앱을 Pull하고 Docker 빌드를 통하여 생성된 Container Image를  Public 레지스트리에 Push 하였고 해당 이미지를 Knative Service 로 배치를 통해 Knative 의 Build-Serving 원리를 확인해 보았다.
 

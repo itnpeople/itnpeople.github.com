@@ -224,7 +224,7 @@ EOF
   * `DISABLE`	: upstream endpoint에 대한 TLS  연결을  disable 지정
   * `SIMPLE` : Originate a TLS connection to the upstream endpoint.
   * `MUTUAL` : 클라이언트 존재하는 인증서로  mutual TLS 을 사용하여 upstream 보안 연결 한다.
-  * `ISTIO_MUTUA`L : `MUTUAL`와 유사, 다른점은 Istio mTLS 인증에 의해 자동 생성된 인증서를 사용, 이 모드를 사용하면 TLSSettings 시 다른 모든 필드를 비워두어야 한다.
+  * `ISTIO_MUTUAL` : `MUTUAL`와 유사, 다른점은 Istio mTLS 인증에 의해 자동 생성된 인증서를 사용, 이 모드를 사용하면 TLSSettings 시 다른 모든 필드를 비워두어야 한다.
 
 
 * 아래 명령으로 기본 **default** _DestinationRule_ 이 생성됨을 확인 할 수 있다.

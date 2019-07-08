@@ -131,12 +131,6 @@ $ minikube start --cpus 6 --memory 8192
 $ minikube ssh
 ~~~
 
-* [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md) 설정을 통하여 Cluster IP로 접근 가능 하도록 라우딩한다.
-
-~~~
-$ minikube tunnel
-$ sudo route -n add 10.0.0.0/12 $(minikube ip)
-~~~
 
 ### Helm 초기화 
 
@@ -177,9 +171,6 @@ $ cd tools
 
 ~~~
 $ cd perf/benchmark
-$ export NAMESPACE=twopods
-$ kubectl create namespace $NAMESPACE
-$ kubectl label namespace $NAMESPACE istio-injection=enabled
 $ DNS_DOMAIN=local ./setup_test.sh
 ~~~
 * twopods 라는 namespace로 "fortioclient", "fortioserver" 2개 파드가 생성
@@ -189,36 +180,43 @@ $ DNS_DOMAIN=local ./setup_test.sh
 
 ~~~
 $ export NAMESPACE=twopods
-$ python runner/runner.py 2,4 10,40 90 --serversidecar --baseline
+$ python runner/runner.py 2,4 10,40 90 --serversidecar --clientsidecar --baseline
 ~~~
-* 위의 예에서 2,4 는 connection 수 10,40은 qps, 90은 수행시간을 의미
-* 90초 동안 12개 테스트가 진행된다.
+* runner.py의 1,2번째 파라메터 2,4 는 connection
+* runner.py의 3,4번째 파라메터 10,40은 qps
+* runner.py의 5번째 파라메터 90은 수행시간을 의미
+* runner.py의 6번째 이후 파라메터는 테스트 종류를 의미 (3종)
+  * serversidecar : server sidecar injection
+  * clientsidecar : server & client sidecar injection
+  * baseline : no sidecar
+* 위 예에서 90초 동안 (2 x 2 x 3) 12종류 테스트가 진행된다.
 * 결과 확인(forio.py실행)시 지정된 값 이전 데이터는 SKIP 처리(METRICS_START_SKIP_DURATION) default 값이  62로 지정되어 있으므로  측정시간을 최소 62초 이상으로 지정해야한다.
-* 환경변수 "NAMESPACE" 는 필수
+* 환경변수 "NAMESPACE" 는 필수 (default 값은 'service-graph')
 
 
 ### 결과확인
 
-* Prometheus, Fortio에 대한  IP, 포트 확인
+
+* Prometheus, Fortio 포트 포워딩
 
 ~~~
-$ export PROMETHEUS_URL=http://$(kubectl get svc/prometheus -n istio-system -o jsonpath={.spec.clusterIP}):9090
-$ export FORTIO_URL=http://$(kubectl get svc/fortioclient -n twopods -o jsonpath={.spec.clusterIP}):8080
-~~~
-
-* 앞서 확인했던 Prometheus, Forio URL을 지정 (예: http://10.98.31.42:9090  http://10.105.130.107:9090)
-
-~~~
-$ python ./runner/fortio.py  $FORTIO_URL $PROMETHEUS_URL --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
+$ kubectl -n twopods port-forward $(kubectl -n twopods get po -l app=fortioclient -o jsonpath={.items[0].metadata.name}) 8080 &
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get po -l app=prometheus -o jsonpath={.items[0].metadata.name}) 9090 &
 ~~~
 
 * fortio.py를 실행하면 2개의 아래와 같은 내용을 가진 임시 파일이 생성된다. 
+
+~~~
+$ python ./runner/fortio.py http://localhost:8080 http://localhost:9090 --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
+~~~
+
 
 ~~~
 {"mem_MB_max_ingressgateway_proxy": 24, "cpu_mili_max_telemetry_mixer": 5, "mem_MB_max_fortioserver_deployment_proxy": 29, "cpu_mili_min_ingressgateway_proxy": 13, "cpu_mili_min_fortio_deployment_captured": 22, "cpu_mili_avg_pilot_proxy": 11, "mem_MB_max_fortioserver_deployment_captured": 6, "proxyaccesslog": true, ......
 ~~~
 
 #### 분석 지표
+
 * fortio.py 실행하여 얻은 분석결과는 3개의 시나리오에 대한  latency 측정 결과(fortio)와 리소스 측정결과(prometheus)로 나누어진다.
 
 * Fortio를 활용한 Latency 측정 (ms)

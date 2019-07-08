@@ -32,10 +32,13 @@ minikube 에서 Istio 공식 TASK > Traffic Management 문서 Istio Traffic Mana
 
 * bookinfo  서비스에 대한 default Destination Rule 적용/확인
 
+* 기본 Gateway, VirtualService, DestinationRule 지정
+
 ~~~
+$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 $ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
-$ kubectl get destinationrules -o yaml
 ~~~
+
 
 
 ### 시나리오 #1 실행
