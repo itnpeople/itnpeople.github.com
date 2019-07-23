@@ -78,7 +78,7 @@ k8s_POD_httpbin-77c6b4bdff-jbwjr_default_05adc80f-a6c7-11e9-a026-0800279747bb_1
 
 3가지 설정항목에 따라 injection 여부 결정하고 처리
 
-* Rule-1. istio-sidecar-injector MutatingAdmission Webhook **namespaceSelector** 매칭 여부
+* Rule-1. istio-sidecar-injector mutatingwebhookconfiguration의 **namespaceSelector** 매칭 여부
 
 ~~~
 $ kubectl get mutatingwebhookconfiguration istio-sidecar-injector -o yaml | grep "namespaceSelector:" -A5
