@@ -75,6 +75,17 @@ pod/hello-server-v1   2/2     Running   0          20m
 pod/hello-server-v2   2/2     Running   0          20m
 ~~~
 
+
+### Cases
+
+1. Kuberntes 2개 서비스 구성 예
+1. Kuberntes single _service_ & multi _pod_ & 구성 예
+1. Istio VirtualService 라우팅 URI Prefix  룰셋 예
+1. Istio VirtualService 라우팅 Weight 룰셋 예
+
+![Cases](/resources/img/post/istio-virtualservice-case.png)
+
+
 ### Case 1
 > _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 Traffic을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인한다.
 
