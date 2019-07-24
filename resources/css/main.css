@@ -123,6 +123,7 @@ div.highlight {margin-left:20px;}
 
 #body {line-height: 2em}
 #body li img{max-width:90%;}
+#body img{max-width:100%;}
 
 #rnb ul.nav-list>li>a {padding: 3px 15px;}
 #rnb ul.nav-list>li>a.active {font-weight: bold;background-color: #eee;}
