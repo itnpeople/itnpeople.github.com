@@ -1,9 +1,9 @@
 ---
-title:  "[Istio] Visualizing mesh with Kiali"
+title:  "Visualizing mesh with Kiali"
 date:   2019/04/16 14:55
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","kiali"]
+keywords: ["istio","kiali","kubernetes","install","쿠버네티스","이스티오","minikube"]
 description: "Istio에서 수집된 각종 지표를 기반으로, 서비스간의 관계와 처리량, 정상 여부, 응답 시간등 각종 지표들을 를 시각화해주는 Kiali를 minikube 환경에서 설치해보고 실행해봅니다."
 ---
 

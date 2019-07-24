@@ -1,13 +1,13 @@
 ---
-title:  "[Istio/task] Istio Authentication Policy"
+title:  "Istio 연습과제 - Authentication Policy"
 date:   2019/04/25 09:20
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","authentication"]
+keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube","authentication"]
 description: "Istio는  서비스와 서비스간의  'Transport authentication', end-user 와 서비스간의 'Origin authentication' 2가지 인증처리 기능을 제공하고 있으며 MeshPolicy, Policy, DestinnationRule 3가지 CDR(Custom Define Resource)을 활용하여 인증 환경을 구성할 수 있습니다."
 ---
 
-# Istio Authentication Policy
+# Istio 연습과제 - Authentication Policy
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 

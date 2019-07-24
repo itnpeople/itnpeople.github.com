@@ -1,5 +1,5 @@
 ---
-title:  "[Knative] minikube에 Knative 설치해보고 처음으로 앱 배포해보기"
+title:  "Minikube에 Knative 설치해보고 처음으로 앱 배포해보기"
 date:   2019/06/03 13:35
 categories: "cloud"
 tags: ["recent"]
@@ -7,7 +7,7 @@ keywords: ["Knative","kubernetes","istio","install","쿠버네티스","이스티
 description: "Knativ는 AWS의 람다(Lambda)나, Google의 펑션(Function) 같은 Serverless 서비스를 할 수 있도록 워크로드를 구축 및 관리하는 Kubernetes 기반 오픈소스 플랫폼이다. 이에 minikuke를 활용해 로컬에 설치해보고 샘플 앱을 배포 및 실행을 통해 Knative 의 개념 및 동작원리를 이해하고 Knative 하에서 Blue/Green Deployment 가 어떤 방식으로 정의되고 동작되는지 확인해 보고자 한다."
 ---
 
-# Knative - minikube에 Knative 설치해보고 처음으로 앱 배포해보기
+# Minikube에 Knative 설치해보고 처음으로 앱 배포해보기
 ---
 *knative 0.6.*, *docker engine 18.06.2-ce*, *kubernetes 1.12.0*, *Istio 1.0.7*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 

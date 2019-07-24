@@ -1,13 +1,13 @@
 ---
-title:  "[Istio/task] Istio Telemetry - collect metrics & logs"
+title:  "Istio 연습과제 - Telemetry - collect metrics & logs"
 date:   2019/04/17 13:15
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","grafana"]
+keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube","grafana"]
 description: "Istio에서 telemetry metric, 수집하는 handler,  metric 과 handler를 연결하는 rule 정의를 통하여 telemetry 데이터를 수집하고 grafana를 통해 그 결과를 조회해 봅니다."
 ---
 
-# Istio telemetry - collect  metrics & logs on minikube
+# Istio 연습과제 - telemetry - collect  metrics & logs on minikube
 ---
 *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 

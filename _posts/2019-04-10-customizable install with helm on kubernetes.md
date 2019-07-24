@@ -3,7 +3,7 @@ title:  "Kubernetes에 Istio Control Plane을 Helm template 으로 설치하는 
 date:   2019/04/10 15:05
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오", "Helm"]
+keywords: ["istio", "Helm","kubernetes","install","쿠버네티스","이스티오"]
 description: "Kubernetes에 Istio Control Plane를 설치 하는 방법 중에서 Helm template을 활용하여 설치하는 방법을 수행해 봅니다."
 ---
 

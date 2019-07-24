@@ -1,17 +1,17 @@
 ---
-title:  "[Istio] 간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해"
+title:  "간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해"
 date:   2019/07/24 10:01
 categories: "cloud"
 tags: ["recent"]
-keywords: ["kubernetes","istio","쿠버네티스", "virtualservice"]
-description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 트래픽이 라우트 되도록 해준다. 이에 간단한  Kubernetes의 service 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다."
+keywords: ["istio","kubernetes","쿠버네티스", "virtualservice", "destinationrule", "routing"]
+description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 트래픽이 라우트 되도록 해준다. 이 포스트는 간단한  Kubernetes의 _service_ 와 Istio 가 제공하는 VirtualService, DestinationRule를 활용한 라우팅 룰셋 적용 결과 비교를 통해서 Istio의 Routing 의 기본 개념을 이해하는데 목적이 있습니다."
 ---
 
 # 간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해
 
 **kubernetes (minikube) 1.14.0*, *Istio 1.2.2*
 
-간단한  Kubernetes의 _service_ 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다.
+이 포스트는 간단한  Kubernetes의 _service_ 와 Istio 가 제공하는 VirtualService, DestinationRule를 활용한 라우팅 룰셋 적용 결과 비교를 통해서 Istio의 Routing 의 기본 개념을 이해하는데 목적이 있습니다.
 
 
 ## 예제 실행

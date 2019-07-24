@@ -1,5 +1,5 @@
 ---
-title:  "[Knative] Github 소스를 Build 컴포넌트로 빌드하고 서비스 배치 해보기"
+title:  "knative 에서 Github에 있는 hello 앱 소스를 Build 컴포넌트로 빌드하고 서비스 배치 해보기"
 date:   2019/06/10 13:04
 categories: "cloud"
 tags: ["recent"]

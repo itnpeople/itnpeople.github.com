@@ -1,13 +1,13 @@
 ---
-title:  "[Istio/task] Istio Authorization for HTTP Services"
+title:  "Istio 연습과제 - Authorization for HTTP Services"
 date:   2019/04/26 14:20
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube","authorization"]
+keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube","authorization"]
 description: "Istio는  ClusterRbacConfig 를 통해 권한(접근제어)를 활성화하고 ServiceRole에 대상 서비스들 접근권한 Rule 정의한 후 ServiceRoleBinding을 통해 특정 대상에 해당 ServiceRole에 지정하여 접근통제(권한)를 수행합니다."
 ---
 
-# Authorization for HTTP Services
+# Istio 연습과제 - Authorization for HTTP Services
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.14.0*, *Istio 1.1.1*, *minikube v1.0.0* , *macOS Mojave 10.14.4(18E226)*
 

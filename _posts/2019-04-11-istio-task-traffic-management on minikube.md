@@ -1,13 +1,13 @@
 ---
-title:  "[Istio/task] Traffic Management on minikube"
+title:  "Istio 연습과제 - Traffic Management on minikube"
 date:   2019/04/11 18:10
 categories: "cloud"
 tags: []
-keywords: ["kubernetes","istio","install","쿠버네티스","이스티오","minikube"]
+keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube"]
 description: "minikube 에서 Istio 공식 TASK > Traffic Management 문서 Istio Traffic Management 를 토대로 minikube 환경에서 실행해보고 개인적으로 정리한 내용을 공유합니다."
 ---
 
-# Traffic Management
+# Istio 연습과제 - Traffic Management
 ---
 *docker engine 18.06.2-ce*, *kubernetes 1.13.4*, *Istio 1.1.1* , *minikube v0.35.0*, *macOS Mojave 10.14.4(18E226)*
 
@@ -450,18 +450,17 @@ GateWay, VirtualService, DestinationRule (v1alpha3 elements)간 관계
 
 * DestinationRule
   * subset을 정의한다. 이때 라벨링을 통해 정의한 subset에 해당하는 deployment를 지정함 (deployment에만 지정하는 것이 아닐 지도...)
-  * 서비스로 트래픽을 포워딩하는 정책 결정 (loadbalancer)
-  * 하나의 비즈니스서비스를 분산하는 개념 ??
+  * loadbalancer 등 서비스로 트래픽 정책 결정
 
 * Virtual Service
   * 라우팅 룰 적용
     * Gateway 로부터 DestinationRule
-    * MESH 외부 서비스 대상
-  * 쿠키, 헤더, uri 등 활용
+    * Kubernetes service 라우팅 룰을 세분화
+  * 쿠키, 헤더, uri 등 활용할 수 있음
 
 * ServiceEntry
   * 사용자서비스 Entry 포인트를 등록  
-  * MESH 밖의 외부 서비스 (밖에만 지정하는건 아니겠지??? 아마도??)
+  * Mesh 밖의 외부 서비스 지정
   * 호스트 - 포트(번호, 프로토콜) 별로 지정 가능
 
 * Kubernetes의  Ingress 에서  비즈니스서비스 구간을 3단계로 세분화 하고 각 단계별로 기능을 분리시킴
