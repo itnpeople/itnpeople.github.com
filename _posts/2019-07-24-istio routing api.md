@@ -1,20 +1,20 @@
 ---
-title:  "[Istio] VirtualService 간단한 적용 예제를 통한 Istio Traffic Routing의 이해"
+title:  "[Istio] 간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해"
 date:   2019/07/24 10:01
 categories: "cloud"
 tags: ["recent"]
 keywords: ["kubernetes","istio","쿠버네티스", "virtualservice"]
-description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 Traffic이 라우트 되도록 해준다. 이에 간단한  Kubernetes의 service 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다."
+description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 트래픽이 라우트 되도록 해준다. 이에 간단한  Kubernetes의 service 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다."
 ---
 
-# Istio VirtualService 간단한 적용 예제를 통한 Istio Traffic Routing의 이해
+# 간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해
 
 **kubernetes (minikube) 1.14.0*, *Istio 1.2.2*
 
 간단한  Kubernetes의 _service_ 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다.
 
 
-## 데모
+## 예제 실행
 ---
 
 ### 준비작업
@@ -77,17 +77,86 @@ pod/hello-server-v2   2/2     Running   0          20m
 
 
 ### Cases
+개념 파악을 위한 5개 샘플 Case 
 
-1. Kuberntes 서비스 구성
-1. Kuberntes single _service_ & multi _pod_ & 구성
-1. Istio VirtualService 라우팅 URI Prefix  룰셋 예
-1. Istio VirtualService 라우팅 Weight 룰셋 예
+* Case 1
+  * Kuberntes _service_ 가 바라보는 _endpoints_ 가 다수인 경우 
+  * 트래픽은 _endpoints_ 들로 round robin 되어 전달된다.
+* Case 2
+  * Kuberntes 서비스 구성
+  * 트래픽은 각각 지정하는 _service_ 로 전달된다.
+* Case 3
+  * Istio VirtualService 에 uri에 따른 라우팅 룰셋 정의하는 경우
+  * 트래픽은 기본적으로 v1 _pod_ 로 전달되나 URI prefix 가 **/v2** 인 경우는 v2 _pod_로 라우팅 된다.
+* Case 4
+  * Istio VirtualService 을 이용하여 라우팅 비율 룰셋을 지정하는 경우
+  * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달된다.
 
 ![Cases](/resources/img/post/istio-virtualservice-case.png)
 
+* Case 5
+  * v1, v2 _service_ 대신 **DestinationRule** 을 이용는 경우
+  * Case 4와 동일한 결과를 리턴 받는다.
+  * VirtualService 에서 `app=hello` 로 _endpoints_ 를 지정하고 DestinationRule 에서 label `version=v1`, `version=v2` 지정해 subset으로 세분화 구성
+  * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달된다.
 
-### Case 1
-> _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 Traffic을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인한다.
+![Cases](/resources/img/post/istio-virtualservice-case-2.png)
+
+
+###  Case 1
+> 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
+> `svc-hello` 로 트래픽을  발생시키면 해당 트래픽은 endpoints 로 round robin 되는것을 확인한다.
+
+* `svc-hello` service 생성
+
+~~~
+$ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-hello
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+EOF
+~~~
+
+
+* endpoint 확인
+  * `svc-hello` 추가 생성
+
+~~~
+$ kubectl get endpoints -l app=hello
+
+NAME           ENDPOINTS                         AGE
+svc-hello      172.17.0.5:8080,172.17.0.6:8080   92m
+svc-hello-v1   172.17.0.5:8080                   2m6s
+svc-hello-v2   172.17.0.6:8080                   14s
+~~~
+
+* `svc-hello` 에 트래픽을 전달하여 결과 확인해 보기
+  * `hello-server-v1` , `hello-server-v2` 각각으로 Round Robin
+
+~~~
+$ kubectl exec -it curl bash
+
+# for i in {1..5}; do curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
+
+Hello server - v2 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v2 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+~~~
+
+### Case 2
+> _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 트래픽을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인한다.
 
 * `svc-hello-v1`, `svc-hello-v2` 생성
 
@@ -135,7 +204,7 @@ svc-hello-v1   172.17.0.5:8080                   2m6s
 svc-hello-v2   172.17.0.6:8080                   14s
 ~~~
 
-* `svc-hello-v1`, `svc-hello-v2` 에 Traffic 전달하여 결과 확인하기
+* `svc-hello-v1`, `svc-hello-v2` 에 트래픽을 전달하여 결과 확인하기
 
 ~~~
 $ kubectl exec -it curl bash
@@ -157,57 +226,6 @@ Hello server - v2 (requestUri=/)
 Hello server - v2 (requestUri=/)
 ~~~
 
-###  Case 2
-> 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
-> `svc-hello` 로 Traffic 발생시키면 해당 Traffic은 endpoints 로 round robin 되는것을 확인한다.
-
-* `svc-hello` service 생성
-
-~~~
-$ kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-hello
-  labels:
-    app: hello
-spec:
-  selector:
-    app: hello
-  ports:
-  - name: http
-    protocol: TCP
-    port: 8080
-EOF
-~~~
-
-
-* endpoint 확인
-  * `svc-hello` 추가 생성
-
-~~~
-$ kubectl get endpoints -l app=hello
-
-NAME           ENDPOINTS                         AGE
-svc-hello      172.17.0.5:8080,172.17.0.6:8080   92m
-svc-hello-v1   172.17.0.5:8080                   2m6s
-svc-hello-v2   172.17.0.6:8080                   14s
-~~~
-
-* `svc-hello` 에 Traffic 전달하여 결과 확인해 보기
-  * `hello-server-v1` , `hello-server-v2` 각각으로 Round Robin
-
-~~~
-$ kubectl exec -it curl bash
-
-# for i in {1..5}; do curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
-
-Hello server - v2 (requestUri=/)
-Hello server - v1 (requestUri=/)
-Hello server - v2 (requestUri=/)
-Hello server - v1 (requestUri=/)
-Hello server - v1 (requestUri=/)
-~~~
 
 ### Case 3
 > 이전 round robin 되엇던 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 준다.
@@ -254,7 +272,7 @@ svc-hello-v1   172.17.0.5:8080                   11m
 svc-hello-v2   172.17.0.6:8080                   9m13s
 ~~~
 
-* `svc-hello` 로 Traffic을 발생시키면  `svc-hello-v1` 으로 라우트된다.
+* `svc-hello` 로 트래픽을 발생시키면  `svc-hello-v1` 으로 라우트된다.
 
 ~~~
 $ kubectl exec -it curl bash
@@ -268,7 +286,7 @@ Hello server - v1 (requestUri=/)
 Hello server - v1 (requestUri=/)
 ~~~
 
-*  prefix `\v2` 로 Traffic을 발생하면  `svc-hello-v2` 으로 라우트된다.
+*  prefix `\v2` 로 트래픽을 발생하면  `svc-hello-v2` 으로 라우트된다.
 
 ~~~
 # for i in {1..5}; do curl http://svc-hello.default.svc.cluster.local:8080/v2; sleep 0.5; done
@@ -307,6 +325,8 @@ spec:
 EOF
 ~~~
 
+* 트래픽을 전달하여 결과를 확인한다.
+
 ~~~
 # for i in {1..20}; do curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
 
@@ -321,16 +341,80 @@ Hello server - v2 (requestUri=/)
 Hello server - v1 (requestUri=/)
 ~~~
 
+###  Case 5
+> Case 4 와 같이 각 _pod_ 별 _service_ 를 구성하는 대신 **DestinationRule** 을 이용하여 동일한 결과 구현한다.
+
+* DestinationRule 생성하여 subset 을 구성하고 VirtualService 에서 이를 지정한다.
+  * _service_ 는 label `app=hello` 로 타켓 _endpoints_ 정의
+  * DestinationRule 에서 label `version=v1`, `version=v2` 으로 subset `v1`, `v2` 을 구성
+
+~~~
+$ kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: dr-hello
+spec:
+  host: svc-hello.default.svc.cluster.local
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-hello
+spec:
+  hosts:
+  - "svc-hello.default.svc.cluster.local"
+  http:
+  - route:
+    - destination:
+        host: "svc-hello.default.svc.cluster.local"
+        subset: v1
+      weight: 90
+    - destination:
+        host: "svc-hello.default.svc.cluster.local"
+        subset: v2
+      weight: 10
+EOF
+~~~
+
+* 트래픽을 전달하여 결과를 확인한다.
+
+~~~
+# for i in {1..10}; do curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
+
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+...
+Hello server - v2 (requestUri=/)
+....
+Hello server - v1 (requestUri=/)
+~~~
+
+
+
 ### Clean-up
 
 ~~~
-$ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-hello service/svc-hello-v1 service/svc-hello-v2 vs/vs-hello
+$ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-hello service/svc-hello-v1 service/svc-hello-v2 vs/vs-hello dr/dr-hello
 ~~~
+
+
+
 
 ## VirtualService
 ---
 
-프로토콜(http/tls/tcp)별로 Traffic 라우트 룰셋(destination)을 정의
+프로토콜(http/tls/tcp)별로 트래픽 라우트 룰셋(destination)을 정의
 
 
 ### 주요 Spec
@@ -374,8 +458,21 @@ $ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-he
 
   * 현재 virtual service 를 export 하는 네임스페이스를 정의
 
+## DestinationRule
+---
+
+라우팅 발생 이후 트래픽 관련된 정책을 정의하는 Custom Resource Definition
+
+* 트래픽 정책
+  * Load-balancing
+  * connection-pool
+  * pool 에서 unhealthy 한 서비스 detect & 제거
+
+* subset
+  * 버전 특정 정책들 정의하고 service 레벨의 특정 설정을 overriding 한다.
+
 
 ## Conclusion
 ---
 
-Istio 의 **VirtualService** 는  Kubernetes _service_ 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 Traffic이 라우트 되도록 해준다.
+Istio 의 **VirtualService** 는  Kubernetes _service_ 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 트래픽이 라우팅 되도록 해준다.
