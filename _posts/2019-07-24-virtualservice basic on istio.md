@@ -78,7 +78,8 @@ pod/hello-server-v2   2/2     Running   0          20m
 
 ### Cases
 
-1. Kuberntes 2개 서비스 구성 예
+1. Kuberntes 서비스 구성
+1. Kuberntes single _service_ & multi _pod_ & 구성
 1. Istio VirtualService 라우팅 URI Prefix  룰셋 예
 1. Istio VirtualService 라우팅 Weight 룰셋 예
 
@@ -156,7 +157,59 @@ Hello server - v2 (requestUri=/)
 Hello server - v2 (requestUri=/)
 ~~~
 
-### Case 2
+###  Case 2
+> 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
+> `svc-hello` 로 Traffic 발생시키면 해당 Traffic은 endpoints 로 round robin 되는것을 확인한다.
+
+* `svc-hello` service 생성
+
+~~~
+$ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-hello
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+EOF
+~~~
+
+
+* endpoint 확인
+  * `svc-hello` 추가 생성
+
+~~~
+$ kubectl get endpoints -l app=hello
+
+NAME           ENDPOINTS                         AGE
+svc-hello      172.17.0.5:8080,172.17.0.6:8080   92m
+svc-hello-v1   172.17.0.5:8080                   2m6s
+svc-hello-v2   172.17.0.6:8080                   14s
+~~~
+
+* `svc-hello` 에 Traffic 전달하여 결과 확인해 보기
+  * `hello-server-v1` , `hello-server-v2` 각각으로 Round Robin
+
+~~~
+$ kubectl exec -it curl bash
+
+# for i in {1..5}; do curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
+
+Hello server - v2 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v2 (requestUri=/)
+Hello server - v1 (requestUri=/)
+Hello server - v1 (requestUri=/)
+~~~
+
+### Case 3
 > 이전 round robin 되엇던 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 준다.
 > 룰셋은 기본적으로 `svc-hello-v1` 로 라우트 되지만 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트 되도록한다.
 
@@ -196,6 +249,7 @@ EOF
 $ kubectl get endpoints -l app=hello
 
 NAME           ENDPOINTS                         AGE
+svc-hello      172.17.0.5:8080,172.17.0.6:8080   101m
 svc-hello-v1   172.17.0.5:8080                   11m
 svc-hello-v2   172.17.0.6:8080                   9m13s
 ~~~
@@ -226,7 +280,7 @@ Hello server - v2 (requestUri=/v2)
 Hello server - v2 (requestUri=/v2)
 ~~~
 
-### Case 3
+### Case 4
 > **VirtualService** 는 Destination weight 스펙을 통해 라우트되는 비율을 정의할 수 있다.
 
 * VirtualService 를 수정 적용
@@ -270,7 +324,7 @@ Hello server - v1 (requestUri=/)
 ### Clean-up
 
 ~~~
-$ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-hello-v1 service/svc-hello-v2 vs/vs-hello
+$ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-hello service/svc-hello-v1 service/svc-hello-v2 vs/vs-hello
 ~~~
 
 ## VirtualService
