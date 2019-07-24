@@ -1,5 +1,5 @@
 ---
-title:  "[Istio] VirtualService 를 통한 Kubernetes Service Routing 확장"
+title:  "[Istio] VirtualService 간단한 적용 예제를 통한 Istio Traffic Routing의 이해"
 date:   2019/07/24 10:01
 categories: "cloud"
 tags: ["recent"]
@@ -7,18 +7,21 @@ keywords: ["kubernetes","istio","쿠버네티스", "virtualservice"]
 description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 Traffic이 라우트 되도록 해준다. 이에 간단한  Kubernetes의 service 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다."
 ---
 
-# Istio VirtualService 를 통한 Kubernetes Service Routing 확장
+# Istio VirtualService 간단한 적용 예제를 통한 Istio Traffic Routing의 이해
 
-간단한  Kubernetes의 service 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다.
+**kubernetes (minikube) 1.14.0*, *Istio 1.2.2*
+
+간단한  Kubernetes의 _service_ 와 Istio 가 제공하고 있는 VirtualService를 활용한 라우트 룰셋 적용 결과 비교를 통해 VirtualService 의 기본 개념을 이해해본다.
 
 
 ## 데모
 ---
 
 ### 준비작업
-> 테스트 용 `hello-server-v1`, `hello-server-v2` pod 2개, dummy pod  `curl`, `app=hello` service 준비
+> 테스트 용 `hello-server-v1`, `hello-server-v2` _pod_ 2개, dummy _pod_  `curl`, `app=hello` _service_ 준비
 
-* 클러스터에 Istio가 설치되어 있다는 전제하에 pod 3개, service 1개 생성
+* 클러스터에 Istio가 설치 전제
+* _pod_ 3개, _service_ 1개 생성
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -73,8 +76,7 @@ pod/hello-server-v2   2/2     Running   0          20m
 ~~~
 
 ### Case 1
-> `hello-server-v1`, `hello-server-v2` 를 각각 다른 App. 이라고 정의하고 각각에 서비스 `svc-hello-v1`, `svc-hello-v2`를 match 시킨다.
->  각 service로 Traffic을 발생시키면 각각의 pod 로 전달되는 것을 확인한다.
+> _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 Traffic을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인한다.
 
 * `svc-hello-v1`, `svc-hello-v2` 생성
 
@@ -145,7 +147,7 @@ Hello server - v2 (requestUri=/)
 ~~~
 
 ###  Case - 2
-> 2개의 샘플 pod - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
+> 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
 > `svc-hello` 로 Traffic 발생시키면 해당 Traffic은 endpoints 로 round robin 되는것을 확인한다.
 
 * `svc-hello` service 생성
@@ -197,15 +199,15 @@ Hello server - v1 (requestUri=/)
 ~~~
 
 ### Case 3
-> 이전 round robin 되엇던 `svc-hello` service 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 준다.
+> 이전 round robin 되엇던 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 준다.
 > 룰셋은 기본적으로 `svc-hello-v1` 로 라우트 되지만 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트 되도록한다.
 
 * VirtualService 생성
   * 기본적으로 `svc-hello-v1` 로 라우트되고 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트되는 룰셋
-  * spec.hosts 는 대상 service
-  * spec.http.route.destination 는 기본 라우트 service
+  * spec.hosts 는 대상 _service_
+  * spec.http.route.destination 는 기본 라우트 _service_
   * spec.http.match.* 에 라우트 조건 지정 
-  * spec.*.destination.host 는 destination service
+  * spec.*.destination.host 는 destination _service_
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -324,7 +326,7 @@ $ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-he
 
 * hosts
 
-  * service 이름
+  * _service_ 이름
   * service registry 또는 ServiceEntry(external Mesh) 에서 lookup
   * short 네임은 대신 full 네임 권장 (`reviews` interpreted `reviews.default.svc.cluster.local`)
   * only `*` 설정 불가하지만 `*.default.svc.cluster.local`, `*.svc.cluster.local` 가능
@@ -343,11 +345,11 @@ $ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-he
 
 * spec.[http/tls/tcp]...route.destination
 
-  * (필수) 요청/연결을 포워딩해야 하는 service 인스턴스 고유한 식별자
+  * (필수) 요청/연결을 포워딩해야 하는 _service_ 인스턴스 고유한 식별자
 
 * spec.[http/tls/tcp].*.destination.host
 
-  * 타켓 service 인스턴스
+  * 타켓 _service_ 인스턴스
 
 * spec.[http/tls/tcp].*.destination.subset
 
@@ -365,4 +367,4 @@ $ kubectl delete pod/curl pod/hello-server-v1 pod/hello-server-v2 service/svc-he
 ## Conclusion
 ---
 
-Istio 의 **VirtualService** 는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 Traffic이 라우트 되도록 해준다.
+Istio 의 **VirtualService** 는  Kubernetes _service_ 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 Traffic이 라우트 되도록 해준다.
