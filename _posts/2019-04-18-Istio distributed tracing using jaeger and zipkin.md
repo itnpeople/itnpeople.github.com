@@ -39,7 +39,7 @@ $ kubectl create namespace istio-system
 $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
 ~~~
 
-*  Istio 설치한다.
+*  Istio 설치
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system | kubectl apply -f -
@@ -71,8 +71,8 @@ $ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system g
 ***
 
 * Istio 를 재구성한다.
-  * `pilot.traceSampling`, `tracing.enabled` 옵션을 지정하여 tracing 과 샘플링 비율을 지정하여 Istio 재 구성한다. 
-  * `pilot.traceSampling`은  trace 샘플링 비율로  0~100까지 0.01 단위로 지정할 수 있으며 기본값은 0.01이다.  연습을 위해 일단 100으로 지정한다.
+  * `pilot.traceSampling`, `tracing.enabled` 옵션을 지정하여 tracing 과 샘플링 비율을 지정하여 Istio 재 구성
+  * `pilot.traceSampling`은  trace 샘플링 비율로  0~100까지 0.01 단위로 지정할 수 있으며 기본값은 0.01이다.  연습을 위해 일단 100으로 지정
 
 ~~~
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
@@ -93,15 +93,15 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 ~~~
 
 * 결과확인
-  * 브라우저에서 [_http://localhost:16686_](http://localhost:16686) 을 연다.
-  * 좌측 조회 조건을 입력/선택하고 "Find Traces" 버튼을 클릭하여 traceing 확인한다.
-  * 조회된 traceing 을 클릭하여 세부 trace 를 확인한다.
+  * 브라우저에서 [_http://localhost:16686_](http://localhost:16686) 을 오픈
+  * 좌측 조회 조건을 입력/선택하고 "Find Traces" 버튼을 클릭하여 traceing 확인
+  * 조회된 traceing 을 클릭하여 세부 trace 를 확인
 
 
 ## Zipkin
 ***
 
-*  앞서 지정햔 옵션에 아래와 같이 옵션을 추가하여 Istio 를 재구성한다.
+*  앞서 지정햔 옵션에 아래와 같이 옵션을 추가하여 Istio 를 재구성
   * `gateways.istio-ingressgateway.type=NodePort` NodePort 로 지정
   * `tracing.provider=zipkin` zipkin 옵션
   * `tracing.ingress.enabled=true`
@@ -136,5 +136,5 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 
 
 * 결과 확인
-  * 브라우저에서 [_http://localhost:9411_](http://localhost:9411) 을 연다.
-  * Find Traces 버튼을 클릭하여 tracing 이 조회되는지 확인한다.
+  * 브라우저에서 [_http://localhost:9411_](http://localhost:9411) 을 오픈
+  * Find Traces 버튼을 클릭하여 tracing 이 조회되는지 확인합니다.

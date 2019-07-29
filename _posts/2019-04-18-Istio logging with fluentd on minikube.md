@@ -70,7 +70,7 @@ $ export GW_URL=http://$(minikube ip -p istio-fluentd):$(kubectl -n istio-system
 
 ## Logging with Fluentd
 ***
-이 TASK는  Fluentd / Elasticsearch / Kibana stack을 활용한 로그처리 예제를 보여준다.
+이 TASK는  Fluentd / Elasticsearch / Kibana stack을 활용한 로그처리 예제를 보여 줍니다.
 
 * Fluentd, Elasticsearch, Kibana Stack 적용
 
@@ -352,8 +352,8 @@ $ kubectl -n logging port-forward $(kubectl -n logging get pod -l app=kibana -o 
 ~~~
 
 * 결과 확인
-  1. 브라우저에서 [_http://localhost:5601_](http://localhost:5601) 을 연다.
+  1. 브라우저에서 [_http://localhost:5601_](http://localhost:5601) 을 오픈합니다.
   1. 메인화면에서 "Index Pettterns" 선택
   1. Index pattern에 "*" 입력 하고 "Set up index patterns" 클릭
   1. Time Filter field name 에 @timestamp 선택하고 "Create index pattern" 클릭
-  1. 좌측 메뉴의 "Discover" 클릭하여  현재 만든 "*"의 로그를 확인한다.
+  1. 좌측 메뉴의 "Discover" 클릭하여  현재 만든 "*"의 로그를 확인합니다.

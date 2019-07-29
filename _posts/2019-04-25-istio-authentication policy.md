@@ -31,7 +31,7 @@ Istio는  서비스와 서비스간의  'Transport authentication', end-user 와
   * `kind: MeshPolicy` : Mesh 에 적용
   * `kind: Policy` : Namespace 에 적용
 * Target selectors
-  * 적용하는 대상 서비스 또는 서비스와 포트를 세부 지정할 수 있다.
+  * 적용하는 대상 서비스 또는 서비스와 포트를 세부 지정할 수 있습니다.
   * "selector"를 통해 0~n 개의 적용 서비스를 특정할 수 있음 (Service-specific policy)
 * peer
   * service-to-service 인증을 위한 method를 지정
@@ -158,7 +158,7 @@ $ ./security-check.sh
 
 ### #1. Mesh 에 mutual TLS를 적용하여 Mesh 내 서비스간 Authentication 이 변경되는지 확인
 
-* Mesh 인증정책을 지정하기 위해서는 아래와 같이  _MeshPolicy_ 을 적용한다.
+* Mesh 인증정책을 지정하기 위해서는 아래와 같이  _MeshPolicy_ 을 적용
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -201,7 +201,7 @@ command terminated with exit code 56
 
 ### #2. Mesh내 서비스간 Authentication 통과되도록 설정
 
-* 아래와 같이 _DestinationRule_ 에 trafficPolicy TLS 모드를 `ISTIO_MUTUAL` 모드로 지정한다.
+* 아래와 같이 _DestinationRule_ 에 trafficPolicy TLS 모드를 `ISTIO_MUTUAL` 모드로 지정.
 * Mesh 내 _DestinationRule_ 은 Namespace _istio-system_ 에 지정한다.
 
 ~~~
@@ -223,11 +223,11 @@ EOF
   * TLS connection mode
   * `DISABLE`	: upstream endpoint에 대한 TLS  연결을  disable 지정
   * `SIMPLE` : Originate a TLS connection to the upstream endpoint.
-  * `MUTUAL` : 클라이언트 존재하는 인증서로  mutual TLS 을 사용하여 upstream 보안 연결 한다.
-  * `ISTIO_MUTUAL` : `MUTUAL`와 유사, 다른점은 Istio mTLS 인증에 의해 자동 생성된 인증서를 사용, 이 모드를 사용하면 TLSSettings 시 다른 모든 필드를 비워두어야 한다.
+  * `MUTUAL` : 클라이언트 존재하는 인증서로  mutual TLS 을 사용하여 upstream 보안 연결.
+  * `ISTIO_MUTUAL` : `MUTUAL`와 유사, 다른점은 Istio mTLS 인증에 의해 자동 생성된 인증서를 사용, 이 모드를 사용하면 TLSSettings 시 다른 모든 필드를 비워두어야 합니다.
 
 
-* 아래 명령으로 기본 **default** _DestinationRule_ 이 생성됨을 확인 할 수 있다.
+* 아래 명령으로 기본 **default** _DestinationRule_ 이 생성됨을 확인 할 수 있습니다.
 ~~~
 $ kubectl get dr -n istio-system
 ~~~
@@ -260,7 +260,7 @@ command terminated with exit code 56
 
 ### #3. Istio-service에서 non-Istio-service로 요청 가능하도록 설정
 
-* 아래와 같이 특정 **non-Istio-service** 에 _DestinationRule_ 의 TLS 모드를  **DISABLE** 모드로 지정하여  **Istio-service** 에서 **non-Istio-service** 의 호출을 가능하도록 조정한다.
+* 아래와 같이 특정 **non-Istio-service** 에 _DestinationRule_ 의 TLS 모드를  **DISABLE** 모드로 지정하여  **Istio-service** 에서 **non-Istio-service** 의 호출을 가능하도록 조정합니다.
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -278,7 +278,7 @@ EOF
 ~~~
 
 * 결과확인
-  * _foo->legacy_, _bar->legacy_ 요청이 코드 `200`(정상)으로 반환됨을 확인한다.
+  * _foo->legacy_, _bar->legacy_ 요청이 코드 `200`(정상)으로 반환됨을 확인.
 
 ~~~
 $ ./security-check.sh
@@ -304,7 +304,7 @@ command terminated with exit code 56
 
 ### Istio 서비스 에서 Kubernetes API server 호출
 
-* Kubernetes API server 는 sidecar가 존재하지 않는다 그러므로 아래와 같이 sidecar injection 되어있는 foo Namespace 의 sleep 서비스에서 api-server 를 호출하면 `33` (CURLE_SSL_CONNECT_ERROR) 에러가 발생된다.
+* Kubernetes API server 는 sidecar가 존재하지 않는다 그러므로 아래와 같이 sidecar injection 되어있는 foo Namespace 의 sleep 서비스에서 api-server 를 호출하면 `33` (CURLE_SSL_CONNECT_ERROR) 에러가 발생.
 
 ~~~
 $ TOKEN=$(kubectl describe secret $(kubectl get secrets | grep default-token | cut -f1 -d ' ' | head -1) | grep -E '^token' | cut -f2 -d':' | tr -d '\t')
@@ -312,7 +312,7 @@ $ kubectl exec $(kubectl get pod -l app=sleep -n foo -o jsonpath={.items..metada
 ~~~
 
 * **Istio-service** 에서 API-server 호출시 authentication 오류가 발생하지 않도록 하기 위해서
-  * 아래와 같이 Kubernetes API server 서비스 (`kubernetes.default`) 에 _DestinationRule_ 을 등록하고 TLS 를 **DISABLE** 모드로 지정한다.
+  * 아래와 같이 Kubernetes API server 서비스 (`kubernetes.default`) 에 _DestinationRule_ 을 등록하고 TLS 를 **DISABLE** 모드로 지정.
   * 하여 코드 `200`(정상) 반환되어야 하는데 실제로는 코드 `403`가 리턴된다. API 요청 URL 권한 문제인 것으로 판단하여 일단 성공한 것으로 판단
 
 ~~~
@@ -439,7 +439,7 @@ command terminated with exit code 56
 
 ### #3. bar Namespace 의  httpbin 서비스에 policy 적용
 
-* "bar" Namespace의 특정 서비스(httpbin)에  _Policy_ 적용한다.
+* "bar" Namespace의 특정 서비스(httpbin)에  _Policy_ 적용
 
 ~~~
 $ cat <<EOF | kubectl apply -n bar -f -
@@ -481,7 +481,7 @@ command terminated with exit code 56
 
 ### #4. bar Namespace httpbin 서비스가  authentication 통과되도록 설정
 
-* 아래와 같이  bar Namespace 의 _DestinationRule_ 에 "httpbin" 서비스에 대한 TLS 를 `ISTIO_MUTUAL`로 지정한다.
+* 아래와 같이  bar Namespace 의 _DestinationRule_ 에 "httpbin" 서비스에 대한 TLS 를 `ISTIO_MUTUAL`로 지정
 
 ~~~
 $ cat <<EOF | kubectl apply -n bar -f -
@@ -525,8 +525,8 @@ command terminated with exit code 56
 
 ### Policy precedence
 
-* 아래 얘제는 Namespace 정책보다 Service 지정 정책이 우선되는 예제를 보여준다.
-  * Namespace 정책에 따라 막혀있던 **non-Istio-service** 에서 **Istio-service** 인 foo Namespace의 "httpbin" 서비스 호출이 가능하게 된다.
+* 아래 얘제는 Namespace 정책보다 Service 지정 정책이 우선되는 예제를 보여줍니다.
+  * Namespace 정책에 따라 막혀있던 **non-Istio-service** 에서 **Istio-service** 인 foo Namespace의 "httpbin" 서비스 호출이 가능
 
 ~~~
 $ cat <<EOF | kubectl apply -n foo -f -
@@ -551,7 +551,7 @@ EOF
 ~~~
 
 * 결과 확인
-  * legacy 에서 호출한 foo, bar 의 httpbin 서비스 중 _DestinationRule_ 을 지정한 foo Namespace 의 httpbin 서비스는 호출결과가 `200` (정상)로 전환되었음.
+  * legacy 에서 호출한 foo, bar 의 httpbin 서비스 중 _DestinationRule_ 을 지정한 foo Namespace 의 httpbin 서비스는 호출결과가 `200` (정상)로 전환
 
 ~~~
 $ ./security-check.sh
@@ -588,7 +588,7 @@ $ kubectl delete dr httpbin -n bar
 
 ### 준비작업
 
-* foo Namespace의 httpbin 서비스를  ingressgateway 노출한다.
+* foo Namespace의 httpbin 서비스를  ingressgateway 노출
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -704,7 +704,7 @@ $ curl -I http://$(kubectl -n istio-system get service istio-ingressgateway -o j
 
 ### 특정 Path를 End-user 인증에서 포함
 
-* 아래와 같이 **/ip** Path는  인증처리에서 포함(`included_paths`) 되도록 _Policy_ 를 설정하였다.
+* 아래와 같이 **/ip** Path는  인증처리에서 포함(`included_paths`) 되도록 _Policy_ 를 설정
 
 ~~~
 $ cat <<EOF | kubectl apply -n foo -f -
@@ -735,7 +735,7 @@ $ curl -I $INGRESS_URL/user-agent
 $ curl -I $INGRESS_URL/ip
 ~~~
 
-* **/ip** 로 Token 정보를 헤더에 같이 보내면 인증 통과하여 `401` 에서  `200` 으로 변경됨을 확인
+* **/ip** 로 Token 정보를 헤더에 같이 보내면 인증 통과하여 `401` 에서  `200` 으로 변경
 
 ~~~
 $ curl -I --header "Authorization: Bearer $JWT_TOKEN" $INGRESS_URL/ip
@@ -743,7 +743,7 @@ $ curl -I --header "Authorization: Bearer $JWT_TOKEN" $INGRESS_URL/ip
 
 ### End-user 인증을  mutual TLS와 함께 사용
 
-* End-user 인증과 and mutual TLS 을 같이 사용할 수 있다.
+* End-user 인증과 and mutual TLS 을 같이 사용 가능
 
 
 ### Cleanup

@@ -73,14 +73,14 @@ $ fortio load http://www.google.com
 ### /istio-install 
 * https://github.com/istio/tools/tree/master/perf/istio-install
 * 성능테스트를 위해 Istio를 설정하는 스크립트 및 Helm 제공.
-* 이 클러스터는 Istio의 한계를 테스트하기 위한 아주 큰 클러스터로  설계되어 있다. 
-* 대부분의 테스트는 Istio 표준 설치 상태에서 실행할 수 있다.
+* 이 클러스터는 Istio의 한계를 테스트하기 위한 아주 큰 클러스터로  설계
+* 대부분의 테스트는 Istio 표준 설치 상태에서 실행 가능
 * 성능체크를 위한 이스티오 성능 권장 설정되어 있으나 대용량 클러스터가 필요, 적어도 32 vCPU 
 
 ### /load
 * https://github.com/istio/tools/tree/master/perf/load
 * 이스티오 havey load 상에서 테스트하기 위한 대용량 서비스를 생성하는 툴을 제공
-* Fortio 인스턴스로 설치됨
+* Fortio 인스턴스로 설치
 * 각 인스턴스는 적어도 6 vCPU에 6G 메모리 필요 (그림상으로는 인스턴스가 9인데. 그럼 54 vCPU에 54G 리소스가 필요한건가?)
 
 ### /benchmark 
@@ -99,7 +99,7 @@ $ fortio load http://www.google.com
 ### /stability
 * https://github.com/istio/tools/tree/master/perf/stability
 * Istio의  안정성을 보장하기 위해서 다양한 Istio의 기능을 발휘하는 테스트를 제공
-* 테스트의 목적은 통합테스트와 차별화된 장기적고 연속적으로 실행된다.
+* 테스트의 목적은 통합테스트와 차별화된 장기적고 연속적으로 실행
 
 * 테스트 종류
   * http10 : http 1.0 지원 테스트
@@ -123,7 +123,7 @@ $ fortio load http://www.google.com
 ### minikube
 
 * minikube 인스턴스 삭제 설치 (minikube 설치 되어있다는 전제)
-* minikube 기본값으로 kubernetes + istio 설치 + 성능측정이 불가능하므로 리소스를 늘려서(6cpu, 8g) 인스턴스를 생성한다. 
+* minikube 기본값으로 kubernetes + istio 설치 + 성능측정이 불가능하므로 리소스를 늘려서(6cpu, 8g) 인스턴스를 생성
 
 ~~~
 $ minikube delete
@@ -190,7 +190,7 @@ $ python runner/runner.py 2,4 10,40 90 --serversidecar --clientsidecar --baselin
   * clientsidecar : server & client sidecar injection
   * baseline : no sidecar
 * 위 예에서 90초 동안 (2 x 2 x 3) 12종류 테스트가 진행된다.
-* 결과 확인(forio.py실행)시 지정된 값 이전 데이터는 SKIP 처리(METRICS_START_SKIP_DURATION) default 값이  62로 지정되어 있으므로  측정시간을 최소 62초 이상으로 지정해야한다.
+* 결과 확인(forio.py실행)시 지정된 값 이전 데이터는 SKIP 처리(METRICS_START_SKIP_DURATION) default 값이  62로 지정되어 있으므로  측정시간을 최소 62초 이상으로 지정해야 합니다.
 * 환경변수 "NAMESPACE" 는 필수 (default 값은 'service-graph')
 
 
@@ -204,7 +204,7 @@ $ kubectl -n twopods port-forward $(kubectl -n twopods get po -l app=fortioclien
 $ kubectl -n istio-system port-forward $(kubectl -n istio-system get po -l app=prometheus -o jsonpath={.items[0].metadata.name}) 9090 &
 ~~~
 
-* fortio.py를 실행하면 2개의 아래와 같은 내용을 가진 임시 파일이 생성된다. 
+* fortio.py를 실행하면 2개의 아래와 같은 내용을 가진 임시 파일이 생성
 
 ~~~
 $ python ./runner/fortio.py http://localhost:8080 http://localhost:9090 --csv StartTime,ActualDuration,Labels,NumThreads,ActualQPS,p50,p90,p99,cpu_mili_avg_telemetry_mixer,cpu_mili_max_telemetry_mixer,mem_MB_max_telemetry_mixer,cpu_mili_avg_fortioserver_deployment_proxy,cpu_mili_max_fortioserver_deployment_proxy,mem_MB_max_fortioserver_deployment_proxy,cpu_mili_avg_ingressgateway_proxy,cpu_mili_max_ingressgateway_proxy,mem_MB_max_ingressgateway_proxy
@@ -217,7 +217,7 @@ $ python ./runner/fortio.py http://localhost:8080 http://localhost:9090 --csv St
 
 #### 분석 지표
 
-* fortio.py 실행하여 얻은 분석결과는 3개의 시나리오에 대한  latency 측정 결과(fortio)와 리소스 측정결과(prometheus)로 나누어진다.
+* fortio.py 실행하여 얻은 분석결과는 3개의 시나리오에 대한  latency 측정 결과(fortio)와 리소스 측정결과(prometheus)로 나누어집니다.
 
 * Fortio를 활용한 Latency 측정 (ms)
   * p50
@@ -269,7 +269,7 @@ $PROMETHEUS_URL/api/v1/query_range?start=2019-04-03T01:00:00.000Z&end=2019-04-03
 $ cd perf/stability/
 ~~~
 
-* minikube 환경이므로 LoadBalancer의 ExternalIP가 바인딩 되지 않는다. (Pending 상태) 그러므로 `setup_tests.sh` 파일을 열고 istio-ingressgateway의 gateway 주소를 변경해준다.(39라인)
+* minikube 환경이므로 LoadBalancer의 ExternalIP가 바인딩 되지 않는다. (Pending 상태) 그러므로 `setup_tests.sh` 파일을 열고 istio-ingressgateway의 gateway 주소를 변경 (39라인)
 
 ~~~
 $ vi setup_tests.sh

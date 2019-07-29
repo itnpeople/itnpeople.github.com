@@ -21,7 +21,7 @@ minikube 에서 Istio 공식 TASK 문서를 토대로 minikube 환경에서 연�
 
 * 연습 클러스터로 minikube 사용 
 
-* minikube 인스턴스 생성 시 리소스를 6cpu, 8G 로 지정한다.
+* minikube 인스턴스 생성 시 리소스를 6cpu, 8G 로 지정
 
 ~~~
 $ minikube delete
@@ -57,7 +57,7 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 
 ## Bookinfo 샘플 어플리케이션 설치
 ***
-BookInfo는 연습시 사용되는 주요 샘플 서비스이다.
+BookInfo는 연습시 사용되는 주요 샘플 서비스입니다.
 
 
 ![Bookinfo Examples Apps](https://istio.io/docs/examples/bookinfo/noistio.svg)
@@ -85,7 +85,7 @@ $ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
 
 
 ## Bookinfo 샘플 어플리케이션 확인
-LoadBalancer를 지원하지 않는 minikube 환경에서 Bookinfo 샘플 어플리케이션에 접근 하는 방법은 아래와 같이 3가지 정도 있다.
+LoadBalancer를 지원하지 않는 minikube 환경에서 Bookinfo 샘플 어플리케이션에 접근 하는 방법은 아래와 같이 3가지 
 
 * NodePort 로 접근하는 방법
 * 포트 포워딩 설정하여 접근하는 방법
@@ -112,7 +112,7 @@ curl -I http://localhost:9080/productpage
 
 ### minikube tunnel 기능 활용하여 접근
 
-* minikube는 Cluster IP로 접근 가능 하도록 터널링 기능을 제공한다.
+* minikube는 Cluster IP로 접근 가능 하도록 터널링 기능을 제공
 * [minikube tunnel](https://github.com/kubernetes/minikube/blob/master/docs/tunnel.md)
 
 * 터널링 설정
@@ -122,7 +122,7 @@ $ minikube tunnel
 $ sudo route -n add 10.0.0.0/8 $(minikube ip)
 ~~~
 
-* 터널링 상태에서는 /productpage 를 아래와 같이 바로 ClientIP 바로 접근가능한다.
+* 터널링 상태에서는 /productpage 를 아래와 같이 바로 ClientIP 바로 접근가능
 
 ~~~
 $ curl -I http://$(kubectl get svc productpage -o jsonpath='{.spec.clusterIP}'):9080/productpage
@@ -130,9 +130,9 @@ $ curl -I http://$(kubectl get svc productpage -o jsonpath='{.spec.clusterIP}'):
 
 
 * Cleanup
-  * 터널링 사용 후는 반드시 cleanup 해주도록 한다.
+  * 터널링 사용 후는 반드시 cleanup 해주도록 합니다.
   * 터널링 설정한 채로 minikube를 일정 시간이상  사용할 경우 `VBoxHeadless` 프로세스가 CPU가 할당된 한도에서 full로 사용하고 minikube 가 Hang 걸리는 현상 발생
-  * 이와 같이 minikube 가 Hang 걸리는 현상이 발생하면  아래 cleanup 작업을 수행해주고 잠시 가디라면 정상으로 돌아온다.
+  * 이와 같이 minikube 가 Hang 걸리는 현상이 발생하면  아래 cleanup 작업을 수행해주고 잠시 가디라면 정상으로 돌아옵니다.
 
 ~~~
 $ sudo route -n delete 10.0.0.0/8

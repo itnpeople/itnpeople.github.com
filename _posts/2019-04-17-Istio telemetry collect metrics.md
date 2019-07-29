@@ -72,7 +72,7 @@ $ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system g
 ***
 
 ### Collect Matrics
-이 TASK는  Metrics 를 커스트마이징하고 수집하기위해 Istio 구성을 어떻게 하는지를 보여준다. 
+이 TASK는  Metrics 를 커스트마이징하고 수집하기위해 Istio 구성을 어떻게 하는지를 보여줍니다.
 
 * Monitoring Microservices with Istio
   * 마이크로서비스간 트래픽에 따른 Envoy Sidecar가 Proxy를 통해 얻은 데이터 속성들을 Mixer가 Telemetry-backend(Prometheus, Fluentd 등) 로 전달
@@ -84,7 +84,7 @@ $ export GW_URL=http://$(minikube ip -p istio-trace):$(kubectl -n istio-system g
     * 출처: [Monitoring Microservices with Istio](https://www.signalfx.com/blog/monitoring-microservices-with-istio/)
 
 * Mixer가 Mesh내 모든 트래픽에 대한 레포트와 메트릭을 자동으로 생성하도록  구성
-* 3가지 Mixer의 기능을 컨트롤하도록 구성을 추가한다.
+* 3가지 Mixer의 기능을 컨트롤하도록 구성을 추가
   1. kind : metric - Istion 속성으로부터 _instance_ 구성
   1. kind : prometheus - 생성된 _instance_를 처리할 수 있는 Prometheus _handler_ 구성
   1. kind : rule - _instance_ 를 Prometheus _handler_ 에게  보내는 규칙 지정
@@ -135,7 +135,7 @@ EOF
 ~~~
 
 
-* Metrics가 정상 수집되는지 확인을 위해 BookInfo 서비스로 트래픽 발생시킨다.
+* Metrics가 정상 수집되는지 확인을 위해 BookInfo 서비스로 트래픽 발생
 
 ~~~
 $ curl -I $GW_URL/productpage
@@ -149,13 +149,13 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 ~~~
 
 * 결과 확인
-  * 브라우저에서 [_http://localhost:9090_](http://localhost:9090) 을 열고  입력박스에 `istio_double_request_count` 를 입력하고 "Execute"  버튼 클릭한다.
+  * 브라우저에서 [_http://localhost:9090_](http://localhost:9090) 을 열고  입력박스에 `istio_double_request_count` 를 입력하고 "Execute"  버튼 클릭
   * /productpage 페이지가 호출될 때마다 카운트가 2개씩 증가함을 확인한다.
 
 
 
 ### Prometheus로 부터 Metrics 조회 
-이 TASK는 Prometheus를 활용하여 Istio Metrics 를 어떻게 조회하는를 보여준다.
+이 TASK는 Prometheus를 활용하여 Istio Metrics 를 어떻게 조회하는를 보여줍니다.
 
 * Promethus URL 에서 Query에 아래 항목을 입력하고 "Execute"  버튼 클릭
   * `istio_requests_total` : request 전체 
@@ -165,7 +165,7 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 
 
 ### Visualizing Metrics with Grafana
-이 TASK는 서비스 메시내의 트래픽 모니터링을 위해 Grafana Dashboard 를 어떻게 구성하고 사용하는지를 보여준다.
+이 TASK는 서비스 메시내의 트래픽 모니터링을 위해 Grafana Dashboard 를 어떻게 구성하고 사용하는지를 보여줍니다.
 
 
 * grafana 사용 옵션 추가하여  istio 재구성
@@ -196,7 +196,7 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 ~~~
 
 * 결과확인
-  * 브라우저에서 [_http://localhost:3000/dashboard/db/istio-mesh-dashboard_](http://localhost:3000/dashboard/db/istio-mesh-dashboard) 을 연다.
+  * 브라우저에서 [_http://localhost:3000/dashboard/db/istio-mesh-dashboard_](http://localhost:3000/dashboard/db/istio-mesh-dashboard) 을 오픈
   * 트래픽 발생하면 잠시 후 Grafana Dashboard 에 반영되는 것을 확인
   * Istio Dashboard : Mesh, Mixer, Service, Performance, Pilot, Service, Workload, Gally  
 
@@ -205,9 +205,9 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 ***
 
 ### 로그 수집
-이 TASK는  로그를 커스트마이징하고 수집하기위해 Istion 구성을 어떻게 하는지를 보여준다. 
+이 TASK는  로그를 커스트마이징하고 수집하기위해 Istion 구성을 어떻게 하는지를 보여줍니다.
 
-* 메시내 모든 트래픽에 대해서 로그 스트림이 자동으로 생성되고 수집되도록 설정한다.
+* 메시내 모든 트래픽에 대해서 로그 스트림이 자동으로 생성되고 수집되도록 설정
 
   1. kind: logentry : Istio 속성들로부터 _instances_ 구성  
   1. kind: stdio : 구성된 _instances_ 처리 _handlers_  생성
@@ -332,7 +332,7 @@ $ kubectl logs -n istio-system -l istio-mixer-type=telemetry -c mixer \
 ~~~
 
 ### Getting Envoy's Access Logs
-이 TASK는 Envoy 의 엑세스로그를  standard output 출력을 어떻게 구성하는지 보여준다.
+이 TASK는 Envoy 의 엑세스로그를  standard output 출력을 어떻게 구성하는지 보여줍니다.
 
 * _sleep_,  _httpbin_ 샘플 설치 및 실행여부 확인
 

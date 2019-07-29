@@ -103,7 +103,7 @@ echo $INGRESS_URL
 ## Istio authorization 활성화
 
 * **ClusterRbacConfig** 를 구성하여 Istio authorization 을 활성화
-* 네임스페이스 "default" 에 대해서 authorization 활성화한다.
+* 네임스페이스 "default" 에 대해서 authorization 활성화 합니다.
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -118,7 +118,7 @@ spec:
 EOF
 ~~~    
 
-* authorization 대상을 지정하지 않았으므로 _/productpage_ 페이지 요청하면 "RBAC: access denied" 결과가 리턴된다.
+* authorization 대상을 지정하지 않았으므로 _/productpage_ 페이지 요청하면 "RBAC: access denied" 결과가 리턴됩니다.
 
 ~~~
 $ curl $INGRESS_URL
@@ -131,7 +131,7 @@ RBAC: access denied
 
 ## Namespace-level 접근 제어
 
-* 네임스페이스 레벨에서 접근통제를 정의한다.
+* 네임스페이스 레벨에서 접근통제를 정의합니다.
 *  app 라벨이 ["productpage", "details", "reviews", "ratings"] 인 서비스의 "GET"  호출에 대해 ServiceRole을 정의하고 전체 사용자에게 ServiceRole을 을 부여(ServiceRoleBinding)
 * 공식문서 상에서는 ServiceRoleBinding subjects 에 `source.namespace :"default"` 를 지정하였으나 정상적으로 동작하지 않아 모든 user 에 대해서(`user: "*"`) ServiceRole을 을 부여하도록 조정, 원인 확인 필요
 
@@ -229,9 +229,9 @@ $ echo $INGRESS_URL
 
 ### #2. details & reviews 서비스 접근 허용
 
-* 추가로 _details_ 과 _reviews_ 의 서비스에 ServiceRole을 부여하여 접근가능하도록 한다.
-* 신규로 ServiceRole 이름을 생성했으므로 이전 ServiceRole,ServiceRoleBinding 과 함께 적용된다.
-* 공식문서 상에서는 ServiceRoleBinding subjects에 `user:"cluster.local/ns/default/sa/bookinfo-productpage"` 를 지정하였으나 정상적으로 동작하지 않았음
+* 추가로 _details_ 과 _reviews_ 의 서비스에 ServiceRole을 부여하여 접근가능하도록 합니다..
+* 신규로 ServiceRole 이름을 생성했으므로 이전 ServiceRole,ServiceRoleBinding 과 함께 적용됩니다.
+* 공식문서 상에서는 ServiceRoleBinding subjects에 `user:"cluster.local/ns/default/sa/bookinfo-productpage"` 를 지정하였으나 정상적으로 동작하지 않았습니다.
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -261,8 +261,8 @@ EOF
 
 * 결과 확인
   * 반영까지 대기한 후 브라우져에서 refresh 
-  * review 부분이 정상으로 조회된다.
-  * 여전히 ratings 부분은 오류를 발생시킨다.
+  * review 부분이 정상으로 조회됩니다.
+  * 여전히 ratings 부분은 오류를 발생시킵니다.
 
 ~~~
 $ echo $INGRESS_URL
@@ -271,9 +271,9 @@ $ echo $INGRESS_URL
 
 ### #3. ratings 서비스 접근 허용
 
-* 추가로 _ratings_ 의 서비스에 Role을 부여하여 접근가능하도록 한다.
-* 신규로 ServiceRole 이름을 생성했으므로 이전 ServiceRole,ServiceRoleBinding 과 함께 적용된다.
-* 공식문서 상에서는 ServiceRoleBinding subjects에 `user:"cluster.local/ns/default/sa/bookinfo-reviews"` 를 지정하였으나 정상적으로 동작하지 않았음
+* 추가로 _ratings_ 의 서비스에 Role을 부여하여 접근가능하도록 합니다.
+* 신규로 ServiceRole 이름을 생성했으므로 이전 ServiceRole,ServiceRoleBinding 과 함께 적용됩니다.
+* 공식문서 상에서는 ServiceRoleBinding subjects에 `user:"cluster.local/ns/default/sa/bookinfo-reviews"` 를 지정하였으나 정상적으로 동작하지 않았습니다.
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -303,7 +303,7 @@ EOF
 
 * 결과 확인
   * 반영까지 대기한 후 브라우져에서 refresh 
-  * review 부분의 ratings 값이 정상으로 조회된다.
+  * review 부분의 ratings 값이 정상으로 조회됩니다.
 
 ~~~
 $ echo $INGRESS_URL

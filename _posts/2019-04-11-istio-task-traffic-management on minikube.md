@@ -19,13 +19,13 @@ minikube 에서 Istio 공식 TASK > Traffic Management 문서 Istio Traffic Mana
 
 ## Configuring Request Routing
 ***
-이 Task는 다중 microservice에 대한 요청을 다이나믹하게 라우팅하는 예제를 보여준다.
+이 Task는 다중 microservice에 대한 요청을 다이나믹하게 라우팅하는 예제
 
 ### 개요
 
-* BookInfo 서비스는 화면 Review 부분은 3개의 다른 버전의 microservice로 구성되어 있으며 브라우저에서 /productpage URL에 대해 refresh를 2,3번 할 때마다 reviews 부문이 변경된다. 그 이유는 라우딩하기 위한 기본 서비스 버전을 명확히 지정해주지 않았기 때문에  Istio는 모든 버전의 microservice들을  round-robin 방식으로 라우딩하기 때문이다.
-* 시나리오 #1 -  모든 요청 트래픽을 v1 microservice 로 라우딩 한다.
-* 시나리오 #2 - HTTP Header의 값으로 요청을 구분하고 해당 요청에 대해서는 v2 microservice 로 라우팅을 분리한다.
+* BookInfo 서비스는 화면 Review 부분은 3개의 다른 버전의 microservice로 구성되어 있으며 브라우저에서 /productpage URL에 대해 refresh를 2,3번 할 때마다 reviews 부문이 변경됩니다. 그 이유는 라우딩하기 위한 기본 서비스 버전을 명확히 지정해주지 않았기 때문에  Istio는 모든 버전의 microservice들을  round-robin 방식으로 라우딩
+* 시나리오 #1 -  모든 요청 트래픽을 v1 microservice 로 라우딩 합니다.
+* 시나리오 #2 - HTTP Header의 값으로 요청을 구분하고 해당 요청에 대해서는 v2 microservice 로 라우팅을 분리합니다.
 
 
 ### Destination Rule 적용/확인
@@ -50,12 +50,12 @@ $ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
 $ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 ~~~
 
-* 브라우저에서 /productpage를 refresh하면 이전처럼 reviews 번갈아 변경되는 것이 아니라 reviews v1이 계속 표시된다.
+* 브라우저에서 /productpage를 refresh하면 이전처럼 reviews 번갈아 변경되는 것이 아니라 reviews v1이 계속 표시
 
 ### 시나리오 #2 실행
 HTTP Header의 값으로 요청을 구분하고 해당 요청에 대해서는 v2 microservice 로 라우팅을 분리
 
-* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 는 v2를 아닌 경우는 v1을 display 하도록  reviews 부분 VirtualService 수정한다.
+* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 는 v2를 아닌 경우는 v1을 display 하도록  reviews 부분 VirtualService 수정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -81,26 +81,26 @@ spec:
         subset: v1
 EOF
 ~~~
-* /productpage 에서 오른쪽 상단 로그인 링크를 클릭하고 로그인화면에서  아이디에 "jason" 을 입력하고 로그인 한다.
-* refresh 하면 v2 microservice(검은색 별)를 표시한다.
+* /productpage 에서 오른쪽 상단 로그인 링크를 클릭하고 로그인화면에서  아이디에 "jason" 을 입력하고 로그인
+* refresh 하면 v2 microservice(검은색 별)를 표시
 
 
 
 ## Fault Injction
 ***
-어플리케이션의 자연복원을 테스트하기 위해 오류를 발생시키는 (fault inject) 방법을 보여준다.
+어플리케이션의 자연복원을 테스트하기 위해 오류를 발생시키는 (fault inject) 방법을 보여줍니다.
 
 ### 개요
 
-* BookInfo 어플리케이션은 ratings microservice 조회 제한시간 7초 로 지정되어 있으며 timeout 발생 시 오류 메시지를 표시하도록 되어 있다.
-* 시나리오 #1 - jason으로 로그인한 경우(HTTP end-user 커스텀 헤더) 만 ratings microservice 조회에 대한 연결지연(7초이내)을 고의로 발생시킨다.
-* 시나리오 #2 - jason으로 로그인한 경우(HTTP end-user 커스텀 헤더) 만 500에러를 고의로 발생시킨다.
+* BookInfo 어플리케이션은 ratings microservice 조회 제한시간 7초 로 지정되어 있으며 timeout 발생 시 오류 메시지를 표시
+* 시나리오 #1 - jason으로 로그인한 경우(HTTP end-user 커스텀 헤더) 만 ratings microservice 조회에 대한 연결지연(7초이내)을 고의로 발생
+* 시나리오 #2 - jason으로 로그인한 경우(HTTP end-user 커스텀 헤더) 만 500에러를 고의로 발생
 
 
 ### 시나리오 #1 실행
 ratings microservice 연결지연(7초이내)을 고의로 발생
 
-* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 연결지연(7초이내)을 고의로 발생시키도록  ratings microservice의 VirtualService 수정한다.
+* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 연결지연(7초이내)을 고의로 발생시키도록  ratings microservice의 VirtualService 수정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -138,7 +138,7 @@ EOF
 ### 시나리오 #2 실행
 ratings microservice  500에러를 고의로 발생
 
-* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 500에러를 고의로 발생시키도록 ratings microservice의 VirtualService 수정한다.
+* jason으로 로그인 한 경우(HTTP의 커스텀 헤더로 매치) 500에러를 고의로 발생시키도록 ratings microservice의 VirtualService 수정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -176,7 +176,7 @@ EOF
 
 ## Traffic Shifting
 ***
-이 Task는 이전 버전에서 다른 버전으로 트래픽을 서서 마이그레이션 하는 방법을 보여준다. 
+이 Task는 이전 버전에서 다른 버전으로 트래픽을 서서 마이그레이션 하는 방법을 보여줍니다.
 
 ### 개요
 
@@ -215,17 +215,17 @@ spec:
 EOF
 ~~~
 
-* /productpage 를 reviews 부분이 refresh 하면 v1과 v3(붉은색 별) 화면이 50:50 확률로 표시된다.
+* /productpage 를 reviews 부분이 refresh 하면 v1과 v3(붉은색 별) 화면이 50:50 확률로 표시
 
 
 ## TCP Traffic Shifting
 ***
-이 Task는 이전 버전에서 다른 버전으로 TCP 트래픽을 서서히 마이그레이션 하는 방법을 보여준다. 
+이 Task는 이전 버전에서 다른 버전으로 TCP 트래픽을 서서히 마이그레이션 하는 방법을 보여줍니다
 
 
 ### 개요
 
-*  tcp-echo microservice 생성하고 v1 으로 100% 트래픽을 전달한 결과와 v2로 20%를 분산시킨 결과를 비교 확인한다.
+*  tcp-echo microservice 생성하고 v1 으로 100% 트래픽을 전달한 결과와 v2로 20%를 분산시킨 결과를 비교 확인
 
 ### 실행
 
@@ -342,11 +342,11 @@ done
 
 ## Setting Request Timeouts
 ***
-이 TASK는 요청 제한시간를 샛팅하는 방법을  보여준다.
+이 TASK는 요청 제한시간를 샛팅하는 방법을  보여줍니다.
 
 ### 개요
 
-* rationgs microservice 에 강제로 delay을 지정하고 reviews microservice 에 제한시간을 지정하여 오류를 확인한다.
+* rationgs microservice 에 강제로 delay을 지정하고 reviews microservice 에 제한시간을 지정하여 오류를 확인
 
 ### 실행
 
@@ -375,9 +375,9 @@ spec:
 EOF
 ~~~
 
-* 브라우저에서 화면  refresh 하여 reviews v2로 라우딩되는지 확인한다.
+* 브라우저에서 화면  refresh 하여 reviews v2로 라우딩되는지 확인
 
-* rating microservice에 강제로 2초의 deplay를 지정한다.
+* rating microservice에 강제로 2초의 deplay를 지정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -400,7 +400,7 @@ spec:
 EOF
 ~~~
 
-* 브라우저에서 화면을  refresh 하여 2초간의 delay가 되는지 확인한다.
+* 브라우저에서 화면을  refresh 하여 2초간의 delay가 되는지 확인
 
 * reviews v2 서비스에 제한시간을 지정 한다.
 
@@ -422,18 +422,17 @@ spec:
 EOF
 ~~~
 
-* 브라우저 refresh 하면 2초가 지났을 경우 에러메시지 표시 확인한다.
-
+* 브라우저 refresh 하면 2초가 지났을 경우 에러메시지 표시 확인
 
 ## Control Ingress Traffic
 ***
-이 TASK는 Istio Gateway 를 활용하여 서비스메시 외부에 서비스를 노출하는 방법을 보여준다.
+이 TASK는 Istio Gateway 를 활용하여 서비스메시 외부에 서비스를 노출하는 방법을 보여줍니다.
 
 ### 개요
 
-* Kubernetes 환경에서  `Kubernetes Ingress Resources` 는 클러스터 외부에 노출하고자 할 때 명시적인 서비스이다. 그러나 Istio 서비스메시 환경에서는 `Istio Gateway` 로 불리는 보다 나은 다른 설정 모델 접근법을 사용한다.
-* Gateway는  모니터링과 라우팅 룰 같은 Istio 특성들을  클러스터에 들어가는 트래픽에 적용한다.
-* 예제는 Gateway에서 "httpbin.example.com" 도메인만  해당 VirtualService 로 라우팅되고 도메인 정보가 없는 요청은 404(Not Found) 리턴되는 것을 확인한다.
+* Kubernetes 환경에서  `Kubernetes Ingress Resources` 는 클러스터 외부에 노출하고자 할 때 명시적인 서비스입니다. 그러나 Istio 서비스메시 환경에서는 `Istio Gateway` 로 불리는 보다 나은 다른 설정 모델 접근법을 사용합니다.
+* Gateway는  모니터링과 라우팅 룰 같은 Istio 특성들을  클러스터에 들어가는 트래픽에 적용합니다.
+* 예제는 Gateway에서 "httpbin.example.com" 도메인만  해당 VirtualService 로 라우팅되고 도메인 정보가 없는 요청은 404(Not Found) 리턴되는 것을 확인합니다.
 
 ### Istio Gateway 배경 지식
 
@@ -471,7 +470,7 @@ GateWay, VirtualService, DestinationRule (v1alpha3 elements)간 관계
 
 ### 사전준비
 
-* minikube 환경에 istio-ingressgateway 를 NotePort 로 정의했으므로 아래와 같이 IP 와 Port 확인하고 환경변수에 지정한다. 
+* minikube 환경에 istio-ingressgateway 를 NotePort 로 정의했으므로 아래와 같이 IP 와 Port 확인하고 환경변수에 지정
 
 ~~~
 $ export INGRESS_HOST=$(minikube ip)
@@ -481,7 +480,7 @@ $ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway
 
 ### 실행
 
-* 호스트명이 "httpbin.example.com"로 요청될 경우 이를 받아주는 Gateway 와 URL profix에 따라 destination을  지정하는 VirtualService를 생성(적용)한다.
+* 호스트명이 "httpbin.example.com"로 요청될 경우 이를 받아주는 Gateway 와 URL profix에 따라 destination을  지정하는 VirtualService를 생성(적용)
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -523,7 +522,7 @@ spec:
 EOF
 ~~~
 
-* /status/200 로 요청한 경우는 Code 200 (정상) 리턴되지만 /headers 와 같이 VirtualService에 정의되지 않는 prefix로 요청한 경우는 Code 404 (Not Found) 리턴되는 것을 확인한다.
+* /status/200 로 요청한 경우는 Code 200 (정상) 리턴되지만 /headers 와 같이 VirtualService에 정의되지 않는 prefix로 요청한 경우는 Code 404 (Not Found) 리턴되는 것을 확인
 
 ~~~
 $ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/status/200
@@ -539,7 +538,7 @@ $ curl -I http://$INGRESS_HOST:$INGRESS_PORT/status/200
 
 ## Securing Ingress Gateway (File Mount-based approch)
 ***
-이 TASK 는  File Mount-Based 접근방식을 통해 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여준다.
+이 TASK 는  File Mount-Based 접근방식을 통해 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여줍니다.
 
 
 ### 개요
@@ -585,8 +584,8 @@ EOF
 ~~~
 
 * 클라이언트/서버 인증서 생성
-  * certificates and keys를 생성할 툴을 clone 하고 `generate.sh` 실행하고 프롬프트 나오면 모두 y 선택한다.
-  * 1_root, 2_intermediate, 3_application, 4_client 4게의 서버와 클라이언트  certification 디렉토리가 생성된다.
+  * certificates and keys를 생성할 툴을 clone 하고 `generate.sh` 실행하고 프롬프트 나오면 모두 y 선택
+  * 1_root, 2_intermediate, 3_application, 4_client 4게의 서버와 클라이언트  certification 디렉토리가 생성
 ~~~
 cd ..
 git clone https://github.com/nicholasjackson/mtls-go-example
@@ -594,14 +593,14 @@ cd mtls-go-example/
 ./generate.sh httpbin.example.com password1234
 ~~~
 
-  * **Istio Ingress Gateway** 에 마운트 시킬 certification 디렉토리를 새로 생성하고 generate 결과물들을 해당 디렉토리로 이동한다.
+  * **Istio Ingress Gateway** 에 마운트 시킬 certification 디렉토리를 새로 생성하고 generate 결과물들을 해당 디렉토리로 이동
 ~~~
 mkdir ~+1/httpbin.example.com
 mv 1_root 2_intermediate 3_application 4_client ~+1/httpbin.example.com
 cd ~+1/
 ~~~
 
-* 공통으로 사용할 IP, PORT 변수 확인한다.
+* 공통으로 사용할 IP, PORT 변수 확인
 
 ~~~
 export INGRESS_HOST=$(minikube ip)
@@ -619,11 +618,11 @@ File Mount-Based 접근방식을 통해 TLS ingress gateway (SIMPLE) 설정
 $ kubectl create -n istio-system secret tls istio-ingressgateway-certs --key httpbin.example.com/3_application/private/httpbin.example.com.key.pem --cert httpbin.example.com/3_application/certs/httpbin.example.com.cert.pem
 ~~~
 
-* istio-system 네임스페이스에 istio-ingressgateway-certs 라는  secret 를  kubectl로 생성하면 istio-gateway는 자동으로 secret을 로드한다.
-* 반드시 "istio-ingressgateway-certs" 라는  secret이라고 이름을 지정해야  default ingress gateway  에서 사용할 수 있다. (Istio 설치시 설정 옵션 default 값)
+* istio-system 네임스페이스에 istio-ingressgateway-certs 라는  secret 를  kubectl로 생성하면 istio-gateway는 자동으로 secret을 로드
+* 반드시 "istio-ingressgateway-certs" 라는  secret이라고 이름을 지정해야  default ingress gateway  에서 사용할 수 있습니다. (Istio 설치시 설정 옵션 default 값)
 * secret위치도  ingress gateway 파드의 "/etc/istio/ingressgateway-certs/" 에 고정 (Istio 설치시 설정 옵션 default 값)
 
-* secret 생성 확인 secret은  `/etc/istio/ingressgateway-certs` 위치에 마운트된다.
+* secret 생성 확인 secret은  `/etc/istio/ingressgateway-certs` 위치에 마운트
 
 ~~~
 $ kubectl exec -it -n istio-system $(kubectl -n istio-system get pods -l istio=ingressgateway -o jsonpath='{.items[0].metadata.name}') -- ls -al /etc/istio/ingressgateway-certs
@@ -714,7 +713,7 @@ https://httpbin.example.com:$SECURE_INGRESS_PORT/status/418
 ### 시나리오 #3 실행 - 다중 호스트
 
 * gateway는 ingress gateway 파드에서 실행
-* 멀티 도메인을 활용할 경우 인증서를 추가하게 되면 해당 인증서를 ingress gateway 파드에 새로 마운트 해주어야 한다.
+* 멀티 도메인을 활용할 경우 인증서를 추가하게 되면 해당 인증서를 ingress gateway 파드에 새로 마운트 해주어야 합니다.
 * 아래는 디렉터리를 추가로 마운트하기 위해서 helm으로 ingressgateway yaml 을 신규 생성하여 설치하는 예
 
 ~~~
@@ -736,10 +735,10 @@ $ kubectl apply -f $HOME/istio-ingressgateway.yaml
 
 ## Securing Gateways with HTTPS Using Secret Discovery Service
 ***
-이 TASK 는  SDS(Secret Discovery Service)를 사용하여 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여준다.
+이 TASK 는  SDS(Secret Discovery Service)를 사용하여 Istio Ingress Gateway 에서 TLS(SSL)를 적용하는 방법을 보여줍니다.
 
 
-* gateways.istio-egressgateway.enabled=false로 gateways.istio-ingressgateway.sds.enabled=true 로 변경하여  istio-ingressgateway yaml을 생성한후 적용한다.
+* gateways.istio-egressgateway.enabled=false로 gateways.istio-ingressgateway.sds.enabled=true 로 변경하여  istio-ingressgateway yaml을 생성한후 적용
 
 ~~~
 $ helm template install/kubernetes/helm/istio/ --name istio \
@@ -755,18 +754,18 @@ $ kubectl apply -f $HOME/istio-ingressgateway.yaml
 
 ## Control Egress Traffic
 ***
-Istio 에서 관리되는 파드들의  모든 outbound 트래픽은 기본적으로 sidecar proxy로 리디렉션되기 때문에, 클러스터 외부의 URL 접근성은 proxy의 구성에 따라 달라진다.
+Istio 에서 관리되는 파드들의  모든 outbound 트래픽은 기본적으로 sidecar proxy로 리디렉션되기 때문에, 클러스터 외부의 URL 접근성은 proxy의 구성에 따라 달라집니다.
 
 ### 개요
 
-* 설정하지 않았다면 서비스메시 내의 외부 요청은 envoy proxy 에서 모두 허용됨
+* 설정하지 않았다면 서비스메시 내의 외부 요청은 envoy proxy 에서 모두 허용
 * ServiceEntries 설정을 통하여 외부 서비스 컨트럴 접근 통제를 제공
 * IP 범위 설정으로  bypass 처리
 
-* 시나리오 #1 - Envoy를 통한 외부 서비스 접근 옵션을 조회하고 외부 접근이 가능한지 확인한다.
-* 시나리오 #2  - 외부 서비스 접근 정책을 REGISTRY_ONLY 로 변경하고 외부 접근이 불가능한지 확인한다.
-* 시나리오 #3 - 외부 서비스 접근 정책 REGISTRY_ONLYHTTP 상태에서 ServiceEntry 등록을 통해 외부 가능 서비스 등록한다.
-* 시나리오 #4 - 외부 서비스 호출시  제한시간을 설정한다.
+* 시나리오 #1 - Envoy를 통한 외부 서비스 접근 옵션을 조회하고 외부 접근이 가능한지 확인
+* 시나리오 #2  - 외부 서비스 접근 정책을 REGISTRY_ONLY 로 변경하고 외부 접근이 불가능한지 확인
+* 시나리오 #3 - 외부 서비스 접근 정책 REGISTRY_ONLYHTTP 상태에서 ServiceEntry 등록을 통해 외부 가능 서비스 등록
+* 시나리오 #4 - 외부 서비스 호출시  제한시간을 설정
 
 ### 준비작업
 
@@ -779,15 +778,15 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
 
 
 ### 시나리오 #1 실행
-Envoy를 통한 외부 서비스 접근 옵션을 조회하고 외부 접근이 가능한지 확인한다.
+Envoy를 통한 외부 서비스 접근 옵션을 조회하고 외부 접근이 가능한지 확인
 
-* 현재 설정된 외부접근 옵션 확인 (default : ALLOW_ANY) 한다.
+* 현재 설정된 외부접근 옵션 확인 (default : ALLOW_ANY) 
 
 ~~~
 $ kubectl get configmap istio -n istio-system -o yaml | grep -o "mode: ALLOW_ANY"
 ~~~
 
-* ALLOW_ANY 상태에서  외부 서비스 호출 가능 여부 확인한다.
+* ALLOW_ANY 상태에서  외부 서비스 호출 가능 여부 확인
 
 ~~~
 $ kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://www.google.com | grep  "HTTP/"; kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://edition.cnn.com | grep "HTTP/"
@@ -797,9 +796,9 @@ $ kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://www.google.com | grep
 
 
 ### 시나리오 #2 실행
-외부 서비스 접근 정책을 REGISTRY_ONLY 로 변경하고 외부 접근이 불가능한지 확인한다.
+외부 서비스 접근 정책을 REGISTRY_ONLY 로 변경하고 외부 접근이 불가능한지 확인
 
-* global.outboundTrafficPolicy.mode를 REGISTRY_ONLY로 변경하여 재 설정, 변경에 시간이 걸림
+* global.outboundTrafficPolicy.mode를 REGISTRY_ONLY로 변경하여 재 설정, 변경에 시간이 걸립니다.
 
 ~~~
 $ kubectl get configmap istio -n istio-system --export -o yaml | sed 's/mode: ALLOW_ANY/mode: REGISTRY_ONLY/g' | kubectl replace -n istio-system -f -
@@ -811,15 +810,15 @@ $ kubectl get configmap istio -n istio-system --export -o yaml | sed 's/mode: AL
 $ kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://www.google.com | grep  "HTTP/"; kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://edition.cnn.com | grep "HTTP/"
 ~~~
 
-* 외부 서비스가 막혀 `command terminated with exit code 35` 메시지가 표시된다.
+* 외부 서비스가 막혀 `command terminated with exit code 35` 메시지가 표시
 
 
 ### 시나리오 #3
-외부 서비스 접근 정책 REGISTRY_ONLYHTTP 상태에서 ServiceEntry 등록을 통해 외부 가능 서비스 등록한다.
+외부 서비스 접근 정책 REGISTRY_ONLYHTTP 상태에서 ServiceEntry 등록을 통해 외부 가능 서비스 등록
 
-* 외부접근 기본값이 REGISTRY_ONLY 로 지정된 경우 외부 HTTP, HTTPS 서비스에 접근하기 위해서는 접근 호스트, 프로토콜별 ServiceEntry 를 생성해 준다.
+* 외부접근 기본값이 REGISTRY_ONLY 로 지정된 경우 외부 HTTP, HTTPS 서비스에 접근하기 위해서는 접근 호스트, 프로토콜별 ServiceEntry 를 생성
 
-* 외부접근을 위한 ServiceEntry 생성하고 외부서비스로는 httpbin.org (http://httpbin.org)  를 지정한다.
+* 외부접근을 위한 ServiceEntry 생성하고 외부서비스로는 httpbin.org (http://httpbin.org)  를 지정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -846,10 +845,10 @@ $ kubectl exec -it $SOURCE_POD -c sleep -- curl -I http://httpbin.org/status/200
 $ kubectl exec -it $SOURCE_POD -c sleep -- curl https://httpbin.org/headers
 ~~~
 
-* ServiceEntry 에 설정된대로 HTTP는 정상호출, HTTPS 호출 블가능(Code 35)함을 확인한다.
+* ServiceEntry 에 설정된대로 HTTP는 정상호출, HTTPS 호출 블가능(Code 35)함을 확인
 
 
-* 외부 서비스 httpbin.org 에  HTTPS 허용으로 변경한다.
+* 외부 서비스 httpbin.org 에  HTTPS 허용으로 변경
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -876,13 +875,13 @@ kubectl exec -it $SOURCE_POD -c sleep -- curl https://httpbin.org/headers
 kubectl exec -it $SOURCE_POD -c sleep -- curl -I http://httpbin.org/status/200
 ~~~
 
-* ServiceEntry 에 설정된대로 HTTP는 호출불가(code 404), HTTPS 호출 가능함을 확인한다.
+* ServiceEntry 에 설정된대로 HTTP는 호출불가(code 404), HTTPS 호출 가능함을 확인
 
 
 ### 시나리오 #4
-외부 서비스 호출시  제한시간을 설정한다.
+외부 서비스 호출시  제한시간을 설정
 
-* sleep 파드에서 5초 delay 되는  request를 요청하면 5초후 정상 결과 리턴 (200번)된댜.
+* sleep 파드에서 5초 delay 되는  request를 요청하면 5초후 정상 결과 리턴 (200번)
 
 ~~~
 $ kubectl exec -it $SOURCE_POD -c sleep sh
@@ -891,7 +890,7 @@ $ exit
 ~~~
 
 
-* VirtualService 에  httpbin.org 외부서비스 요청에 제한시간 3 초를 지정한다.
+* VirtualService 에  httpbin.org 외부서비스 요청에 제한시간 3 초를 지정
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -911,7 +910,7 @@ spec:
 EOF
 ~~~
 
-* 앞서 실행했던 sleep 파드에서 5초 delay 되는  request를 요청하면 이전과 달리 제한시간으로 지정된 약 3초 후 오류코드 503 가 표시된다.
+* 앞서 실행했던 sleep 파드에서 5초 delay 되는  request를 요청하면 이전과 달리 제한시간으로 지정된 약 3초 후 오류코드 503 가 표시
 
 ~~~
 $ kubectl exec -it $SOURCE_POD -c sleep sh
@@ -922,23 +921,23 @@ $ exit
 
 ## Circuit Breaking
 ***
-이 TASK는 연결,요청에 따른 circuit breaking 설정을 보여준다.
+이 TASK는 연결,요청에 따른 circuit breaking 설정을 보여줍니다.
 
 * Circuit breaker 패턴
   * 연결되는 서비스간 장애전파를 막기 위한 패턴
-  * 마이크로 서비스 아키텍쳐는 여러개의 마이크로 서비스간에 호출하는 개념을 가지고 있으므로 하나의 마이크로서비스가 느려지거나 장애가 나면 종속된 서비스까지 그 장애가 전파되는 특성을 가지고 있다. 
-  * 호출되는 서비와 호출하는 서비스 중간에 위치하여 정상적인 상황에서는 트래픽을 문제 없이 bypass 하다가 호출되는 서비스에 문제가 발생했을 경우 트래픽을 강제적으로 끊어서  쓰레드들이 더 이상 요청을 기다리지 않도록해 장애가 전파하는 것을 방지한다.
+  * 마이크로 서비스 아키텍쳐는 여러개의 마이크로 서비스간에 호출하는 개념을 가지고 있으므로 하나의 마이크로서비스가 느려지거나 장애가 나면 종속된 서비스까지 그 장애가 전파되는 특성을 가지고 있습니다. 
+  * 호출되는 서비와 호출하는 서비스 중간에 위치하여 정상적인 상황에서는 트래픽을 문제 없이 bypass 하다가 호출되는 서비스에 문제가 발생했을 경우 트래픽을 강제적으로 끊어서  쓰레드들이 더 이상 요청을 기다리지 않도록해 장애가 전파하는 것을 방지합니다.
 
 ### 개요
 
-* DestinationRule 에 허용 연결과 요청수를 작게한 후 클라이언트(fortio)  에서 서버(httpbin) 로 연결정보 및 요청수를 늘려가면서 circuit breaking 되는 현상을 확인한다.
+* DestinationRule 에 허용 연결과 요청수를 작게한 후 클라이언트(fortio)  에서 서버(httpbin) 로 연결정보 및 요청수를 늘려가면서 circuit breaking 되는 현상을 확인
 
 
 ### 실행
 
 * Circuit Breaking 상황을 발생시키기 위해 Destination Rule 적용
 * maxConnections: 1 and http1MaxPendingRequests: 1
-* 1개의 커넥션과  1개 동시요청이 넘을 경우 istio-proxy가 추가요청을 연결을 하게되어 오류 발생 시키게 된다.
+* 1개의 커넥션과  1개 동시요청이 넘을 경우 istio-proxy가 추가요청을 연결을 하게되어 오류 발생
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -970,7 +969,7 @@ EOF
 $ kubectl apply -f <(istioctl kube-inject -f samples/httpbin/sample-client/fortio-deploy.yaml)
 ~~~
 
-* 결과 확인위해 클라이언트(Fortio)에서 서비스(httpbin)으로 단건 요청해보면 200 코드 결과를 리턴한다.
+* 결과 확인위해 클라이언트(Fortio)에서 서비스(httpbin)으로 단건 요청해보면 200 코드 결과를 리턴
 
 ~~~
 $ export FORTIO_POD=$(kubectl get pod | grep fortio | awk '{ print $1 }')
@@ -986,7 +985,7 @@ $ kubectl exec -it $FORTIO_POD  -c fortio /usr/bin/fortio -- load -c 3 -qps 0 -n
 
 
 * 클라이언트(Frotio) 파드에서 상태값 중에서 httpbin 에 호출값 중  pending 상태 값을 조회
-* 결과중 `upstream_rq_pending_overflow` 값이 circuit breaking 수행 결과임
+* 결과중 `upstream_rq_pending_overflow` 값이 circuit breaking 수행 결과
 
 ~~~
 $ kubectl exec -it $FORTIO_POD  -c istio-proxy  -- sh -c 'curl localhost:15000/stats' | grep httpbin | grep pending
@@ -995,16 +994,16 @@ $ kubectl exec -it $FORTIO_POD  -c istio-proxy  -- sh -c 'curl localhost:15000/s
 
 ## Mirroring (Traffic Mirroring, Shadowing)
 ***
-이 TASK는 Istio의 트래픽 미러링 역량을 보여준다.
+이 TASK는 Istio의 트래픽 미러링 역량을 보여줍니다.
 
 ### 개요
 
-* 미러링 할 2개의 microservice(httpbin) 를 준비하고 클라이언트 역할을 할 sleep 서비스를 준비한다.
+* 미러링 할 2개의 microservice(httpbin) 를 준비하고 클라이언트 역할을 할 sleep 서비스를 준비
 
 
 ## 준비작업
 
-* 미러링 될 microservice 2개(httpbin-v1, httpbin-v2)를 준비한다. 
+* 미러링 될 microservice 2개(httpbin-v1, httpbin-v2)를 준비
 
 ~~~
 $ cat <<EOF | istioctl kube-inject -f - | kubectl create -f -
@@ -1065,7 +1064,7 @@ EOF
 ~~~
 
 
-* 클라이언트 역할을 할 sleep 어플를 준비한다. 
+* 클라이언트 역할을 할 sleep 어플를 준비
 
 ~~~
 $ cat <<EOF | istioctl kube-inject -f - | kubectl create -f -
@@ -1090,7 +1089,7 @@ EOF
 
 ### 실행
 
-* 모든 트래픽을 httpbin-v1 으로 라우딩하도록 지정하기 위해서 DestinationRule 과 VirtualService 적용한다.
+* 모든 트래픽을 httpbin-v1 으로 라우딩하도록 지정하기 위해서 DestinationRule 과 VirtualService 적용
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -1124,7 +1123,7 @@ spec:
 EOF
 ~~~
 
-* sleep 파드에서 httpbin 으로 요청 (2회 이상) 해 본다.
+* sleep 파드에서 httpbin 으로 요청 (2회 이상)
 
 ~~~
 $ export SLEEP_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata.name})
@@ -1132,7 +1131,7 @@ $ kubectl exec -it $SLEEP_POD -c sleep -- sh -c 'curl  http://httpbin:8000/heade
 ~~~
 
 
-* V2 파드에는 요청 로그가 없음을 확인한다.
+* V2 파드에는 요청 로그가 없음을 확인
 
 ~~~
 $ export V1_POD=$(kubectl get pod -l app=httpbin,version=v1 -o jsonpath={.items..metadata.name})
@@ -1141,7 +1140,7 @@ $ kubectl logs -f $V1_POD -c httpbin | grep  "GET /headers"
 $ kubectl logs -f $V1_POD -c httpbin | grep  "GET /headers"
 ~~~
 
-* httpbin-v2로 미러링 되도록 VirtualService 수정 적용한다.
+* httpbin-v2로 미러링 되도록 VirtualService 수정 적용
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -1164,13 +1163,13 @@ spec:
 EOF
 ~~~
 
-* 동일한 방식으로 sleep 파드에서 httpbin 으로 요청 (2회 이상) 트래픽을 전달한다.
+* 동일한 방식으로 sleep 파드에서 httpbin 으로 요청 (2회 이상) 트래픽을 전달
 
 ~~~
 $ kubectl exec -it $SLEEP_POD -c sleep -- sh -c 'curl  http://httpbin:8000/headers' | python -m json.tool
 ~~~
 
-$ httpbin-v2 파드에서 v1로가는 미러링 요청을 확인한다.
+$ httpbin-v2 파드에서 v1로가는 미러링 요청을 확인
 
 ~~~
 $ kubectl logs -f $V1_POD -c httpbin

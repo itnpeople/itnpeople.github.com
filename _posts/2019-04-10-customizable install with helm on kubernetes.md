@@ -50,7 +50,7 @@ $ kubectl create namespace istio-system
 ~~~
 
 * CRDs 등록
-* kubectl apply 에 사용할 Istio Custom Resource Definitions (CRDs) 을 등록해준다. 잠시후 Kubernetes APi Server 에 반영된댜.
+* kubectl apply 에 사용할 Istio Custom Resource Definitions (CRDs) 을 등록해준다. 잠시후 Kubernetes APi Server 에 반영
 
 ~~~
 $ helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
@@ -87,7 +87,7 @@ $ helm template install/kubernetes/helm/istio --name istio --namespace istio-sys
 
 * [세부 설치옵션](https://istio.io/docs/reference/config/installation-options/) 참조
 
-* Istio의 ingressgateway는 기본적으로  LoadBalancer 로 설치된다. 이때 minikube에 설치 처럼 LoadBalancer 를 활용할 수 없는 환경에서는 LoadBalancer 대신 NodePort 를 사용하도록 한다.
+* Istio의 ingressgateway는 기본적으로  LoadBalancer 로 설치된다. 이때 minikube에 설치 처럼 LoadBalancer 를 활용할 수 없는 환경에서는 LoadBalancer 대신 NodePort 를 사용하도록 합니다.
 
 
 ### #4. Template을 이용한 구성

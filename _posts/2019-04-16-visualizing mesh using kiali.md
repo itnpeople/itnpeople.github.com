@@ -23,7 +23,7 @@ Istio에서 수집된 각종 지표를 기반으로, 서비스간의 관계와 �
 
 ### Kiali Project
 
-Kiali는 다음과 같이 2개의 프로젝트로 구성되어 있다.
+Kiali는 다음과 같이 2개의 프로젝트로 구성되어 있습니다.
 
 * https://github.com/kiali/kiali
   * back-end
@@ -48,14 +48,14 @@ Kiali는 다음과 같이 2개의 프로젝트로 구성되어 있다.
 
 * 1단계
   * 일반 앱 사용자들이 앱을 사용하는 단계
-  * 앱에서 발생하는 request(telemetry)를  envoy proxy 가 샘플링 수집하여 istio-mixer로 전달한다.
+  * 앱에서 발생하는 request(telemetry)를  envoy proxy 가 샘플링 수집하여 istio-mixer로 전달
 * 2단계
   * Prometheus가 istio-mixer로 부터 metrics 를 수집하는 단계
-  * Prometheus는 target 에 정의된 istio-mesh metrics를 수집 (pull)한다.
+  * Prometheus는 target 에 정의된 istio-mesh metrics를 수집 (pull)
 * 3단계
   * 운영자가 trace 정보를 조회하는 단계
-  * Kiali UI 의 요청에 따라 Kiali backend는 PromQL을 통해 Prometeus로 부터 metrics 조회하고 그래프 데이터로 가공하여 UI로 전달한다.
-  * 수신된  그래프 데이터로 Kiali UI 는 Trace 정보를 시각화 한다.
+  * Kiali UI 의 요청에 따라 Kiali backend는 PromQL을 통해 Prometeus로 부터 metrics 조회하고 그래프 데이터로 가공하여 UI로 전달
+  * 수신된  그래프 데이터로 Kiali UI 는 Trace 정보를 시각화
 
 ![Kiali Trace-data Flow](../resources/img/post/kiali_prom.png){:width="600px"}
 
@@ -149,8 +149,8 @@ $ kubectl port-forward -n default svc/productpage 9080:9080
 ~~~
 
 * 브라우저에서 kiali UI - [http://localhost:20001/kiali/console](http://localhost:20001/kiali/console) 에 접속
-* 앞서 등록했던 계정 (admin/admin) 으로 로그인한다.
-* 트래픽 발생시키지 않으면 Visualization 한 화면을 확인할 수 없으므로 임의로 트래픽을 발생시킨다.
+* 앞서 등록했던 계정 (admin/admin) 으로 로그인
+* 트래픽 발생시키지 않으면 Visualization 한 화면을 확인할 수 없으므로 임의로 트래픽을 발생
 
 ~~~
 $ PROD_URL=http://localhost:9080/productpage; \
@@ -169,9 +169,9 @@ done
 
 ## 마치며
 
-* Istio 패키지에 Kiali 가 포함되어 있어 Istio 설치시 옵션지정만으로 간편하게 Kiali를 같이 설치하고 서비스 할 수 있었다.
-* 복잡한 Microservice 아키텍처 환경에서 구성된 앱간의 트래픽 정보를 보기 쉽게 시각화하는 Kiali의 Graph는 활용 가치가 충분해 보였다.
-* zipkin 등과의 연동을  통해 distributed trace 정보를 제공하며 그래프 상의 트래픽 데이터는 Prometheus를 데이터소스로 활용하고 있다.
+* Istio 패키지에 Kiali 가 포함되어 있어 Istio 설치시 옵션지정만으로 간편하게 Kiali를 같이 설치하고 서비스 할 수 있었습니다.
+* 복잡한 Microservice 아키텍처 환경에서 구성된 앱간의 트래픽 정보를 보기 쉽게 시각화하는 Kiali의 Graph는 활용 가치가 충분해 보였습니다.
+* zipkin 등과의 연동을  통해 distributed trace 정보를 제공하며 그래프 상의 트래픽 데이터는 Prometheus를 데이터소스로 활용하고 있습니다.
 
 
 ## 참고
