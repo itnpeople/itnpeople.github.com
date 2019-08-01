@@ -100,7 +100,7 @@ $ kubectl -n istio-system port-forward svc/kiali 20001
 ![istio canary deployments secenario](http://itnp.kr/resources/img/post/istio-canary-demo.png)
 
 * 1단계 : _microservice_ **v1** 배포해 초기상태 구성하기
-* 2단계 : Canary 배포를 위해 _microservice_ **v1** 에 버전정보 라벨링 
+* 2단계 : _microservice_ **v1** 에 버전정보 라벨링 
 * 3단계 : _microservice_ **v2** 배포
 * 4단계 : 지정된 일부 사용자를 테스트 영역으로 타켓팅하도록 subset을 구성
   * 조건은 HTTP 프로토콜의  "end-user=testers" 라는 헤더 값을 가진 사용자 대상
