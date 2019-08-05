@@ -97,6 +97,8 @@ $ kubectl -n istio-system port-forward svc/kiali 20001
 
 기존에 서비스되고 있는 _microservice_ v1 에서 v2 로 Canary 배포를 수행하고 Kiali를 통해 결과를 모니터링을 합니다. 모니터링 결과에 따라 롤백 및 버전업 처리를 수행합니다.
 
+* Goal
+
 ![istio canary deployments secenario](http://itnp.kr/resources/img/post/istio-canary-demo.png)
 
 * 1단계 : _microservice_ **v1** 배포해 초기상태 구성하기
@@ -117,8 +119,13 @@ $ kubectl -n istio-system port-forward svc/kiali 20001
 
 ### 1단계 : _microservice_  **v1** 배포해 초기상태 구성하기
 
-* 현재 서비스 중이라는 가정하에 _microservice_ v1 를 배포해 시나리오 초기 환경을 구성합니다.
+* _microservice_ v1 를 배포해 시나리오 초기 환경을 구성합니다.
   * label  `app=hello` 로 _pod_ 와 _service_ 연계합니다.
+* 일반적인 구성입니다.
+* 현재 운영중인 환경 구성임을 가정합니다.
+
+
+![kiali-usecase-1](http://itnp.kr/resources/img/post/istio-canary-uc-01.png)
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -182,6 +189,8 @@ Hello server - v1
 * 이때 _deployment_ 삭제 후 배포 해야 합니다.
 * 다음 단계에서 _microservice_ v2 가 배포될 예정이므로 _service_ 의 `spec.selector` 에 추가로  `version=v1`를 지정하여 _microservice_ v2로 트래픽이 전달되지 않도록 합니다.
 
+![kiali-usecase-2](http://itnp.kr/resources/img/post/istio-canary-uc-02.png)
+
 ~~~
 $ kubectl delete deploy hello-server-v1
 
@@ -232,6 +241,7 @@ EOF
 * _microservice_ v2 를 배포 힙니다.
   * `app=hello, version=v2`
 
+![kiali-usecase-3](http://itnp.kr/resources/img/post/istio-canary-uc-03.png)
 ~~~
 $ kubectl apply -f - <<EOF
 apiVersion: apps/v1
@@ -307,6 +317,9 @@ Hello server - v1
 
 * Istio _destinationrule_ 로 subset 구성합니다.
   * Label `version: v1`, `version: v2` 로 **v1**, **v2** 2개의 _subset_ 을 구성합니다.
+* 이번 단계부터 본격적으로 Canary Deployment 를 위한 라우팅룰을 정의합니다.
+
+![kiali-usecase-4](http://itnp.kr/resources/img/post/istio-canary-uc-04.png)
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -424,6 +437,8 @@ Hello server - v1
 
 * v2 에 대한 사용자 테스트 중 오류가 발생했다고 가정하고 다음과 같이 임의로 에러를 발생시키면 Kiali를 통해 오류가 모니터링 됩니다. 
 
+![kiali-usecase-5](http://itnp.kr/resources/img/post/istio-canary-uc-05.png)
+
 ~~~
 $ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl -H "end-user:testers" http://svc-hello.default.svc.cluster.local:8080/error; sleep 0.1; done
 Hello server - v2 (uri=/error)
@@ -463,6 +478,8 @@ EOF
 
 * 오류 수정 후 문제 없다면 버전업 선택하고 전체 트래픽을  _subset_ v2로 전환합니다.
 
+![kiali-usecase-6](http://itnp.kr/resources/img/post/istio-canary-uc-06.png)
+
 ~~~
 $ kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
@@ -479,7 +496,6 @@ spec:
         subset: v2
 EOF
 ~~~
-
 
 ~~~
 $ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.1; done

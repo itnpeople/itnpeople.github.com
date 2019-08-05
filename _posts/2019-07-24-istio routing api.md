@@ -24,8 +24,13 @@ Traffic Management 는 소스코드의 변경없이 트래픽의 경로를 경�
 ### 준비작업
 > 테스트 용 `hello-server-v1`, `hello-server-v2` _pod_ 2개,   _pod_  `httpbin`, `app=hello` _service_ 준비
 
-* 클러스터에 Istio가 설치 전제
-* _pod_ 3개, _service_ 1개 생성
+* 클러스터에 Istio가 설치되어 있어야 합니다.
+* hello-server-v1 는 `Hello server - v1` 문자열을 리턴합니다.
+* hello-server-v2 는 `Hello server - v2` 문자열을 리턴합니다.
+* /error 라는 URI 로 요청하면 503 에러를 강제발생합니다.
+* httpbin 는 curl 을 사용하기 위한 유틸 _pod_ 입니다. 트래픽 발생하는 클라이언트입니다.
+
+![](http://itnp.kr/resources/img/post/istio-vs-dr-uc-01.png)
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -98,20 +103,22 @@ pod/hello-server-v2   2/2     Running   0          20m
   * Istio VirtualService 을 이용하여 라우팅 비율 룰셋을 지정하는 경우
   * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달됩니다.
 
-![Cases](/resources/img/post/istio-virtualservice-case.png)
-
 * Case 5
   * v1, v2 _service_ 대신 **DestinationRule** 을 이용는 경우
   * Case 4와 동일한 결과를 리턴 받습니다.
   * VirtualService 에서 `app=hello` 로 _endpoints_ 를 지정하고 DestinationRule 에서 label `version=v1`, `version=v2` 지정해 subset으로 세분화 구성
   * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달됩니다.
 
+
+![Cases](/resources/img/post/istio-virtualservice-case.png)
 ![Cases](/resources/img/post/istio-virtualservice-case-2.png)
 
 
 ###  Case 1
 > 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
 > `svc-hello` 로 트래픽을  발생시키면 해당 트래픽은 endpoints 로 round robin 되는것을 확인합니다.
+
+![routeapi-usecase-1](http://itnp.kr/resources/img/post/istio-vs-dr-uc-01.png)
 
 * `svc-hello` service 생성
 
@@ -161,6 +168,8 @@ Hello server - v1
 
 ### Case 2
 > _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 트래픽을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인합니다.
+
+![routeapi-usecase-2](http://itnp.kr/resources/img/post/istio-vs-dr-uc-02.png)
 
 * `svc-hello-v1`, `svc-hello-v2` 생성
 
@@ -233,6 +242,8 @@ Hello server - v2
 > 이전 round robin 되엇던 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 줍니다.
 > 룰셋은 기본적으로 `svc-hello-v1` 로 라우트 되지만 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트 되도록합니다..
 
+![routeapi-usecase-3](http://itnp.kr/resources/img/post/istio-vs-dr-uc-03.png)
+
 * VirtualService 생성
   * 기본적으로 `svc-hello-v1` 로 라우트되고 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트되는 룰셋
   * spec.hosts 는 대상 _service_
@@ -301,6 +312,8 @@ Hello server - v2 (uri=/v2)
 ### Case 4
 > **VirtualService** 는 Destination weight 스펙을 통해 라우트되는 비율을 정의할 수 있습니다.
 
+![routeapi-usecase-4](http://itnp.kr/resources/img/post/istio-vs-dr-uc-04.png)
+
 * VirtualService 를 수정 적용
   * v1:v2 = 90:10 비율로 라우트 되도록 합니다.
   * spec.*.route.*.destination.weight 에 라우트 비율 정의 (%)
@@ -343,6 +356,8 @@ Hello server - v1
 
 ###  Case 5
 > Case 4 와 같이 각 _pod_ 별 _service_ 를 구성하는 대신 **DestinationRule** 을 이용하여 동일한 결과 구현합니다.
+
+![routeapi-usecase-5](http://itnp.kr/resources/img/post/istio-vs-dr-uc-05.png)
 
 * DestinationRule 생성하여 subset 을 구성하고 VirtualService 에서 이를 지정합니다.
   * _service_ 는 label `app=hello` 로 타켓 _endpoints_ 정의
