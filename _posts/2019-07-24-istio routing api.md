@@ -30,7 +30,6 @@ Traffic Management 는 소스코드의 변경없이 트래픽의 경로를 경�
 * /error 라는 URI 로 요청하면 503 에러를 강제발생합니다.
 * httpbin 는 curl 을 사용하기 위한 유틸 _pod_ 입니다. 트래픽 발생하는 클라이언트입니다.
 
-![](http://itnp.kr/resources/img/post/istio-vs-dr-uc-01.png)
 
 ~~~
 $ kubectl apply -f - <<EOF
@@ -89,36 +88,18 @@ pod/hello-server-v2   2/2     Running   0          20m
 > 다음은 개념 파악을 위한 5개 샘플 Case 입니다.
 > Case 1,2 는 Kubernetes 의  _service_ 를 통해 _workload_ 를 서비스하는 경우이며 Case3,4는 **VirtualService** 를 통해 라우팅 룰셋 적용 case 입니다.
 
-* Case 1
-  * Kuberntes _service_ 가 바라보는 _endpoints_ 가 다수인 경우 
-  * `hello-server-v1`, `hello-server-v2`는 결과 확인을 위해 2종류의 _pod_ 로 구성하였으나 하나의 _workload_ 로 가정합니다.
-  * 트래픽은 _endpoints_ 들로 round robin 되어 전달됩니다.
-* Case 2
-  * Kuberntes 서비스 구성
-  * 트래픽은 각각 지정하는 _service_ 로 전달됩니다.
-* Case 3
-  * Istio VirtualService 에 uri에 따른 라우팅 룰셋 정의하는 경우
-  * 트래픽은 기본적으로 v1 _pod_ 로 전달되나 URI prefix 가 **/v2** 인 경우는 v2 _pod_로 라우팅 됩니다.
-* Case 4
-  * Istio VirtualService 을 이용하여 라우팅 비율 룰셋을 지정하는 경우
-  * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달됩니다.
-
-* Case 5
-  * v1, v2 _service_ 대신 **DestinationRule** 을 이용는 경우
-  * Case 4와 동일한 결과를 리턴 받습니다.
-  * VirtualService 에서 `app=hello` 로 _endpoints_ 를 지정하고 DestinationRule 에서 label `version=v1`, `version=v2` 지정해 subset으로 세분화 구성
-  * 트래픽  은 v1 _pod_ 와 v2 _pod_ 각각 9:1 비율로 전달됩니다.
-
-
-![Cases](/resources/img/post/istio-virtualservice-case.png)
-![Cases](/resources/img/post/istio-virtualservice-case-2.png)
+* Case 1 : Kuberntes _service_ 가 바라보는 _endpoints_ 가 다수인 경우 트래픽은 _endpoints_ 들로 자동 round robin 됩니다.
+* Case 2 : Kuberntes _service_ 에 `spec.selector` 로 라벨을 지정하여 라우팅 룰을 수동으로 지정할 수 있습니다.
+* Case 3 : Istio **VirtualService** 를 활용하여 HTTP Request URI에 따라 각 _pod_ 들로 라우팅 되도록 정의할 수 있습니다.
+* Case 4 : Istio **VirtualService** 를 활용하여 각 _pod_ 들로 라우팅 되는 비율을 정의할 수 있습니다.
+* Case 5 : Istio **DestinationRule** 에 `subset` 을 구성하여 요청에 대한 destionation 을 정의합니다. Case 4와 동일한 결과를 리턴 받습니다.
 
 
 ###  Case 1
 > 2개의 샘플 _pod_ - `hello-server-v1`, `hello-server-v2` - 가 서로 같은 App. 이라 정의하고 (실제로는 다르지만) 
 > `svc-hello` 로 트래픽을  발생시키면 해당 트래픽은 endpoints 로 round robin 되는것을 확인합니다.
 
-![routeapi-usecase-1](http://itnp.kr/resources/img/post/istio-vs-dr-uc-01.png)
+![routeapi-usecase-1](/resources/img/post/istio-vs-dr-uc-01.png)
 
 * `svc-hello` service 생성
 
@@ -149,8 +130,6 @@ $ kubectl get endpoints -l app=hello
 
 NAME           ENDPOINTS                         AGE
 svc-hello      172.17.0.5:8080,172.17.0.6:8080   92m
-svc-hello-v1   172.17.0.5:8080                   2m6s
-svc-hello-v2   172.17.0.6:8080                   14s
 ~~~
 
 * `svc-hello` 에 트래픽을 전달하여 결과 확인해 봅니다.
@@ -167,14 +146,127 @@ Hello server - v1
 ~~~
 
 ### Case 2
-> _pod_ `hello-server-v1`, `hello-server-v2` 를 각각 서비스 `svc-hello-v1`, `svc-hello-v2`로 match 시키고  각 _service_ 로 트래픽을 발생시키면 각각의 _pod_ 로 전달되는 것을 확인합니다.
+> Istio 의 Route API를 사용하지 않고 _service_ `svc-hello` 에 라벨링을 통해서  _pod_ `hello-server-v1`, `hello-server-v2` 라우팅룰을 지정할 수도 있습니다.
 
-![routeapi-usecase-2](http://itnp.kr/resources/img/post/istio-vs-dr-uc-02.png)
+![routeapi-usecase-2](/resources/img/post/istio-vs-dr-uc-02.png)
 
-* `svc-hello-v1`, `svc-hello-v2` 생성
+* `spec.selector` 에  `version: v1` 라벨 추가
 
 ~~~
 $ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-hello
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+    version: v1
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+EOF
+~~~
+
+* endpoint 확인
+
+~~~
+$ kubectl get endpoints -l app=hello
+
+NAME        ENDPOINTS                         AGE
+svc-hello      172.17.0.5:8080                   92m
+~~~
+
+
+* `svc-hello` 에 트래픽을 전달하여 결과 확인하기
+
+~~~
+$ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
+
+Hello server - v1
+Hello server - v1
+Hello server - v1
+Hello server - v1
+Hello server - v1
+~~~
+
+
+* `spec.selector` 에  `version: v2` 라벨 변경
+
+~~~
+$ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-hello
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+    version: v2
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+EOF
+~~~
+
+* endpoint 확인
+
+~~~
+$ kubectl get endpoints -l app=hello
+
+NAME        ENDPOINTS                         AGE
+svc-hello      172.17.0.6:8080                   92m
+~~~
+
+
+* `svc-hello` 에 트래픽을 전달하여 결과 확인하기
+
+~~~
+$ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl http://svc-hello.default.svc.cluster.local:8080; sleep 0.5; done
+
+Hello server - v2
+Hello server - v2
+Hello server - v2
+Hello server - v2
+Hello server - v2
+~~~
+
+
+### Case 3
+> 각 _pod_ 를 바라보는 `svc-hello-v1`, `svc-hello-v2` 를 생성하고 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 줍니다.
+> 룰셋은 기본적으로 `svc-hello-v1` 로 라우트 되지만 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트 되도록합니다..
+
+![routeapi-usecase-3](/resources/img/post/istio-vs-dr-uc-03.png)
+
+* VirtualService 생성
+  * 기본적으로 `svc-hello-v1` 로 라우트되고 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트되는 룰셋
+  * spec.hosts 는 대상 _service_
+  * spec.http.route.destination 는 기본 라우트 _service_
+  * spec.http.match.* 에 라우트 조건 지정 
+  * spec.*.destination.host 는 destination _service_
+
+~~~
+$ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-hello
+  labels:
+    app: hello
+spec:
+  selector:
+    app: hello
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -204,55 +296,7 @@ spec:
   - name: http
     protocol: TCP
     port: 8080
-EOF
-~~~
-
-* endpoint 확인
-
-~~~
-$ kubectl get endpoints -l app=hello
-
-NAME        ENDPOINTS                         AGE
-svc-hello-v1   172.17.0.5:8080                   2m6s
-svc-hello-v2   172.17.0.6:8080                   14s
-~~~
-
-* `svc-hello-v1`, `svc-hello-v2` 에 트래픽을 전달하여 결과 확인하기
-
-~~~
-$ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl http://svc-hello-v1.default.svc.cluster.local:8080; sleep 0.5; done
-
-Hello server - v1
-Hello server - v1
-Hello server - v1
-Hello server - v1
-Hello server - v1
-
-$ for i in {1..5}; do kubectl exec -it httpbin -c httpbin -- curl http://svc-hello-v2.default.svc.cluster.local:8080; sleep 0.5; done
-
-Hello server - v2
-Hello server - v2
-Hello server - v2
-Hello server - v2
-Hello server - v2
-~~~
-
-
-### Case 3
-> 이전 round robin 되엇던 `svc-hello` _service_ 에 **VirtualService** CRDs 를 사용하여 라우트 룰셋을 정의하여 줍니다.
-> 룰셋은 기본적으로 `svc-hello-v1` 로 라우트 되지만 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트 되도록합니다..
-
-![routeapi-usecase-3](http://itnp.kr/resources/img/post/istio-vs-dr-uc-03.png)
-
-* VirtualService 생성
-  * 기본적으로 `svc-hello-v1` 로 라우트되고 URI prefix가 `\v2` 이면 `svc-hello-v2`로 라우트되는 룰셋
-  * spec.hosts 는 대상 _service_
-  * spec.http.route.destination 는 기본 라우트 _service_
-  * spec.http.match.* 에 라우트 조건 지정 
-  * spec.*.destination.host 는 destination _service_
-
-~~~
-$ kubectl apply -f - <<EOF
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -312,7 +356,7 @@ Hello server - v2 (uri=/v2)
 ### Case 4
 > **VirtualService** 는 Destination weight 스펙을 통해 라우트되는 비율을 정의할 수 있습니다.
 
-![routeapi-usecase-4](http://itnp.kr/resources/img/post/istio-vs-dr-uc-04.png)
+![routeapi-usecase-4](/resources/img/post/istio-vs-dr-uc-04.png)
 
 * VirtualService 를 수정 적용
   * v1:v2 = 90:10 비율로 라우트 되도록 합니다.
@@ -357,7 +401,7 @@ Hello server - v1
 ###  Case 5
 > Case 4 와 같이 각 _pod_ 별 _service_ 를 구성하는 대신 **DestinationRule** 을 이용하여 동일한 결과 구현합니다.
 
-![routeapi-usecase-5](http://itnp.kr/resources/img/post/istio-vs-dr-uc-05.png)
+![routeapi-usecase-5](/resources/img/post/istio-vs-dr-uc-05.png)
 
 * DestinationRule 생성하여 subset 을 구성하고 VirtualService 에서 이를 지정합니다.
   * _service_ 는 label `app=hello` 로 타켓 _endpoints_ 정의

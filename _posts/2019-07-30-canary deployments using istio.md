@@ -537,8 +537,6 @@ Istio 의 _virtualservice_ , _destinationrule_ 의  traffic shifting 기능을 �
 * [Official-Virtual Service](https://istio.io/docs/reference/config/networking/v1alpha3/virtual-service/)
 
 
-## 기타
-
 ### Blue/Green vs Canary vs A/B Testing
 
 * [Blue-green Deployments, A/B Testing, and Canary Releases](https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/)
