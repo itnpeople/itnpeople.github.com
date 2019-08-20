@@ -118,6 +118,7 @@ blockquote {font-size:1em;padding:10px 5px;}
 li > p {padding-left:0px;}
 p {padding-left:20px;line-height: 1.6em;margin-bottom:5px;}
 ul { padding-left: 30px;}
+ul>li>ul { padding-left: 10px;}
 div.highlight {margin-left:20px;}
 .nav>li.nav-header {padding-bottom: 10px;}
 

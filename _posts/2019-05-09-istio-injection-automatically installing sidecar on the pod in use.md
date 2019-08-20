@@ -198,6 +198,7 @@ httpbin-776b7bcdcd-bhn9m   2/2       Running       0          7s
 
 
 ## 참조
+***
 
 * [sidecar-injection](https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/)
 * [Dynamic Admission Webhooks Overview](https://istio.io/docs/ops/setup/webhook/)

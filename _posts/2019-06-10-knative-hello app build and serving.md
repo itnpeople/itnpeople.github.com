@@ -43,6 +43,7 @@ Knative의 _Build 컴포넌트_ 는 git 같은 SCM에서 소스를 pull 하고 �
 
 
 ## 개발 - Hello Server 어플 준비
+***
 
 * 문자열을 리턴하는 간단한 샘플 어플을 준비하고 Github Repository 에 _Push_ 합니다.
 * [샘플 소스](https://github.com/itnpeople/knatvie_build_demo) 참조

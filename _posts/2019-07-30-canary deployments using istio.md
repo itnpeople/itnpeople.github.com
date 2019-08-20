@@ -14,8 +14,9 @@ Canary 배포는 예전 광산에 유독가스가 있는지 확인하기 위해 
 
 
 ## 개요
+***
 
-## Canary 배포
+### Canary 배포
 
 카나키아는 메탄, 일산화탄소에 매우 민감하며 가스에 노출되면 죽어버리게 됩니다.
 그래서 예전 광산에서는 카나리아가 노래를 계속하고 있는 동안 광부들은 안전함을 느낀 채 일 할 수 있었으며, 카나리아가 죽게 되면 곧바로 탄광을 탈출함으로써 자신의 생명을 보존할 수 있었습니다.
@@ -25,7 +26,7 @@ Canary 배포는 예전 광산에 유독가스가 있는지 확인하기 위해 
 
 ![Canary](https://blog.christianposta.com/images/canarydeployment.png)
 
-## 준비
+### 준비
 
 * Istio 를 설치합니다. 이때 모니터링을 위해 Kiali를 포함합니다.
 
@@ -116,6 +117,7 @@ $ kubectl -n istio-system port-forward svc/kiali 20001
 
 
 ## 시나리오 실행
+***
 
 ### 1단계 : _microservice_  **v1** 배포해 초기상태 구성하기
 
@@ -524,12 +526,14 @@ $ kubectl delete deploy/hello-server-v1 deploy/hello-server-v2 service/svc-hello
 ~~~
 
 ## Conclusion
+***
 
 Istio 의 _virtualservice_ , _destinationrule_ 의  traffic shifting 기능을 활용하여 Canary Deployment 를 간단한 시나리오로 구현해 볼 수 있었습니다. 이를 조금만 더 응용한다면 Blug/Green, A/B Test 역시도 유사한 방식으로 구현 가능하리라 판단됩니다.
 물론 production-level 에서는 이보다는 헐씬 더 복잡하고 다양한 경우가 발생할 것입니다. 뿐만 아니라 운영관점에서 [Horizontal Pod Autoscaler Walkthrough](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) 등도 추가로 고려해야 할 것입니다.
 
 
 ## 참고
+***
 
 * [Canary Deployments using Istio](https://istio.io/blog/2017/0.1-canary/)
 * [Flagger:progressive delivery Kubernetes operator](https://docs.flagger.app/how-it-works)
