@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Roulette</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		div.graph {min-height:500px;}
+		div.col {text-align: center;}
+		#ulCases {list-style-type: none;padding: 0;}
+		#ulCases input[type=checkbox] {width:20px;}
+		#ulCases input.text {width:120px;}
+		#ulCases input.value {width:40px;}
+	</style>
+</head>
+<body>
+	<h1></h1>
+	<div class="container">
+		
+		<div class="row">
+			<div class="col">
+				<div class="graph"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm"></div>
+			<div class="input-group col-sm-3">
+				<input id="txtText" type="text" class="form-control form-control-sm" value=""/>
+				<div class="input-group-append">
+					<button type="button" class="btn btn-secondary  btn-sm" id="btnAdd">추가</button>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-secondary btn-sm" id="btnClear">초기화</button>
+				<button type="button" class="btn btn-primary btn-sm" id="btnRun">실행</button>
+			</div>
+			<div class="col-sm"></div>
+		</div>
+	</div>
+<script type="text/javascript" src="roulette-itnp.kr.js"></script></body>
+<script>
+
+	var conf = {
+		translate: {
+			duration: 6000,
+			numOfRotate: 6	//회전수
+		},
+		plugin:	{
+			success: (d)=> {
+				console.log("success", d);
+			}
+		}
+	};
+	
+
+	var graph = new itnp.roulette(".graph", conf);
+	graph.render();
+
+	var oTXT = document.getElementById("txtText");
+
+	//실행
+	document.getElementById("btnRun").addEventListener("click", (e) => {
+		graph.start();
+	});
+	
+	//추가
+	document.getElementById("txtText").addEventListener("keydown", (e) => {
+		if(e.keyCode == 13) document.getElementById("btnAdd").click();
+	});
+
+	document.getElementById("btnAdd").addEventListener("click", (e) => {
+		
+		var data = graph.data();
+
+		var nm = oTXT.value;
+		var n = parseFloat(prompt("당첨 확률은 얼마입니까? (1~100까지)",data[0].value));
+		if(isNaN(n)) { alert("숫자를 입력하세요"); return false; }
+		if(!nm) nm = "선택 " + (data.length + 1);
+
+		data.push( {text: nm, value: n});
+		graph.render(data);
+		oTXT.value = "";
+		oTXT.focus();
+
+	});
+
+	oTXT.focus();
+
+	// clean-up
+	document.getElementById("btnClear").addEventListener("click", (e) => {
+		data = [];
+		graph.clear();
+	});
+
+
+
+</script>
+
+</html>
+
+
