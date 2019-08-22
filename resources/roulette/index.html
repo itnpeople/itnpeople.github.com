@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<title>룰렛</title>
+	<title>Roulette</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<style>
-		div.graph {min-height:500px;}
+		/* div.graph {height:800px;} */
 		div.col {text-align: center;}
-		#ulCases {list-style-type: none;padding: 0;}
-		#ulCases input[type=checkbox] {width:20px;}
-		#ulCases input.text {width:120px;}
-		#ulCases input.value {width:40px;}
+		svg g.status text {font-size: 2.8em;}
+		svg g.arc text {font-size: 1.6em;}
 	</style>
 </head>
 <body>
 	<h1></h1>
-	<div class="container">
+	<div class="container-fluid">
 		
 		<div class="row">
 			<div class="col">
@@ -22,18 +20,18 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm"></div>
-			<div class="input-group col-sm-3">
-				<input id="txtText" type="text" class="form-control form-control-sm" value=""/>
+			<div class="col"></div>
+			<div class="input-group col-5">
+				<input id="txtText" type="text" class="form-control form-control" value=""/>
 				<div class="input-group-append">
-					<button type="button" class="btn btn-secondary  btn-sm" id="btnAdd">추가</button>
+					<button type="button" class="btn btn-secondary" id="btnAdd">추가</button>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<button type="button" class="btn btn-secondary btn-sm" id="btnClear">초기화</button>
-				<button type="button" class="btn btn-primary btn-sm" id="btnRun">실행</button>
+			<div class="col-5">
+				<button type="button" class="btn btn-secondary" id="btnClear">초기화</button>
+				<button type="button" class="btn btn-primary" id="btnRun">실행</button>
 			</div>
-			<div class="col-sm"></div>
+			<div class="col"></div>
 		</div>
 	</div>
 <script type="text/javascript" src="roulette-itnp.kr.js"></script></body>
@@ -54,6 +52,7 @@
 
 	var graph = new itnp.roulette(".graph", conf);
 	graph.render();
+	graph.start();
 
 	var oTXT = document.getElementById("txtText");
 
