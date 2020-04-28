@@ -21,7 +21,7 @@ layout: default
 	{% if tags == "popular" %}<span class="label label-success">Best</span>{% endif %}
 	{% if tags == "recent" %}<span class="label label-info">New</span>{% endif %}
 {% endfor %}
-<em>{{post.date | date: "%Y/%m/%d %H:%M" }}</em>
+<p>{{post.date | date: "%Y/%m/%d %H:%M" }}</p>
 <p class="keyword">
 {% for word in post.keywords %}
 	&nbsp;<em>#{{ word }}</em>
