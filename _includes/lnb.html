@@ -1,8 +1,8 @@
 
-<ul class="nav nav-list">
-	<li class="nav-header">CATEGORIES</li>
+<p>CATEGORIES</p>
+<ul class="list-group">
 	{% for cate in site.category %}
-	<li><a {% if cate.code == page.categories %}class="active" {% endif %}href="{{site.baseurl}}/posts/{{cate.code}}" >{{cate.name}}</a></li>
+	<li class="list-group-item {% if cate.code == page.categories %}active{% endif %}"><a href="{{site.baseurl}}/posts/{{cate.code}}" >{{cate.name}}</a></li>
 	{% endfor %}
 </ul>
 
