@@ -2,7 +2,7 @@
 title:  "Amazone EC2 사용자별 MAX 프로세스 갯수 변경"
 date:   2012/06/18 10:44
 categories: "linux"
-tags: []
+tags: ["linux", "cloud", "ec2"]
 keywords: ["Cloud","System Engineering"]
 description: "리눅스는 사용자별로 max 로 수정할 수 있는 프로세스 수가 정해져 있으며 아마존 EC2 환경에서 사용자별 프로세스 수 변경하였다."
 ---

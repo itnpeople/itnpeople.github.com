@@ -1,0 +1,42 @@
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="{{site.baseurl}}/resources/js/d3-cloud.js"></script>
+<script>
+var words = []
+{% for tag in site.tags | sort %}
+	words.push({"text":"{{ tag[0] | replace:'-', '' }}","size": 16 + {{ tag | last | size |  times: 2 }} })
+{% endfor %}
+function RenderTagCloud(el) {
+
+	var offset = {w: el.offsetWidth, h: el.offsetWidth * 0.6}
+	var color= d3.scale.category20().domain([1,2,3,4,5,6,10,11,12,14,15,15,16,20,100])
+
+	el.innerHTML = ""
+	var layout = d3.layout.cloud()
+		.size([offset.w, offset.w])
+		.words(words)
+		.padding(3)
+		.rotate(0)
+		.font("Impact")
+		.fontSize(function(d) { return d.size; })
+		.on("end", function(words) {
+			d3.select(el).append("svg")
+				  .attr("width", offset.w)
+				  .attr("height", offset.h)
+				.append("g")
+				.attr("transform", "translate(" + offset.w / 2 + "," + offset.h / 2 + ")")
+				.selectAll("text")
+				.data(words)
+				.enter().append("text")
+				.style("font-size", function(d) { return d.size + "px"; })
+					.style("fill", function(d, i) { return color(i); })
+				.style("font-family", "Impact")
+				.attr("text-anchor", "middle")
+				.attr("transform", function(d) {
+					return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+				})
+				.text(function(d) { return d.text; });
+
+		});
+	layout.start();
+}
+</script>

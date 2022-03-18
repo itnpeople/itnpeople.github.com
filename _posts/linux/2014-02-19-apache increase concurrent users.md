@@ -2,7 +2,7 @@
 title:  "아파치 웹서버 (Apache HTTP Server) 동시 접속자 수 늘리기"
 date:   2014/02/19 14:25
 categories: "linux"
-tags: ["popular"]
+tags: ["linux", "apache", "httpd","popular"]
 keywords: ["Apache","httpd"]
 description: "아파치 동시 접속자수는 httpd.conf 파일에서 그 값을 지정할 수 있으며 컴파일시 지정하는 'ServerLimit' 값 이상은 그 값이 늘어나지 않는다."
 ---

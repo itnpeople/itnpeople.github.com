@@ -2,7 +2,7 @@
 title:  "Istio 연습과제 - Traffic Management on minikube"
 date:   2019/04/11 18:10
 categories: "cloud"
-tags: []
+tags: ["cloud", "istio","kubernetes"]
 keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube"]
 description: "minikube 에서 Istio 공식 TASK > Traffic Management 문서 Istio Traffic Management 를 토대로 minikube 환경에서 실행해보고 개인적으로 정리한 내용을 공유합니다."
 ---

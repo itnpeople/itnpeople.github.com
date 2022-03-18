@@ -2,7 +2,7 @@
 title:  "아파치 상태 모니터링 (server-status) 및 권한 설정"
 date:   2014/02/19 14:26
 categories: "linux"
-tags: []
+tags: ["linux", "apache", "httpd"]
 keywords: ["Apache","httpd","모니터링","보안"]
 description: "아파치 웹서버 모니터링을 설정하고 해당 URL의 접근제한을 지정하는 방법"
 ---

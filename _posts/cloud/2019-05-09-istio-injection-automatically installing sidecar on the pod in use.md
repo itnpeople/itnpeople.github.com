@@ -2,7 +2,7 @@
 title:  "Istio Sidecar Injection"
 date:   2019/05/09 17:05
 categories: "cloud"
-tags: []
+tags: ["cloud", "istio","kubernetes"]
 keywords: ["istio","kubernetes","install","쿠버네티스","이스티오","minikube","sidecar","sidecar-injection","istio-injection"]
 description: "만일 나의 클러스터내에 Istio-system 이 설치가 되었다면 가장 먼저 해야 할 일은  envoy sidecar 를 설치하는 것입니다.
 sidecar-injection 이란 이렇게 파드에 sidecar를 설치하는 과정으로 3가지 설정 정보에 의해서 결정되며 istio는 수동/자동 2가지 방법을 통해 sidecar-injection 을  수행합니다"

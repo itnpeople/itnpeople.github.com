@@ -2,7 +2,7 @@
 title:  "Eclipse에서 Maven 빌드 시 지원되지 않는 goal 예외 처리"
 date:   2015/01/16 17:51
 categories: "java"
-tags: []
+tags: ["java", "maven"]
 keywords: ["Eclipse","org.eclipse.m2e","pluginExecutionFilter"]
 description: "Eclipse에서 Maven 빌드 시 지원되지 않는 goal 예외 처리"
 ---

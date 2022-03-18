@@ -2,7 +2,7 @@
 title:  "CentOS Password-less SSH 설정 방법"
 date:    2014/11/06 11:50
 categories: "linux"
-tags: []
+tags: ["linux", "apache", "httpd","centos"]
 keywords: ["Apache","httpd","CentOS"]
 description: "Password-less SSH 는 서버간 ssh 연결시 비밀번호 입력없이 상호 trust된 연결이 되도록 지정해 주는 것 방법"
 ---

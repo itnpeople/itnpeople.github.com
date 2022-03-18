@@ -2,7 +2,7 @@
 title:  "Maven Repository 없이 로컬 jar 파일을 maven project 에 추가하는 방법"
 date:   2018/01/04 15:03
 categories: "java"
-tags: ["popular"]
+tags: ["java", "maven", "repository", "popular"]
 keywords: ["dependency","repository"]
 description: "Maven Repository 없이 로컬 jar 파일을 maven project 에 추가하는 방법"
 ---

@@ -2,7 +2,7 @@
 title:  "Maven 빌드 시 dependency 라이브러리들을 특정 디렉토리로 복사하는 방법"
 date:   2015/01/16 17:51
 categories: "java"
-tags: []
+tags: ["java", "maven"]
 keywords: ["Dependency","J2EE","maven-dependency-plugin"]
 description: "Maven 빌드 시 dependency 라이브러리들을 특정 디렉토리로 복사하는 방법"
 ---

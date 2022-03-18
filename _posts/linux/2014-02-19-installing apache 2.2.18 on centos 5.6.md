@@ -2,7 +2,7 @@
 title:  "Installing Apache 2.2.18 on CentOS 5.6"
 date:   2014/02/19 14:16
 categories: "linux"
-tags: []
+tags: ["linux", "apache", "httpd","centos"]
 keywords: ["Apache","httpd","CentOS"]
 description: "CentOS에 아파치 웹서버를 컴파일하여 설치하는 방법"
 ---

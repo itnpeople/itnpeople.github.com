@@ -2,7 +2,7 @@
 title:  "Maven 멀티 소스 디렉토리 지정 방법"
 date:   2015/01/16 17:47
 categories: "java"
-tags: []
+tags: ["java", "maven"]
 keywords: ["maven-compiler-plugin","includes"]
 description: "Maven 멀티 소스 디렉토리 지정 방법"
 ---

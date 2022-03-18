@@ -2,7 +2,7 @@
 title:  "Istio Circuit Breaking"
 date:   2019/08/20 14:35
 categories: "cloud"
-tags: []
+tags: ["cloud", "istio","kubernetes"]
 keywords: ["istio","kubernetes","쿠버네티스", "circuit break", "destinationrule"]
 description: "Circuit Breaking이란  전기의 회로차단기에서 차용한 개념으로 전기가 흐르다가 문제가 생기면 회로를 open하여 더이상 전기가 흐르지 않도록하여  문제가 되는 부분으로 부터 전체 시스템에 장애가 전파되지 않도록 하는데 목적이 있습니다. Istio 에서는 envoy 를 활용하여 circuit breaking 기능을 제공하고 있습니다. 이중 Istio 의 destinationrul의  connectionPool, outlierDetection 스펙을 활용한 circuit breaking 기능을 간단한 예제를 통해 검증해 봅니다."
 ---

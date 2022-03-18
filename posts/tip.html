@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<div class="row">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{{site.baseurl}}/posts/categories">Categories</a></li>
+			<li class="breadcrumb-item active">Tips</li>
+		</ol>
+	</nav>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+{% for cate in site.tips_category %}
+		<h2>{{ cate.name }}</h2>
+		<ul>
+	{% for subject in cate.subjects %}
+			<li><a href="{{site.baseurl}}/post/{{ subject | replace: ' ', '-' }}">{{ subject }}</a></li>
+	{% endfor %}
+		</ul>
+{% endfor %}
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<h2>Links</h2>
+		<ul>
+			<li><a href="https://github.com/itnpeople/itnpeople/tree/master/demo" target="_blank">Demo applications</a></li>
+		</ul>
+	</div>
+</div>
+
+

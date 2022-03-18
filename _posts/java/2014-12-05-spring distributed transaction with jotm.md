@@ -2,8 +2,8 @@
 title:  "Spring framework 4.0.x 에서 JOTM(Java Open Transacdtion Manager) 을 이용한 분산 트랜잭션 처리 방법"
 date:   2014/02/19 14:26
 categories: "java"
-tags: []
-keywords: ["Spring Frameworks","Transaction","jotm"]
+tags: ["java", "spring","jotm"]
+keywords: ["spring","transaction","jotm"]
 description: "스프링 프레임워크에서 분산 트랜잭션을 설정하고 활용하는 방법"
 ---
 

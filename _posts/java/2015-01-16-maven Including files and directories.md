@@ -2,7 +2,7 @@
 title:  "Maven 빌드 시 소스 디렉토리내 리소스들을 포함 시키는 방법"
 date:    2015/01/16 17:47
 categories: "java"
-tags: []
+tags: ["java", "maven"]
 keywords: ["resources"]
 description: "maven은 소스 디렉토리내에 java 이외의 파일은 리소스로 인식하지 않기 때문에 소스 디렉토리 내의 리소스는 pom.xml 에서 다음과 같이 추가로 `resources` > `resource` 노드에 추가로 지정해 주어야 패키징 시 해당 리소스들이 포함된다."
 ---

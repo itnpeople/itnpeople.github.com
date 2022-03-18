@@ -2,7 +2,7 @@
 title:  "PostgreSQL Yum Install & Setup"
 date:   2018/11/18 1:22
 categories: "linux"
-tags: [""]
+tags: ["linux", "pgsql", "centos"]
 keywords: ["centos","pgsql","install"]
 description: "CentOS 6에 PostgreSQL 설치(yum) 및 데이터베이스 시작하기"
 ---

@@ -1,7 +1,7 @@
 ---
 layout: "default"
-title : "kubernetes"
-categories: "kubernetes"
+title : "Categories"
+categories: ""
 ---
 
 <div class="row">

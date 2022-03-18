@@ -2,7 +2,7 @@
 title:  "간단한 예제로 보는 Istio VirtualService와 Destination 을 활용한 Istio Traffic Routing의 이해"
 date:   2019/07/24 10:01
 categories: "cloud"
-tags: []
+tags: ["cloud", "istio","kubernetes"]
 keywords: ["istio","kubernetes","쿠버네티스", "virtualservice", "destinationrule", "routing"]
 description: "Istio 의 VirtualService는  Kubernetes service 를 세분화한 추상화된 Custom Resource Definition이며, 다양한 조건 정의를 통해 사용자에게 소스 또는 어플리케이션 설정정보 변경없이 선언적으로 트래픽이 라우트 되도록 해준다. Traffic Management 는 소스코드의 변경없이 트래픽의 경로를 경로를 변경 관리할 수 있는 기능으로 수많은 마이크로서비스과 그들간의 트래픽이 오고가는 서비스메시에서 기본이 되는 주요한 기능이라 할 수 있을 것입니다. 이 포스트는 이렇게 Istio 에서도 주요 feature 중 하나인 Traffic Management 의 핵심인 VirtualService 와 DestinationRule 동작 원리를 간단한 예제를 활용해서 룰셋을 적용해보고 Kubernetes의 _service_ 와 비교를 통해 Istio 라우팅의 기본 개념을 이해하는데 목적이 있습니다."
 ---

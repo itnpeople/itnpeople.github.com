@@ -1,3 +1,4 @@
+domain: itnp.kr
 title: 사람과 기술
 email: itnpeople@naver.com
 description: >-
@@ -5,7 +6,12 @@ baseurl: ""
 
 # Build settings
 markdown: kramdown
-exclude: ['Gemfile', 'Gemfile.lock', '.idea/','.gitignore','README.md']
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .idea/
+  - .gitignore
+  - README.md
 
 collections:
   cate:
@@ -22,13 +28,48 @@ defaults:
     layout: post
     permalink: /post/:title
 
-
 category:
   - {code: 'linux', name: 'Linux',  desc: "S/W 개발자입장에서 리눅스를 사용하는 방법과 Apache 등 여러가지 오픈플랫폼 설치하는 방법을 공유합니다"}
   - {code: 'java', name: 'Java', desc: "Spring framework 과 java 개발과 관련된 팁을 공유합니다."}
   - {code: 'python', name: 'Python', desc: "파이썬을 활용한 구현 예제들을 공유합니다."}
   - {code: 'cloud', name: 'Cloud', desc: "마이크로서비스, 서비스 메시 관련 기술을 공유합니다."}
-
+  - {code: 'tip', name: 'Tips', desc: "개인적 필요에 의해서 정리한 각종 개발 및 운영팁 모음입니다."}
 
 is_google_analytics: true
 
+tips_category:
+  - name: Popular contents
+    subjects:
+    - git
+    - shell
+    - network
+    - kubectl
+  - name: Development
+    subjects:
+    - shell
+    - network
+    - git
+    - go-lang
+    - jmeter
+    - nuxt-framework
+    - etc
+  - name: Kubernetes
+    subjects:
+    - kubectl
+    - kubeadm
+    - kubernetes network
+    - kubernetes security
+    - kubernetes monitoring
+    - client-go
+  - name: Istio
+    subjects:
+    - istio
+    - install istio
+    - install kiali
+  - name: Cloud Native
+    subjects:
+    - docker
+    - helm
+    - cloud providers
+    - minikube
+    - ecosystem projects

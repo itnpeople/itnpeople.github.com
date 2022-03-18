@@ -2,7 +2,7 @@
 title:  "파이썬(Python)으로 웹 크롤러 만들기 - requests, beautifulsoup, lxml"
 date:   2017/01/23 12:55
 categories: "python"
-tags: ["popular"]
+tags: ["python", "lxml","BeautifulSoup","centos", "popular"]
 keywords: ["lxml","BeautifulSoup","centos"]
 description: "파이썬(Python)으로 웹 크롤러 프로토타입 개발"
 ---

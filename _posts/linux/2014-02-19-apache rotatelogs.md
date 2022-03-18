@@ -2,7 +2,7 @@
 title:  "Apache rotatelogs 를 이용한 로그 관리하기"
 date:   2014/02/19 14:14
 categories: "linux"
-tags: []
+tags: ["linux", "apache", "httpd","logs"]
 keywords: ["Apache","httpd","logs"]
 description: "웹서버의 성능을 위해서 rotatelogs를 활용하여 로그의 크기를 일정하게 늘어나지 않도록 해주는 방법"
 ---

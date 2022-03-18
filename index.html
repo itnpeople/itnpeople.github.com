@@ -1,7 +1,7 @@
 ---
 title: "메인"
 keywords: "자바,닷넷,리눅스,정보시스템,오픈소스,플렛폼,아이티,java,asp.net,platform,.net,IT,kubernetes,istio,python"
-description: "자바,닷넷,리눅스 등 각종 오픈소스 및 오픈 플렛폼 기술 공유 블로그 입니다"
+description: "자바,닷넷,리눅스,클라우드 등 각종 오픈소스 및 오픈 플렛폼 기술 공유 블로그 입니다"
 ---
 <!DOCTYPE html>
 <html>
@@ -23,66 +23,55 @@ description: "자바,닷넷,리눅스 등 각종 오픈소스 및 오픈 플렛�
 			</header>
 		<!-- Main -->
 			<div id="main">
-
-				<!-- One -->
-					<section id="one">
-						<header class="major">
-							<h2>사람과기술</h2>
-						</header>
-                <p>대학시절 논문 쓰기 싫어 만들었던 졸업작품에서 시작한 소프트웨어 개발 생활이 벌써 20년이 훌쩍 넘었버렸네요.
-경력이 쌓여감에 따라 조직는 매니저 역할을 원했었고 그랬던 시기도 있었지만 개발을 놓지 않으려 노력했기에 결국 아직까지도 현역에서 개발이란걸 하고 있습니다.
-하지만 개인적인 의지와는 상관없이 은퇴를 앞둔 고참 프로야구 선수처럼 이제는 조금씩 생물학적인 한계가 오고 있다는것을 느끼고 있습니다.
-언제까지일지 모르지만 가능한 시간까지 하루하루를 겸손한 마음으로 감사하며 살고자 합니다.</p>
-						<p>개발하면서 얻는 소소한 지식을 공유합니다. 자바, 닷넷, 리눅스, 오픈소스 관련 작지만 도움이 될만한 S/W기술들을 이야기하고 있습니다.</p>
+				<section>
+					<header class="major">
+						<h2>사람과기술</h2>
+					</header>
+<p>대학시절 논문대신 만든 졸업작품에서 시작한 소프트웨어 개발 생활이 벌써 20년이 훌쩍 넘었버렸네요.
+그 동안 개발을 놓지 않으려 노력한 덕분에 적지 않은 어려움에도 아직까지도 현역에서 개발이란 것을 하고 있네요.
+언제까지 소프트웨어 엔지니어 생활을 이어갈 수 있을지 모르지만 겸손하고 감사한 마음으로 하루하루를 살고자 합니다.</p>
+						<p>개발하면서 얻는 소소한 지식을 공유합니다. 자바, 닷넷, 리눅스, 클라우드, 오픈소스 관련 작지만 도움이 될만한 S/W기술들을 이야기하고 있습니다.</p>
 					</section>
-				<!-- Two -->
-					<section id="two">
-						<h2>Interests</h2>
-						<div class="row">
-							{% for cate in site.category %}
-							<article class="6u 12u$(xsmall) work-item">
-								<h3><a href="{{site.baseurl}}/posts/{{cate.code}}">{{cate.name}}</a></h3>
-								<p>{{cate.desc}}</p>
-							</article>
-							{% endfor %}
-							<article class="6u 12u$(xsmall) work-item">
-								<h3><a href="https://github.com/itnpeople/k8s.docs/blob/master/README.md" target="_blank">Tips&nbsp;<i class="icon fa-github"></i></a></h3>
-								<p>Kubernetes 외 Cloud Native 관련 정보 및 개발 팁등 개인적으로 정리한 팁들입니다.</p>
-							</article>
-						</div>
+				<section id="two">
+					<h2>Interests</h2>
+					<div class="row" id="tagcloud">
+						{% include tagcloud.html %}
+					</div>
+					<div class="row">
+						{% for cate in site.category %}
+						<article class="6u 12u$(xsmall) work-item">
+							<h3><a href="{{site.baseurl}}/posts/{{cate.code}}">{{cate.name}}</a></h3>
+							<p>{{cate.desc}}</p>
+						</article>
+						{% endfor %}
+					</div>
+				</section>
+				<section>
+					<h2>Popular Posts</h2>
+					<section>
+						{% assign pages = site.posts | where: "tags", "popular"%}
+						{% for post in pages %}
+						<article class="12u$(xsmall) work-item">
+							<h3><a href="{{post.url}}">{{post.title}}</a></h3>
+							<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
+						</article>
+						{% endfor %}
 					</section>
-					
-				<!-- Three -->
-					<section id="three">
-						<h2>Popular Posts</h2>
-						<section>
-							{% assign pages = site.posts | where: "tags", "popular"%}
-							{% for post in pages %}
-							<article class="12u$(xsmall) work-item">
-								<h3><a href="{{post.url}}">{{post.title}}</a></h3>
-								<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
-							</article>
-							{% endfor %}
-						</section>
+				</section>
+				<section>
+					<h2>Recent Posts</h2>
+					<section>
+						{% assign pages = site.posts | sort: "date" | reverse %}
+						{% for post in pages limit:5 %}
+						<article class="12u$(xsmall) work-item">
+							<h3><a href="{{post.url}}">{{post.title}}</a></h3>
+							<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
+						</article>
+						{% endfor %}
 					</section>
-
-				<!-- Four -->
-					<section id="four">
-						<h2>Recent Posts</h2>
-						<section>
-							{% assign pages = site.posts | sort: "date" | reverse %}
-							{% for post in pages limit:5 %}
-							<article class="12u$(xsmall) work-item">
-								<h3><a href="{{post.url}}">{{post.title}}</a></h3>
-								<p><a href="{{site.baseurl}}/posts/{{post.categories}}">{{post.categories}}</a> / Posted at {{ post.date | date: "%Y/%m/%d %H:%M" }}</p>
-							</article>
-							{% endfor %}
-						</section>
-					</section>
-
+				</section>
 			</div>
-
-		<!-- Footer -->
+			<!-- Footer -->
 			<footer id="footer">
 				<ul class="icons">
 					<li><a href="https://www.youracclaim.com/badges/607847b2-66d2-453e-9eaa-b470a91d8dd5/public_url" target="_blank" class="icon" style="vertical-align:middle"><img src="/resources/img/index/cka-certified-kubernetes-administrator.png" style="width:30px;height:30px"></a></li>
@@ -106,4 +95,9 @@ description: "자바,닷넷,리눅스 등 각종 오픈소스 및 오픈 플렛�
 			<!--[if lte IE 8]><script src="{{site.baseurl}}/resources/js/ie/respond.min.js"></script><![endif]-->
 			<script type="text/javascript" src="{{site.baseurl}}/resources/js/index.main.js"></script>
 </body>
+<script>
+window.onload = window.onresize = function() {
+	RenderTagCloud(document.getElementById("tagcloud"))
+}
+</script>
 </html>

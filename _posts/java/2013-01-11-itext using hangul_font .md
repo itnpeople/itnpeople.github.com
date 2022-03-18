@@ -2,7 +2,7 @@
 title:  "iText에서 한글 폰트 사용방법"
 date:   2013/01/11 17:41
 categories: "java"
-tags: []
+tags: ["java", "iText","PDF","PPT"]
 keywords: ["iText","PDF","PPT","한글"]
 description: "iText를 활용하여 PDF를 페이지 별로 하나의 이미지로 변환한 경험"
 ---

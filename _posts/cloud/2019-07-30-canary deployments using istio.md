@@ -2,7 +2,7 @@
 title:  "[Istio] 간단한 시나리오를 통해 Canary 배포 구현해보기"
 date:   2019/07/30 09:08
 categories: "cloud"
-tags: []
+tags: ["cloud", "istio","kubernetes"]
 keywords: ["istio","kubernetes","쿠버네티스", "virtualservice", "destinationrule", "routing"]
 description: "Canary 배포는 예전 광산에 유독가스가 있는지 확인하기 위해 카나리아를 광산에 가지고 들어간 것에 아이디어를 얻은 배포 방법으로 Istio 의 virtualservice 와 destinationrule 을 활용하여 비교적 손쉽게(?) 구현 할 수 있습니다. 이 글에서는 간단한 시나리오를 통해 Istio 의  Canary 배포를 어떻게 구현하고 활용할 수 있는지를 확인해봅니다."
 ---

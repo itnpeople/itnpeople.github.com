@@ -2,7 +2,7 @@
 title:  "knative 에서 Github에 있는 hello 앱 소스를 Build 컴포넌트로 빌드하고 서비스 배치 해보기"
 date:   2019/06/10 13:04
 categories: "cloud"
-tags: []
+tags: ["cloud", "Knative","kubernetes"]
 keywords: ["Knative","kubernetes","istio","install","쿠버네티스", "serverless"]
 description: "Knative의 Build 컴포넌트는 git 같은 SCM에서 소스를 pull 하고 해당 소스로부터 컨테이너 이미지를 생성하여 레지스트리에 Push 하는 프로세스를 가지고 있습니다.. 이러한 일련의 Knatvie 빌드 프로세스를 간단한 hello 앱을 만들어 그 동작 원리를 확인해 보고자 합니다."
 ---
