@@ -60,6 +60,7 @@ tips_category:
     - kubernetes network
     - kubernetes security
     - kubernetes monitoring
+    - kubernetes certificates
     - client-go
   - name: Istio
     subjects:

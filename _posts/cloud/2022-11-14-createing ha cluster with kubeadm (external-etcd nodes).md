@@ -326,3 +326,4 @@ $ kubectl get nodes --kubeconfig=/etc/kubernetes/admin.conf
 * [Creating Highly Available Clusters with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#external-etcd-nodes)
 * [Set up a High Availability etcd Cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/)
 * [kubeadm Configuration (v1beta3)](https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/)
+* [PKI certificates and requirements](https://kubernetes.io/docs/setup/best-practices/certificates/)
