@@ -34,10 +34,10 @@ $ sudo kubeadm certs renew all
 
 * static pod 재시작
 ```
-sudo kill -s SIGHUP $(pidof kube-apiserver) $(pidof kube-controller-manager) $(pidof kube-scheduler)
-sudo systemctl restart kubelet
-sudo systemctl daemon-reload
-sudo systemctl restart containerd
+$ sudo kill -s SIGHUP $(pidof kube-apiserver) $(pidof kube-controller-manager) $(pidof kube-scheduler)
+$ sudo systemctl restart kubelet
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart containerd
 ```
 
 ### 참고
