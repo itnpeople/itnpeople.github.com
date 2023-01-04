@@ -58,9 +58,10 @@ tips_category:
     - kubectl
     - kubeadm
     - kubernetes network
-    - kubernetes security
     - kubernetes monitoring
     - kubernetes certificates
+    - kubernetes authorization
+    - kubernetes apiserver authentication
     - client-go
   - name: Istio
     subjects:

@@ -1,5 +1,5 @@
 ---
-title:  Kubernetes API-Server Authentication
+title:  Kubernetes apiserver Authentication
 date:   2023/01/04 14:41
 categories: "tip"
 tags: ["kubernetes","apiserver","kube-apiserver","authenticate"]
