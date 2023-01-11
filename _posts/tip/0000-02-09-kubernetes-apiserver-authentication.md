@@ -132,6 +132,7 @@ $ curl -i -k -H "Authorization: Bearer ${TOKEN_ID}.${TOKEN_SECRET}" https://192.
 ## ServiceAccount Token
 
 > kubernetes.io/service-account-token
+
 > https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens
 
 

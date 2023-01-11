@@ -27,8 +27,25 @@ description: Development Tips - Kubernetes Network
 ▒ kubectl exec -it -n default dnsutils -- nslookup kubernetes.default
 ```
 
-## Network-CNI
+## Calico
 
 ```
 ▒ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
+
+* calicoctl
+
+```
+▒ curl -L https://github.com/projectcalico/calico/releases/download/v3.24.5/calicoctl-linux-amd64 -o calicoctl
+▒ chmod 700 calicoctl
+▒ sudo mv calicoctl /usr/local/bin/
+▒ sudo calicoctl node status
+```
+
+* connection refused
+
+```
+# Readiness probe failed: calico/node is not ready: BIRD is not ready: Error querying BIRD: unable to connect to BIRDv4 socket: dial unix /var/run/calico/bird.ctl: connect: connection refused
+
+▒ kubectl set env daemonset/calico-node -n kube-system IP_AUTODETECTION_METHOD=interface=eth*
 ```
