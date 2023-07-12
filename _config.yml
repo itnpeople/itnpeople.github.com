@@ -63,6 +63,7 @@ tips_category:
     - kubernetes authorization
     - kubernetes apiserver authentication
     - client-go
+    - etcd
   - name: Istio
     subjects:
     - istio
